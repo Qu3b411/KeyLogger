@@ -6,7 +6,6 @@
 # when I get around to it i plan to release an uppdate to document the code.
 # so far it is only a demo mock up with limited capabilities. 
 # At some point I plan to add socket level comunication, as well as a masive restructure. This is code I wrote many years ago and I havent been able to work on it since.
-# At some point I plan to  add a means to grab the clipboard. Since the release of windows 10 the functionality of the clipboard has failed thus i cut that code out for the release. 
 # please review it and let me know what Isues arise. 
 #Known Issue
 output is to the console and has not been changed as of yet, a massive overhall needs to take place to support.
