@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="keyloggerStyle.xsl"?>
+<KeyLoggerMetaData>
+
+        <Process>
+                <ProcessHandle>0x590bb8</ProcessHandle>
+                <ProcessID>11624</ProcessID>
+                <title>
+                        <ProcessTitle><![CDATA[main.cpp [keylogger] - Code::Blocks 17.12]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                        <logged>
+                                <CaptureType>ClipBoard</CaptureType>
+                                <Capture>ProcessHandle</Capture>
+                        </logged>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+        </Process>
+        <Process>
+                <ProcessHandle>0x210322</ProcessHandle>
+                <ProcessID>7628</ProcessID>
+                <title>
+                        <ProcessTitle><![CDATA[XSLT Tryit Editor v1.2 and 5 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+                <title>
+                        <ProcessTitle><![CDATA[XSLT Tryit Editor v1.2 and 6 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+                <title>
+                        <ProcessTitle><![CDATA[New tab and 6 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[fir \*CRLF*\ ]]></Capture>
+                        </logged>
+                </title>
+                <title>
+                        <ProcessTitle><![CDATA[New tab page and 6 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+                <title>
+                        <ProcessTitle><![CDATA[First National Bank of Omaha | Personal & Business Banking and Insights and 6 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+                <title>
+                        <ProcessTitle><![CDATA[Please Login and 6 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[Qu3b411]]></Capture>
+                        </logged>
+                </title>
+                <title>
+                        <ProcessTitle><![CDATA[Checking browser fingerprint ... and 6 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+                <title>
+                        <ProcessTitle><![CDATA[Password and 6 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+        </Process>
+        <Process>
+                <ProcessHandle>0x450c3c</ProcessHandle>
+                <ProcessID>11800</ProcessID>
+                <title>
+                        <ProcessTitle><![CDATA[C:\Users\qu3b411\Desktop\keylogger\bin\Debug\keylogger.exe]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+        </Process>
+        <Process>
+                <ProcessHandle>0x70b6a</ProcessHandle>
+                <ProcessID>3676</ProcessID>
+                <title>
+                        <ProcessTitle><![CDATA[New Text Document (2) - Notepad]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[ \*CTRL*\ a \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\ c]]></Capture>
+                        </logged>
+                        <logged>
+                                <CaptureType>ClipBoard</CaptureType>
+                                <Capture>somerandompassword</Capture>
+                        </logged>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[ \*CTRL*\ ]]></Capture>
+                        </logged>
+                </title>
+        </Process>
+        <Process>
+                <ProcessHandle>0</ProcessHandle>
+                <ProcessID>0</ProcessID>
+                <title>
+                        <ProcessTitle><![CDATA[]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+        </Process>
+        <Process>
+                <ProcessHandle>0x450c3c</ProcessHandle>
+                <ProcessID>11800</ProcessID>
+                <title>
+                        <ProcessTitle><![CDATA[C:\Users\qu3b411\Desktop\keylogger\bin\Debug\keylogger.exe]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+        </Process>
+        <Process>
+                <ProcessHandle>0x210322</ProcessHandle>
+                <ProcessID>7628</ProcessID>
+                <title>
+                        <ProcessTitle><![CDATA[Password and 6 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[ \*CTRL*\ v \*CTRL*\ ]]></Capture>
+                        </logged>
+                </title>
+                <title>
+                        <ProcessTitle><![CDATA[Forgot User ID or Password and 6 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+                <title>
+                        <ProcessTitle><![CDATA[Sign In to Access Your Accounts - Bank of the West and 6 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+                <title>
+                        <ProcessTitle><![CDATA[Sign In to Access Your Accounts - Bank of the West and 5 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[]]></Capture>
+                        </logged>
+                </title>
+        </Process>
+        <Process>
+                <ProcessHandle>0x210322</ProcessHandle>
+                <ProcessID>7628</ProcessID>
+                <title>
+                        <ProcessTitle><![CDATA[Sign In to Access Your Accounts - Bank of the West and 5 more pages ?- Microsoft Edge]]></ProcessTitle>
+                        <TimeStamp>Sat Dec 01 19:50:22 2018</TimeStamp>
+                        <logged>
+                                <CaptureType>Keylogger</CaptureType>
+                                <Capture><![CDATA[qu3b411testing special characters!@#$%^&amp;*()_+{}|:&quot;&lt;&gt;?/.,&apos;;\][=-~ \*CRLF*\ ]]></Capture>
+                        </logged>
+                </title>
+        </Process>
+</KeyLoggerMetaData>
