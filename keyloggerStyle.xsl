@@ -22,7 +22,13 @@ Time Stamp:
  </div>
   <div style="margin-left:20px;margin-bottom:1em;font-size:10pt">
     <p>
-    <xsl:value-of select="keystrokes"/>
+   <xsl:for-each select="current()/logged">
+<p>
+<div style="background-color:gold;color:black;padding:4px">
+    <xsl:value-of select="CaptureType"/> </div>
+     <xsl:value-of select="Capture"/> <div></div>
+ </p>
+</xsl:for-each>
     </p>
   </div>
 </xsl:for-each>
