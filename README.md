@@ -2,8 +2,11 @@
 # Developed and tested on the windows 10.
 # This is just the beging of the KeyLogger release, I havent had alot of time to develop it further, by releasing it I hope it will be picked up by some interested developers. 
 
-# when I get around to it I plan to release an uppdate to document the code. 
+# take time to enhance documentation 
   [NOTE: I wrote this when I was in high school and didn't apprecieate the value of documentation, it will take some time to do the documentation so please be patient and visit my repository in the future! I'll be attempting to push updates out on saturdays, However I'm in college curently and can't garentee fast progress at this point!]
+  
+  # internal documentation is comple3ated for now, I still hasve not gotten around to documenting the functions
+  
 # so far it is only a demo mock up with limited capabilities. 
 # TODO
   1.) write a sanitizer function for xml from the clipboard 
