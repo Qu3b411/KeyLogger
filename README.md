@@ -28,4 +28,6 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
  
  2.) special characters in process's will create malformated xml output that cannot be styled
  
- 3.) an end </KeyLoggerMetaData> must be manually added as of this moment
+ 3.) an end </KeyLoggerMetaData> must be manually added to xml coppied off of the console as of this moment
+ 
+ 4.) special characters in clipbord may result in invalid xml output, this means xsl styleing cannot take place.
