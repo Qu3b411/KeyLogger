@@ -4,7 +4,8 @@
 
 # take time to enhance documentation 
    internal documentation is compleated for now
-   write function documentation for callable interfaces 
+ 
+ write function documentation for callable interfaces 
 # so far it is only a demo mock up with limited capabilities. 
 # TODO
   1.) write a sanitizer function for xml from the clipboard 
