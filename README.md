@@ -4,12 +4,14 @@
 
 https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2N2IwOTY5MjU4YzdjODc0MzFhOGI4YWUxYmU4NGFlZTYyMGNlYTUyYmQ5OTVkOGU2NmU5NzZmMGJmMDA1MjI
 
+Contact me via DM username Qu3b411,
 
 # take time to enhance documentation 
    internal documentation is compleated for now
  
  write function documentation for callable interfaces 
-# so far it is only a demo mock up with limited capabilities. 
+# so far it is onl
+y a demo mock up with limited capabilities. 
 # TODO
   1.) write a sanitizer function for xml from the clipboard 
   
