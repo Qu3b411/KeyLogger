@@ -1,6 +1,9 @@
 # KeyLogger version 0.0.2 DEVELOPMENT patch 
 # Developed and tested on the windows 10.
-# This is just the beging of the KeyLogger release, I havent had alot of time to develop it further, by releasing it I hope it will be picked up by some interested developers. 
+# you can contact the comunity on slack
+
+https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2N2IwOTY5MjU4YzdjODc0MzFhOGI4YWUxYmU4NGFlZTYyMGNlYTUyYmQ5OTVkOGU2NmU5NzZmMGJmMDA1MjI
+
 
 # take time to enhance documentation 
    internal documentation is compleated for now
