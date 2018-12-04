@@ -17,8 +17,33 @@ currently Version 0.0.2 is capable of,
 
 6.) logging changes to the clipboard
 
-all the information collected by this program is formatted in xml, to view a sample output download the project, and open the "SampleOutput/ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl" to view the formatting 
+all the information collected by this program is formatted in xml, to view a sample output download the project, and open the "SampleOutput/ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl" to view the formatting o
 
+# Getting Started
+  compileing the keylogger can be done as followed,
+  
+  **step one, get gcc**
+   go to [https://mingw-w64.org/doku.php#mingw-w64] and download gcc, this may install in a few different places, 
+  **step two, locate compiler**
+      
+   locate %systemdrive%\...\MinGW, it will likley be  in "\Program Files\" or "\Program Files (x86)\"
+    
+   open "Command Prompt" as an Administrator and navigate to the MinGW\bin
+    do one of the following
+    
+   **with window, for now this is the only real option untill updates are compleated**   
+   
+       c:\ ... \ MinGw\bin>gcc \ ... \ keylogger\main.cpp -lstdc++ \ ... \ keylogger\keylogger.exe
+   
+   **without window, once buffered io works with sockets Ill be wrighting a compiler script, but for now you can use**
+    
+        c:\ ... \ MinGw\bin>gcc \ ... \ keylogger\main.cpp -lstdc++ -mwindows \ ... \ keylogger\keyloggerNoWindow.exe
+   es, 
+   
+   
+   **congradulations**, you can now run this exe and see what it can realy do,
+   for now you must copy items off of the buffer into xml documents, this will change as the program inproves, please be patient
+             
 # Roadmap to Version 0.1.0
  there are multiple features I wish to add before the 0.1.0.
  
