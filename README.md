@@ -63,11 +63,7 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
 # Contact a core team member via slack to report abuse of the code of coduct
   members:
      Qu3b411
-# take time to enhance documentation 
-   internal documentation is compleated for now
- 
- write function documentation for callable interfaces 
-# so far it is only a demo mock up with limited capabilities. 
+
 # TODO
   1.) write a sanitizer function for xml from the clipboard 
   
