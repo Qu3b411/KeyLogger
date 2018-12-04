@@ -17,7 +17,7 @@ currently Version 0.0.2 is capable of,
 
 6.) logging changes to the clipboard
 
-all the information collected by this program is formatted in xml, to view a sample output download the project, and open the "ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl" to view the formatting 
+all the information collected by this program is formatted in xml, to view a sample output download the project, and open the "SampleOutput/ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl" to view the formatting 
 
 # Roadmap to Version 0.1.0
  there are multiple features I wish to add before the 0.1.0.
