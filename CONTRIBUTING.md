@@ -4,11 +4,9 @@ I am hopeing to build an open and honest comunity built through heavy documentat
 
 # their are many ways to meaningfully contribute
 
-1) bug fixes are extreamly important, if their is indeed a bug, open an issue as layed out by .github/ISSUE_TEMPLATE/bug_report.md this is greatly appreciated and we will look into possible solutions as soon as possible
+1) bug fixes are extreamly important, if their is indeed a bug, open an issue as layed out by .github/ISSUE_TEMPLATE/bug_report.md this is greatly appreciated and we will look into possible solutions as soon as possible. before issueing a bug report please check and see if an issue is allready open
 
-before issueing a bug report please check and see if a pull is allready open
-
-2) Adrdress a problem in the TODO section, it is hard for me to be everywhere. but with an active community we can realy enhance tbe functionality of a the keylogger software.
+2) Adrdress a problem in the TODO section, it is hard for me to be everywhere. but with an active community we can realy enhance tbe functionality of this keylogger software.
 
 3) if your up to the challenge, start working towards compleating a roadmap goal. 
 
