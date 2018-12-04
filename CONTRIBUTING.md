@@ -4,7 +4,7 @@ I am hopeing to build an open and honest comunity built through heavy documentat
 
 # their are many ways to meaningfully contribute
 
-1) bug fixes are extreamly important, if their is indeed a bug, open a pull request as layed out by github/ISSUE_TEMPLATE/bug_report.md this is greatly appreciated and we will look into possible solutions as soon as possible, 
+1) bug fixes are extreamly important, if their is indeed a bug, open an issue as layed out by .github/ISSUE_TEMPLATE/bug_report.md this is greatly appreciated and we will look into possible solutions as soon as possible
 
 before issueing a bug report please check and see if a pull is allready open
 
