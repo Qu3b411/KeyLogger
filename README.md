@@ -15,10 +15,9 @@ currently Version 0.0.2 is capable of,
 
 5.) producing time stamps for title change
 
-6.) logging changest to the clipboard
+6.) logging changes to the clipboard
 
-all the information collected by this program
-is formatted in xml, to view a sample output download the project, and open the "ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl" to view the formatting 
+all the information collected by this program is formatted in xml, to view a sample output download the project, and open the "ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl" to view the formatting 
 
 # Roadmap to Version 0.1.0
  there are multiple features I wish to add before the 0.1.0.
@@ -38,7 +37,7 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
 
 # Contact a core team member via slack to report abuse of the code of coduct
   members:
-     Qu3b4qq
+     Qu3b411
 # take time to enhance documentation 
    internal documentation is compleated for now
  
