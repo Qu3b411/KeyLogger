@@ -1,4 +1,36 @@
-# KeyLogger version 0.0.2 DEVELOPMENT patch 
+## KeyLogger
+ version 0.0.2 DEVELOPMENT patch 
+
+this is a Windows based keylogger, it has multiple features, some of which are still under development, once all the core features to make it work in the desired manner are compleated, and the compile script is formalized I will regiser the version 0.1.0 release, 
+
+currently Version 0.0.2 is capable of,
+
+1.) logging keystrokes, 
+
+2.) determining change in forground processes, 
+
+3.) produceing timestamps for change in forground process
+
+4.) logging change in foreground title,
+
+5.) producing time stamps for title change
+
+6.) logging changest to the clipboard
+
+all the information collected by this program
+is formatted in xml, to view a sample output download the project, and open the "ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl" to view the formatting 
+
+# Roadmap to Version 0.1.0
+ there are multiple features I wish to add before the 0.1.0.
+ 
+ 1) generate xml formatted process entries in a buffer that can be encoded and sent to a listening server
+ 
+ 2) create a server process capable of retrieving xml process entries
+ 
+ 3) color code keylogger data captures and clipboard captures to make it easy to differentiate at a glance.
+ 
+ 4) write a sanitizer function for currently unsanitized xml objects. (process title, clipboard, etc)
+ 
 # Developed and tested on the windows 10.
 # you can contact the comunity on slack
 
