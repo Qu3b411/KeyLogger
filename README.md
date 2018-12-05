@@ -43,6 +43,15 @@ all the information collected by this program is formatted in xml, to view a sam
    
    **congradulations**, you can now run this exe and see what it can realy do,
    for now you must copy items off of the buffer into xml documents, this will change as the program inproves, please be patient
+   
+   **to view a sample output**
+  
+  1) download a copy of this repository. 
+  
+  2) unzip the package and navigate to sampleOutput, 
+  
+  3)  open either of the xml output files in your browser of choice
+  [**Note:** the banking info is not real credentials]
              
 # Roadmap to Version 0.1.0
  there are multiple features I wish to add before the 0.1.0.
