@@ -15,7 +15,9 @@ currently Version 0.0.2 is capable of,
 
 5.) producing time stamps for title change
 
-6.) logging changes to the clipboard
+6.) logging changes to the clipboardo
+
+7.) color codeing output so you can now whats going on at a glance
 
 all the information collected by this program is formatted in xml, to view a sample output download the project, and open the "SampleOutput/ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl", a detailed instruxtion list is under **Getting Startes / to view sample output**, make sure to check in regularly to see whats new!
 
@@ -24,6 +26,7 @@ all the information collected by this program is formatted in xml, to view a sam
   
   **step one, get gcc**
    go to [https://mingw-w64.org/doku.php#mingw-w64] and download gcc, this may install in a few different places, 
+   
   **step two, locate compiler**
       
    locate %systemdrive%\...\MinGW, it will likley be  in "\Program Files\" or "\Program Files (x86)\"
@@ -41,8 +44,7 @@ all the information collected by this program is formatted in xml, to view a sam
    
    
    
-   **congradulations**, you can now run this exe and see what it can realy do,
-   for now you must copy items off of the buffer into xml documents, this will change as the program inproves, please be patient
+   **congradulations**, you can now run this exe and see what it can realy do!
    
    **to view a sample output**
   
@@ -51,6 +53,7 @@ all the information collected by this program is formatted in xml, to view a sam
   2) unzip the package and navigate to sampleOutput, 
   
   3)  open either of the xml output files in your browser of choice
+  
   [**Note:** the banking info is not real credentials]
   
   **Running and Generating xml's**
