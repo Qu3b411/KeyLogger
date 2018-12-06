@@ -113,7 +113,9 @@ at this point the end of your xml file should appear as follows
   
   save the xml file and view the fruites of your labor.
   
- if your file looks as the sample did when you opened it then**Congradulations!** you have successfully created your first keylog capture!
+ if you see a page that looks as the sample did when you opened it then **Congradulations!** you have successfully created your first keylog capture!
+ 
+ **if you have problems: ** you may have invalid items in the clipboard or aprocess title, this is because I havent gotten arround to writing the sanitizer function for the output yet, hopefully that error will be corrected by this weekend
 
 # Roadmap to Version 0.1.0
  there are multiple features I wish to add before the 0.1.0.
