@@ -92,9 +92,24 @@ all the information collected by this program is formatted in xml, to view a sam
 		<title>
 			<ProcessTitle><![CDATA[Task Manager]]></ProcessTitl
   
-  delete everything after the </Process> tag so that your xml file looks as it should.
+  delete everything after the
+  		
+		</Process>
+ tag so that your xml file looks as it should.
   
-  step 7) at the bottom of the xml file after the </process> tag, hit enter and add </KeyLoggerMetaData>
+  step 7) at the bottom of the xml file after the 
+                   
+		  </process> 
+tag, hit enter and add
+  
+                 </KeyLoggerMetaData>
+	
+at this point the end of your xml file should appear as follows
+
+					</logged>
+		          </title>
+	          </Process>
+     </KeyLoggerMetaData>
   
   save the xml file and view the fruites of your labor.
   
