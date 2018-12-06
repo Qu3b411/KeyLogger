@@ -115,7 +115,7 @@ at this point the end of your xml file should appear as follows
   
  if you see a page that looks as the sample did when you opened it then **Congradulations!** you have successfully created your first keylog capture!
  
- **if you have problems: ** you may have invalid items in the clipboard or aprocess title, this is because I havent gotten arround to writing the sanitizer function for the output yet, hopefully that error will be corrected by this weekend
+ **if you have problems: ** you may have witnessed a bug that im still activley trying to fix, hopefully that error will be corrected by this weekend
 
 # Roadmap to Version 0.1.0
  there are multiple features I wish to add before the 0.1.0.
@@ -138,7 +138,7 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
      Qu3b411
 
 # TODO
-  1.) write a sanitizer function for xml from the clipboard 
+  1.) debug sanitizer and xml output
   
   2.) write a sanitizer function for process titles.
   
@@ -149,10 +149,10 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
 # please review it and let me know what Isues arise. 
 
 # Known Issue
- 1.) output is to the console and has not been changed as of yet.
+ 1.) output is to the console has not been changed as of yet.
  
- 2.) special characters in process's will create malformated xml output that cannot be styled
+ 2.) errors in generating xml files in the described way may exit, further debugging must be done
  
  3.) an end </KeyLoggerMetaData> must be manually added to xml coppied off of the console as of this moment
  
- 4.) special characters in clipbord may result in invalid xml output, this means xsl styleing cannot take place.
+
