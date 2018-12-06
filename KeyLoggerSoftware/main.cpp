@@ -478,7 +478,7 @@ int main()
                 initialize a new process xml tag.
             */
  //           cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t</Process>";
-            current_process_data = writeSanitizedBuffer(current_process_data,"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t</Process>");
+            current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t</Process>");
             current_process_data = writeUnsanitizedByte(current_process_data,(char)0x00);
                 cout<<current_process_data.buffered_data;
             current_process_data.buffered_data = (char*)realloc(current_process_data.buffered_data,DefaultBufferSz);
