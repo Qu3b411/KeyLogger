@@ -17,7 +17,7 @@ currently Version 0.0.2 is capable of,
 
 6.) logging changes to the clipboardo
 
-7.) color codeing output so you can now whats going on at a glance
+7.) color codeing output so you can know the flow of events at a glance 
 
 all the information collected by this program is formatted in xml, to view a sample output download the project, and open the "SampleOutput/ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl", a detailed instruxtion list is under **Getting Startes / to view sample output**, make sure to check in regularly to see whats new!
 
@@ -128,12 +128,15 @@ at this point the end of your xml file should appear as follows
 	**part 2** incompleate, encodeing and sending the data still has not been compleated.
 	
  2) create a server process capable of retrieving xml process entries
+ 	**INCOMPLETE** this is the next task to do 
  
  3) color code keylogger data captures and clipboard captures to make it easy to differentiate at a glance
  
  	**COMPLEATE** the xsl stylesheet will color code all captured data makeing it easy to build comprehensive logs
  
  4) write a sanitizer function for currently unsanitized xml objects. (process title, clipboard, etc)
+ 
+ 	**COMPLEATE** this program now sanitizes all incomeing data, 
   
 # Developed and tested on the windows 10.
 # you can contact the comunity on slack
@@ -145,7 +148,7 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
      Qu3b411
 
 # TODO
-  1.) debug sanitizer and xml output -- done besides end tag which still must be added
+  1.) debug sanitizer and xml output -- **done** besides end tag which still must be added
   
   2.) write a sanitizer function for process titles. **done** still need allot of testing, feedback would be amazing!!!
   
@@ -153,11 +156,11 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
   
   4.) set up buffered socket communication
   
+  5.) document all functions internal flow and external **this is the next step before I mark this software as version 0.0.3**
+  
 # please review it and let me know what Isues arise. 
 
 # Known Issue
- 1.) output is to the console has not been changed as of yet.
- 
- 2.) an end </KeyLoggerMetaData> must be manually added to xml coppied off of the console as of this moment
+  1.) an end </KeyLoggerMetaData> must be manually added to xml coppied off of the console as of this moment
  
 
