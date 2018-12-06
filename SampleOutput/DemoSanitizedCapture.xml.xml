@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="keyloggerStyle.xsl"?>
+<KeyLoggerMetaData>
+
+	<Process>
+		<ProcessHandle>0x0</ProcessHandle>
+		<ProcessID>0x0</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+	</Process>
+	<Process>
+		<ProcessHandle>0x65940</ProcessHandle>
+		<ProcessID>0x1008</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[New tab and 12 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[XSLT Introduction and 12 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[ \*CTRL*\ a \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\  \*CTRL*\ c]]></Capture>
+			</logged>
+			<logged>
+				<CaptureType>ClipBoard</CaptureType>
+				<Capture>&lt;?xml version=&quot;1.0&quot;?&gt;
+
+&lt;xsl:stylesheet version=&quot;1.0&quot;
+xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;
+
+&lt;xsl:template match=&quot;/&quot;&gt;
+  &lt;html&gt;
+  &lt;body&gt;
+    &lt;h2&gt;My CD Collection&lt;/h2&gt;
+    &lt;table border=&quot;1&quot;&gt;
+      &lt;tr bgcolor=&quot;#9acd32&quot;&gt;
+        &lt;th&gt;Title&lt;/th&gt;
+        &lt;th&gt;Artist&lt;/th&gt;
+      &lt;/tr&gt;
+      &lt;xsl:for-each select=&quot;catalog/cd&quot;&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;xsl:value-of select=&quot;title&quot;/&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;xsl:value-of select=&quot;artist&quot;/&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/xsl:for-each&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+&lt;/xsl:template&gt;
+
+&lt;/xsl:stylesheet&gt;</Capture>
+			</logged>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[ \*CTRL*\ ]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[XSLT Introduction and 13 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[New tab and 13 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[ \*CTRL*\  \*CTRL*\  \*CTRL*\ v \*CTRL*\ ]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[XSLT Introduction and 13 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[New tab and 13 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[ \*CTRL*\ v \*CTRL*\  \*CRLF*\ ]]></Capture>
+			</logged>
+		</title>
+	</Process>
+	<Process>
+		<ProcessHandle>0x0</ProcessHandle>
+		<ProcessID>0x0</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+	</Process>
+	<Process>
+		<ProcessHandle>0x65940</ProcessHandle>
+		<ProcessID>0x1008</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[New tab and 13 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[&lt;?xml version=&quot;1.0&quot;?&gt;&lt;xsl:stylesheet version=&quot;1.0&quot;xmlns:xsl=&quot;http://www.w3.org/1999/xsl/transform&quot;&gt;&lt;xsl:template match=&quot;/&quot;&gt; &lt;ht and 13 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[&lt;?xml version=&quot;1.0&quot;?&gt;&lt;xsl:stylesheet version=&quot;1.0&quot;xmlns:xsl=&quot;http://www.w3.org/1999/xsl/transform&quot;&gt;&lt;xsl:template match=&quot;/&quot;&gt; &lt;ht and 14 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[New tab and 14 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[+_)(*&amp;^%$#@!!@#$%^&amp;*()_+=-0987654321111111`~~\][|}{&apos;;&quot;:/.,?&gt;&lt; \*CRLF*\ ]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[+_)(*&amp;^%$#@!!@#$%^&amp;*()_+=-0987654321111111`~~\][|}{&apos;;&quot;:/.,?&gt;&lt; - Bing and 14 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+	</Process>
+	<Process>
+		<ProcessHandle>0x131326</ProcessHandle>
+		<ProcessID>0x4204</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+	</Process>
+	<Process>
+		<ProcessHandle>0x0</ProcessHandle>
+		<ProcessID>0x0</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+	</Process>
+	<Process>
+		<ProcessHandle>0x1117514</ProcessHandle>
+		<ProcessID>0x6632</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[Administrator: Command Prompt]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[Select Administrator: Command Prompt]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[c]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[Administrator: Command Prompt]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[aptures are vary strait forward now \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\  \*DEL*\ ]]></Capture>
+			</logged>
+		</title>
+	</Process>
+	<Process>
+		<ProcessHandle>0x0</ProcessHandle>
+		<ProcessID>0x0</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+	</Process>
+	<Process>
+		<ProcessHandle>0x131326</ProcessHandle>
+		<ProcessID>0x4204</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+	</Process>
+	<Process>
+		<ProcessHandle>0x65940</ProcessHandle>
+		<ProcessID>0x1008</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[+_)(*&amp;^%$#@!!@#$%^&amp;*()_+=-0987654321111111`~~\][|}{&apos;;&quot;:/.,?&gt;&lt; - Bing and 14 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[&lt;?xml version=&quot;1.0&quot;?&gt;&lt;xsl:stylesheet version=&quot;1.0&quot;xmlns:xsl=&quot;http://www.w3.org/1999/xsl/transform&quot;&gt;&lt;xsl:template match=&quot;/&quot;&gt; &lt;ht and 14 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[XSLT Introduction and 14 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[Sign In to Access Your Accounts - Bank of the West and 14 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[this i a usernamethis is a password]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[XSLT Transformation and 14 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[XSLT Transformation and 15 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[New tab and 15 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+	</Process>
+	<Process>
+		<ProcessHandle>0x0</ProcessHandle>
+		<ProcessID>0x0</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+	</Process>
+	<Process>
+		<ProcessHandle>0x65940</ProcessHandle>
+		<ProcessID>0x1008</ProcessID>
+		<title>
+			<ProcessTitle><![CDATA[New tab and 15 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[New tab page and 15 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[First National Bank of Omaha | Personal &amp; Business Banking and Insights and 15 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[Please Login and 15 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[qu3b411]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[Checking browser fingerprint ... and 15 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[Password and 15 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[papssword \*CRLF*\ ]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[Forgot User ID or Password and 15 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[+_)(*&amp;^%$#@!!@#$%^&amp;*()_+=-0987654321111111`~~\|}{&apos;;&quot;:/.,?&gt;&lt; - Bing and 15 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[]]></Capture>
+			</logged>
+		</title>
+		<title>
+			<ProcessTitle><![CDATA[+_)(*&amp;^%$#@!!@#$%^&amp;*()_+=-0987654321111111`~~\|}{&apos;;&quot;:/.,?&gt;&lt; - Bing and 14 more pages ?- Microsoft Edge]]></ProcessTitle>
+			<TimeStamp>Wed Dec 05 22:24:18 2018</TimeStamp>
+			<logged>
+				<CaptureType>Keylogger</CaptureType>
+				<Capture><![CDATA[ \*CTRL*\ a \*CTRL*\  \*DEL*\ ]]></Capture>
+			</logged>
+		</title>
+</Process>
+</KeyLoggerMetaData>
