@@ -1,7 +1,7 @@
 ## KeyLogger
  version 0.0.2 DEVELOPMENT patch 
 
-this is a Windows based keylogger, it has multiple features, some of which are still under development, once all the core features to make it work in the desired manner are compleated, and the compile script is formalized I will regiser the version 0.1.0 release, 
+this is a Windows based keylogger, it has multiple usefull features!, **This is still in alpha testing and dev** some of which are still under active development and i will be commiting features ASAP, once all the core features to make This keylogger work asdesired, and the compile script is formalized I will regiser the version 0.1.0 release, that will be the first stable point. but this version does work to some extent.
 
 currently Version 0.0.2 is capable of,
 
@@ -17,7 +17,7 @@ currently Version 0.0.2 is capable of,
 
 6.) logging changes to the clipboard
 
-all the information collected by this program is formatted in xml, to view a sample output download the project, and open the "SampleOutput/ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl" to view the formatting o
+all the information collected by this program is formatted in xml, to view a sample output download the project, and open the "SampleOutput/ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl", a detailed instruxtion list is under **Getting Startes / to view sample output**, make sure to check in regularly to see whats new!
 
 # Getting Started
   compileing the keylogger can be done as followed,
