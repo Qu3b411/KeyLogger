@@ -24,10 +24,22 @@ Time Stamp:
     <p>
    <xsl:for-each select="current()/logged">
 <p>
+<xsl:choose>
+<xsl:when test="CaptureType='Keylogger'">
 <div style="background-color:gold;color:black;padding:4px">
     <xsl:value-of select="CaptureType"/> </div>
-     <xsl:value-of select="Capture"/> <div></div>
- </p>
+<div style="background-color:yellow;color:black;padding:4px">
+    <xsl:value-of select="Capture"/> </div>
+</xsl:when>
+<xsl:otherwise>
+<div style="background-color:blue;color:black;padding:4px">
+    <xsl:value-of select="CaptureType"/> </div>
+
+<div style="background-color:aqua;color:black;padding:4px">
+    <xsl:value-of select="Capture"/> </div>
+</xsl:otherwise>
+</xsl:choose>
+    </p>
 </xsl:for-each>
     </p>
   </div>
