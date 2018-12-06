@@ -27,6 +27,7 @@ XML_PROCESS_BUFFER writeSanitizedByte(XML_PROCESS_BUFFER buffer, const char ch)
         case '&':  buffer = writeUnsanitizedBuffer(buffer,"&amp;"); break;
         case '\'': buffer = writeUnsanitizedBuffer(buffer,"&apos;"); break;
         case '"': buffer = writeUnsanitizedBuffer(buffer,"&quot;"); break;
+
         default:  buffer = writeUnsanitizedByte(buffer,ch);
 
     }
@@ -34,6 +35,11 @@ XML_PROCESS_BUFFER writeSanitizedByte(XML_PROCESS_BUFFER buffer, const char ch)
 }
 XML_PROCESS_BUFFER writeUnsanitizedByte(XML_PROCESS_BUFFER buffer, const char ch)
 {
+    if(buffer.current_buff_offset+1 >= buffer.buffer_size)
+        {
+            buffer.buffer_size+=0x1000;
+            buffer.buffered_data = (char*)realloc(buffer.buffered_data,buffer.buffer_size);
+        }
     *(buffer.buffered_data+buffer.current_buff_offset) = ch;
     buffer.current_buff_offset++;
     return buffer;
