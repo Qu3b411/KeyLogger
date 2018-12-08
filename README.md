@@ -1,9 +1,9 @@
 ## KeyLogger
- version 0.0.2 DEVELOPMENT patch 
+ version 0.1.0-beta
+ 
+ this is a Windows based keylogger, it has multiple usefull features! as described below
 
-this is a Windows based keylogger, it has multiple usefull features!, **This is still in alpha testing and dev** some of these features  are still under active development and I will be commiting features ASAP, once all the core features to make This keylogger work asdesired, and the compile script is formalized I will regiser the version 0.1.0 release, that will be the first stable point. but this version does work to some extent.
-
-currently Version 0.0.2 is capable of,
+currently Version 0.1.0 is capable of,
 
 1.) logging keystrokes, 
 
@@ -119,7 +119,7 @@ at this point the end of your xml file should appear as follows
  if you see a page that looks as the sample did when you opened it then **Congradulations!** you have successfully created your first keylog capture!
  
 
-# Roadmap to Version 0.1.0
+# Roadmap to Version 0.1.1
  there are multiple features I wish to add before the 0.1.0.
  
  1) generate xml formatted process entries in a buffer that can be encoded and sent to a listening server
