@@ -31,16 +31,20 @@ int main()
         printf("failed to bind socket, Error code %d", WSAGetLastError());
         return -1;
     }
-    printf("accepted\n\t\t[*]Listening\n");
+    printf("accepted\n\t\t[*]Listening: ");
     listen(Listener,3);
     cL=sizeof(target);
     acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
     if(acceptedTarget==INVALID_SOCKET)
     {
-        printf("\nerror connecting");
+        printf("\n\t\t[*] error connecting");
         return -1;
     }
-    printf("connection accepted");
-    recv(acceptedTarget,buffer,0x1000,0);
-      return 0;
+    printf(" connection accepted\n[*] IP ADDRESS %d",htonl(target.sin_addr.S_un.S_addr));
+    while(1)
+    {
+        recv(acceptedTarget,buffer,0x1000,0);
+        printf("%s",buffer);
+    }
+    return 0;
 }
