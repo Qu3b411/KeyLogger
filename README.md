@@ -30,19 +30,35 @@ all the information collected by this program is formatted in xml, to view a sam
   **step two, locate compiler**
       
    locate %systemdrive%\...\MinGW, it will likley be  in "\Program Files\" or "\Program Files (x86)\"
-    
-   open "Command Prompt" as an Administrator and navigate to the MinGW\bin
-    do one of the following
+   
+   **step three, adding MinGw\bin to system path**
+   
+   	hit winkey+x and select "Powershell (admin)", then type the following command useing the path you found to MinGw
+		
+		[Enviroment]::SetEnviromentVariable("Path",$env:Path+";C:\ . . . \MinGw\bin\", [System.EnviromentVariableTarget]::Machine)
+		
+ **DO NOT:** forget the ";" before the start of your path.
+ 
+ restart your computer and gcc will be a part of your system path
+ **Step 4, Compileing the client **
+ 
+   open "Command Prompt" as an Administrator and navigate \...\Keyloger\keyloggersoftware\client then do the following to compile the client
     
    **with window**   
    
-       c:\ ... \ MinGw\bin>g++ \ ... \ keylogger\keyloggersoftware\main.cpp \ ... \ keylogger\keyloggersoftware\Sanitize_KeylogBuff.cpp  -o \ ... \ keylogger\keyloggersoftware\keylogger.exe
+       c:\ ... \ keylogger\keyloggersoftware\client> g++ main.cpp  KeyLoggerCom.cpp Sanitize_KeylogBuff.cpp -lws2_32 -o keylogger.exe
    
    **without window**
        
-       c:\ ... \ MinGw\bin>g++ \ ... \ keylogger\keyloggersoftware\main.cpp \ ... \ keylogger\keyloggersoftware\Sanitize_KeylogBuff.cpp   -mwindows -o \ ... \ keylogger\keyloggersoftware\keylogger.exe
+     c:\ ... \ keylogger\keyloggersoftware\client> g++ main.cpp  KeyLoggerCom.cpp Sanitize_KeylogBuff.cpp -lws2_32 -mwindows -o keylogger.exe
    
-   
+**Step 5, Compileing server**
+	
+	 c:\ ... \ keylogger\keyloggersoftware\client> cd ..\server
+	 
+	 c:\ ... \ keylogger\keyloggersoftware\server> g++ main.cpp -lws2_32 -o keyloggerServer.exe
+	 
+  
    
    **congradulations**, you can now run this exe and see what it can realy do!
    
@@ -62,45 +78,26 @@ all the information collected by this program is formatted in xml, to view a sam
   
   step 2) navigate to your newley generate exe files, if done correctly they should be in keylogger software.
   
-  step 3) type 
+  step 3) goto your keylogger client and do the following
    
-           keyloggerHidden.exe >> ./logged/log#.xml
+          c:\ . . . \client> keyloggerHidden.exe 
          
    or
    
-           keylogger.exe >> ./logged/log#.xml
-           
-  "#" is a number
+           c:\ . . . \client>keylogger.exe 
+          
+  step 4) then navigate to your server and do the following
+  	  
+	  c:\ . . . \server> keyloggerServer.exe >> log#.xml
+	  
+  in this case # represents a number
   
   step 4) log data for some time,
   
-  step 5) kill the keylogger process, the easiest way to do so is through the details tab on the task manager
+  step 5) kill the keylogger process and keyloggerServer process, the easiest way to do so is through the details tab on the task manager
   
-  step 6) **for hidden version**
   
-  it is possible that the last process was not totaly logged, in this event you must manualy correct the xml untill I can write the socket, **this is still in alpha testing and development, problems exist!** if you scroll to the bottom of the file it should look as follows 
-    
-            	</logged>
-		</title>
-	</Process>
-            
-  but it is possible to see something like 
-  
-            			</logged>
-		</title>
-	</Process>
-	<Process>
-		<ProcessHandle>0x2033392</ProcessHandle>
-		<ProcessID>0x8088</ProcessID>
-		<title>
-			<ProcessTitle><![CDATA[Task Manager]]></ProcessTitl
-  
-  delete everything after the
-  		
-		</Process>
- tag so that your xml file looks as it should.
-  
-  step 7) at the bottom of the xml file after the 
+  step 6) at the bottom of the xml file after the 
                    
 		  </process> 
 tag, hit enter and add
