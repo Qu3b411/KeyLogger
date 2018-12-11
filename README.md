@@ -125,10 +125,10 @@ at this point the end of your xml file should appear as follows
  1) generate xml formatted process entries in a buffer that can be encoded and sent to a listening server
  	
 	**compleated part 1** this process now generate xml in a memory buffer, and is timed to send loggs after each process is captured.
-	**part 2** incompleate, encodeing and sending the data still has not been compleated.
+	**partialy complete part 2** still need to write compile script
 	
  2) create a server process capable of retrieving xml process entries
- 	**INCOMPLETE** this is the next task to do 
+ 	**PARTIALY COMPLETE** still need to suport multiple users 
  
  3) color code keylogger data captures and clipboard captures to make it easy to differentiate at a glance
  
@@ -154,9 +154,11 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
   
   3.) restructure software for better output flow **done**
   
-  4.) set up buffered socket communication
+  4.) set up buffered socket communication **done** still need alot of testing, 
   
-  5.) document all functions internal flow and external **done**
+  5.) document all functions internal flow and external **not done** new documentation will be added to describe functions,
+  
+  6.) create compiler script to automate compilation options
   
 # please review it and let me know what Isues arise. 
 
