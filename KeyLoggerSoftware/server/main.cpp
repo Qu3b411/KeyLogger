@@ -43,7 +43,8 @@ int main()
     printf(" connection accepted\n[*] IP ADDRESS %d",htonl(target.sin_addr.S_un.S_addr));
     while(1)
     {
-        recv(acceptedTarget,buffer,0x1000,0);
+        recv(acceptedTarget,buffer,0x1001,0);
+        *(buffer+0x1000)=0x00;
         printf("%s",buffer);
     }
     return 0;
