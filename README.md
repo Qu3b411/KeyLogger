@@ -42,22 +42,11 @@ all the information collected by this program is formatted in xml, to view a sam
  restart your computer and gcc will be a part of your system path
  **Step 4, Compileing the client **
  
-   open "Command Prompt" as an Administrator and navigate \...\Keyloger\keyloggersoftware\client then do the following to compile the client
-    
-   **with window**   
-   
-       c:\ ... \ keylogger\keyloggersoftware\client> g++ main.cpp  KeyLoggerCom.cpp Sanitize_KeylogBuff.cpp -lws2_32 -o keylogger.exe
-   
-   **without window**
-       
-     c:\ ... \ keylogger\keyloggersoftware\client> g++ main.cpp  KeyLoggerCom.cpp Sanitize_KeylogBuff.cpp -lws2_32 -mwindows -o keylogger.exe
    
 **Step 5, Compileing server**
 	
-	 c:\ ... \ keylogger\keyloggersoftware\client> cd ..\server
-	 
-	 c:\ ... \ keylogger\keyloggersoftware\server> g++ main.cpp -lws2_32 -o keyloggerServer.exe
-	 
+in the root directory of the keylogger their is a batch script named "compiler.bat", run this script and answer the provided questions
+by the end of the script you should have the exe's
   
    
    **congradulations**, you can now run this exe and see what it can realy do!
