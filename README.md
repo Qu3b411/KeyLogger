@@ -40,10 +40,8 @@ all the information collected by this program is formatted in xml, to view a sam
  **DO NOT:** forget the ";" before the start of your path.
  
  restart your computer and gcc will be a part of your system path
- **Step 4, Compileing the client **
+ **Step 4, Compileing**
  
-   
-**Step 5, Compileing server**
 	
 in the root directory of the keylogger their is a batch script named "compiler.bat", run this script and answer the provided questions
 by the end of the script you should have the exe's
