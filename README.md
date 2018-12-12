@@ -96,23 +96,6 @@ all the information collected by this program is formatted in xml, to view a sam
   
   step 5) kill the keylogger process and keyloggerServer process, the easiest way to do so is through the details tab on the task manager
   
-  
-  step 6) at the bottom of the xml file after the 
-                   
-		  </process> 
-tag, hit enter and add
-  
-                 </KeyLoggerMetaData>
-	
-at this point the end of your xml file should appear as follows
-
-					</logged>
-		          </title>
-	          </Process>
-     </KeyLoggerMetaData>
-  
-  save the xml file and view the fruites of your labor.
-  
  if you see a page that looks as the sample did when you opened it then **Congradulations!** you have successfully created your first keylog capture!
  
 
