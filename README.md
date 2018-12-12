@@ -83,7 +83,7 @@ by the end of the script you should have the exe's
   
   step 4) log data for some time,
   
-  step 5) kill the keylogger process and keyloggerServer process, the easiest way to do so is through the details tab on the task manager
+  step 5) kill the keylogger process and the keyloggerServer will terminate shortly their after, the easiest way to kill the process is through the details tab on the task manager
   
  if you see a page that looks as the sample did when you opened it then **Congradulations!** you have successfully created your first keylog capture!
  
