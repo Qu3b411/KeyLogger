@@ -42,7 +42,7 @@ currently Version 0.1.0 is capable of:
  	
 1.) version releases will be done only after all items in the **Roadmap to Version #.#.#** section of the **README** have been compleated. 
 
-2.) Version releases will be compiled on the loop back address, this is by design, a long term goal of this project is to have it run compleatly in memory, compileing with a config file would defeate this goal!
+2.) Version releases will be compiled on the loop back address, this is by design, a long term goal of this project is to have it run completely in memory, compileing with a config file would defeate this goal!
 
 **Reasons to download version release**
 
