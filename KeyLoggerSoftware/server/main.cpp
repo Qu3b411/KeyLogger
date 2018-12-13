@@ -1,7 +1,9 @@
 #include <winsock2.h>
 #include <stdio.h>
 using namespace std;
-
+/**
+    this is a temporary server used for testing, future changes will be established 
+*/
 int main()
 {
     WSADATA WSA;

@@ -1,31 +1,59 @@
-## KeyLogger
- version 0.0.3-beta
- 
+## KeyLogger Version 0.1.0
  this is a Windows based keylogger, it has multiple usefull features! as described below
 
-currently Version 0.0.3 is capable of,
+currently Version 0.1.0 is capable of:
 
-1.) logging keystrokes, 
+**1.) logging keystrokes:** includeing several of the function keys!
 
-2.) determining change in forground processes, 
+**2.) determining change in forground processes:** so you can see the workflow of the targets computer!
 
-3.) produceing timestamps for change in forground process
+**3.) produceing timestamps for change in forground process:** so you can better corelate events!
 
-4.) logging change in foreground title,
+**4.) logging change in foreground title:** even the inbetween steps that you wouldnt normaly see!
 
-5.) producing time stamps for title change
+**5.) producing time stamps for title change:** to better the corelation of events!
 
-6.) logging changes to the clipboardo
+**6.) logging changes to the clipboard:** to get all sensitive data you would otherwise not see!
 
-7.) color codeing output so you can know the flow of events at a glance 
+**7.) color codeing output** so you can know the flow of events at a glance 
 
-all the information collected by this program is formatted in xml, to view a sample output download the project, and open the "SampleOutput/ClipboardDemo.xml" in your brower, you will need "KeyloggerStyle.xsl", a detailed instruxtion list is under **Getting Startes / to view sample output**, make sure to check in regularly to see whats new!
+**8.) supports  socket level communication.**
+		
+		[NOTE:] Data is sent back to the server after every process, 
+			if the socket for some reason fails then this server
+			will store all logs in memory and attempts to 
+			esstablish a connection to send data back to the server.
+
+**9.) client side xml formatting.**
+	
+		[NOTE:] after a disconnect the server currently prints out the 
+		ending xml tag so you can view the log in your web browser of 
+		choice.
+
+
+**Sample Output:** can be viewed to get a feal for what the output should look like, detailed instructions can be found by going to the **Getting Started/ to view sample output** section of the **README** 
 
 # Getting Started
-  compileing the keylogger can be done as followed,
+  **There are two ways to get this keylogger up and running**
+  	
+ **1.) Manually compile the script:** This is the encouraged manner of getting ahold of this script
+ 
+ **Reasons to manually compile** 
+ 	
+1.) version releases will be done only after all items in the **Roadmap to Version #.#.#** section of the **README** have been compleated. 
+
+2.) Version releases will be compiled on the loop back address, this is by design, a long term goal of this project is to have it run completely in memory, compileing with a config file would defeate this goal!
+
+**Reasons to download version release**
+
+if your only looking to preview what this keylogger version can do then downloading the compiled version will give you a preocompiled binary with the server and both client configurations.
+ 
+ 
+  
+  **compileing the keylogger can be done as follows**
   
   **step one, get gcc**
-   go to [https://mingw-w64.org/doku.php#mingw-w64] and download gcc, this may install in a few different places, 
+   go to [https://mingw-w64.org/doku.php#mingw-w64] and download gcc, 
    
   **step two, locate compiler**
       
@@ -37,17 +65,30 @@ all the information collected by this program is formatted in xml, to view a sam
 		
 		[Enviroment]::SetEnviromentVariable("Path",$env:Path+";C:\ . . . \MinGw\bin\", [System.EnviromentVariableTarget]::Machine)
 		
- **DO NOT:** forget the ";" before the start of your path.
+ **DO NOT:** forget the ";" before the start of your path. this is an important delimiter.
  
  restart your computer and gcc will be a part of your system path
- **Step 4, Compileing**
+ **Step four, Configuration**
  
+ If their is a server ip that you want the client to connect to then you must change the ip address in the **KeyLogger\KeyLoggerSoftware\Client** folder, open the **KeyLogger_clientCom.h** file and find 
+ 
+ 	#define IP_ADDRESS "127.0.0.1"
+
+Edit it to the desired external ip address that your server is connecting to. it should appear as follows
+
+	#define IP_ADDRESS "#.#.#.#"
 	
-in the root directory of the keylogger their is a batch script named "compiler.bat", run this script and answer the provided questions
-by the end of the script you should have the exe's
+**Save your edit and continue on to compile**
+ 
+ **Step five: Compileing**
+ 
+Open Command prompt and navigate to the root directory of this program and find the batch script named "compiler.bat", if your prompted expand the details and click "Run Anyway" run this script and answer the provided questions
+by the end of the script you should have the exe's, 
   
    
    **congradulations**, you can now run this exe and see what it can realy do!
+
+**Compiled versions** can be run as soon as they are downloaded.
    
    **to view a sample output**
   
@@ -79,33 +120,17 @@ by the end of the script you should have the exe's
 	  
   in this case # represents a number
   
-  step 4) log data for some time,
+  step 5) log data for some time,
   
-  step 5) kill the keylogger process and the keyloggerServer will terminate shortly their after, the easiest way to kill the process is through the details tab on the task manager
+  step 6) kill the keylogger process and the keyloggerServer will seld terminate shortly their after, the easiest way to kill the process is through the details tab on the task manager.
   
- if you see a page that looks as the sample did when you opened it then **Congradulations!** you have successfully created your first keylog capture!
+ if you see a page that looks as the sample did, then **Congradulations!** you have successfully created your first keylog capture!
  
 
-# Roadmap to Version 0.1.0
- there are multiple features I wish to add before the 0.1.0.
- 
- 1) generate xml formatted process entries in a buffer that can be encoded and sent to a listening server
- 	
-	**compleated part 1** this process now generate xml in a memory buffer, and is timed to send loggs after each process is captured.
-	**partialy complete part 2** still need to write compile script
-	
- 2) create a server process capable of retrieving xml process entries
- 	**PARTIALY COMPLETE** still need to suport multiple users 
- 
- 3) color code keylogger data captures and clipboard captures to make it easy to differentiate at a glance
- 
- 	**COMPLEATE** the xsl stylesheet will color code all captured data makeing it easy to build comprehensive logs
- 
- 4) write a sanitizer function for currently unsanitized xml objects. (process title, clipboard, etc)
- 
- 	**COMPLEATE** this program now sanitizes all incomeing data, 
-  
-# Developed and tested on the windows 10.
+# Roadmap to Version 0.2.0
+
+	stay posted
+
 # you can contact the comunity on slack
 
 https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2N2IwOTY5MjU4YzdjODc0MzFhOGI4YWUxYmU4NGFlZTYyMGNlYTUyYmQ5OTVkOGU2NmU5NzZmMGJmMDA1MjI
@@ -115,21 +140,7 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
      Qu3b411
 
 # TODO
-  1.) debug sanitizer and xml output -- **done** besides end tag which still must be added
   
-  2.) write a sanitizer function for process titles. **done** still need allot of testing, feedback would be amazing!!!
-  
-  3.) restructure software for better output flow **done**
-  
-  4.) set up buffered socket communication **done** still need alot of testing, 
-  
-  5.) document all functions internal flow and external **not done** new documentation will be added to describe functions,
-  
-  6.) create compiler script to automate compilation options
+  1.) document all functions internal flow and external **not done** new documentation will be added to describe functions.
   
 # please review it and let me know what Isues arise. 
-
-# Known Issue
-  1.) an end </KeyLoggerMetaData> must be manually added to xml coppied off of the console as of this moment
- 
-
