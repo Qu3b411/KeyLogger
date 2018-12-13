@@ -69,7 +69,7 @@ if your only looking to preview what that version can do then downloading the co
  **DO NOT:** forget the ";" before the start of your path.
  
  restart your computer and gcc will be a part of your system path
- **Step 4, Configuration**
+ **Step four, Configuration**
  
  If their is a server ip that you want the client to connect to then you must change the ip address in the **KeyLogger\KeyLoggerSoftware\Client** folder, open the **KeyLogger_clientCom.h** file and find 
  
@@ -80,6 +80,8 @@ Edit it to the desired external ip address that your server is connecting to. it
 	#define IP_ADDRESS "#.#.#.#"
 	
 **Save your edit and continue on to compile**
+ 
+ **Step five**
  
 Open Command prompt and navigate to the root directory of this program and find the batch script named "compiler.bat", if your prompted expand the details and click "Run Anyway" run this script and answer the provided questions
 by the end of the script you should have the exe's, 
@@ -140,12 +142,6 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
 
 # TODO
   
-  5.) document all functions internal flow and external **not done** new documentation will be added to describe functions,
-
+  5.) document all functions internal flow and external **not done** new documentation will be added to describe functions.
   
 # please review it and let me know what Isues arise. 
-
-# Known Issue
-  1.) an end </KeyLoggerMetaData> must be manually added to xml coppied off of the console as of this moment
- 
-
