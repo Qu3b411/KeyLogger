@@ -142,6 +142,6 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
 
 # TODO
   
-  5.) document all functions internal flow and external **not done** new documentation will be added to describe functions.
+  1.) document all functions internal flow and external **not done** new documentation will be added to describe functions.
   
 # please review it and let me know what Isues arise. 
