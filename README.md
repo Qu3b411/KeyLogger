@@ -31,7 +31,7 @@ currently Version 0.1.0 is capable of:
 		choice.
 
 
-**Sample Output:** can be viewed to get a feal for what sample output should look like, detailed instructions can be found by going to the **Getting Started/ to view sample output** section of the **README** 
+**Sample Output:** can be viewed to get a feal for what the output should look like, detailed instructions can be found by going to the **Getting Started/ to view sample output** section of the **README** 
 
 # Getting Started
   **There are two ways to get this keylogger up and running**
@@ -40,21 +40,20 @@ currently Version 0.1.0 is capable of:
  
  **Reasons to manually compile** 
  	
-1.) version releases will be done only after all items in the **Roadmap to Version #.#.#** section of thje **README** have been compleated. 
+1.) version releases will be done only after all items in the **Roadmap to Version #.#.#** section of the **README** have been compleated. 
 
 2.) Version releases will be compiled on the loop back address, this is by design, a long term goal of this project is to have it run compleatly in memory, compileing with a config file would defeate this goal!
 
 **Reasons to download version release**
 
-if your only looking to preview what that version can do then downloading the compiled version will give you a preocompiled binary with the server and both clients, hidden or with screen.  
-
+if your only looking to preview what this keylogger version can do then downloading the compiled version will give you a preocompiled binary with the server and both client configurations.
  
  
   
   **compileing the keylogger can be done as follows**
   
   **step one, get gcc**
-   go to [https://mingw-w64.org/doku.php#mingw-w64] and download gcc, this may install in a few different places, 
+   go to [https://mingw-w64.org/doku.php#mingw-w64] and download gcc, 
    
   **step two, locate compiler**
       
@@ -66,7 +65,7 @@ if your only looking to preview what that version can do then downloading the co
 		
 		[Enviroment]::SetEnviromentVariable("Path",$env:Path+";C:\ . . . \MinGw\bin\", [System.EnviromentVariableTarget]::Machine)
 		
- **DO NOT:** forget the ";" before the start of your path.
+ **DO NOT:** forget the ";" before the start of your path. this is an important delimiter.
  
  restart your computer and gcc will be a part of your system path
  **Step four, Configuration**
@@ -81,7 +80,7 @@ Edit it to the desired external ip address that your server is connecting to. it
 	
 **Save your edit and continue on to compile**
  
- **Step five**
+ **Step five: Compileing**
  
 Open Command prompt and navigate to the root directory of this program and find the batch script named "compiler.bat", if your prompted expand the details and click "Run Anyway" run this script and answer the provided questions
 by the end of the script you should have the exe's, 
@@ -121,11 +120,11 @@ by the end of the script you should have the exe's,
 	  
   in this case # represents a number
   
-  step 4) log data for some time,
+  step 5) log data for some time,
   
-  step 5) kill the keylogger process and the keyloggerServer will terminate shortly their after, the easiest way to kill the process is through the details tab on the task manager.
+  step 6) kill the keylogger process and the keyloggerServer will seld terminate shortly their after, the easiest way to kill the process is through the details tab on the task manager.
   
- if you see a page that looks as the sample did when you opened it then **Congradulations!** you have successfully created your first keylog capture!
+ if you see a page that looks as the sample did, then **Congradulations!** you have successfully created your first keylog capture!
  
 
 # Roadmap to Version 0.2.0
