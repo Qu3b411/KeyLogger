@@ -38,7 +38,7 @@ currently Version 0.1.0 is capable of:
   	
  **1.) Manually compile the script:** This is the encouraged manner of getting ahold of this script
  
- **2.) download the release version** this might not support the latwst and greatest, but itll give you a good idea as to what it can do!!!
+ **2.) download the release version** This might not support the latest and greatest, but it will give you a good idea as to what it can do!!!
  
  **Reasons to manually compile** 
  	
