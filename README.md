@@ -129,7 +129,19 @@ by the end of the script you should have the exe's,
 
 # Roadmap to Version 0.2.0
 
-	stay posted
+| Version Spec |      Client Side Requirements        | done |                   Server Side Requirements                | done |
+| ------------ |:------------------------------------:|:----:|:---------------------------------------------------------:| ----:|
+|    0.1.1     | Limit unsent buffer size before exit |  NO  |     set file names to connecting ip address_TimeStamp     |  NO  |
+|              |    				      |  N/A | client termination loops back to start new client session |  NO  |
+|	       |                                      |  N/A | start the javac implimintations for the GUI, GUI will not be supported at this time | NO |
+|    0.1.2     |  build in click screen captures      |  NO  |                   build multi-client support              |  NO  |
+|              |                                      |      |                                                           |      |
+|    0.1.3     | hook enum process and remove pid     | N/A  |                    build a minimal javac GUI              |  NO  |
+|              |                                      | N/A  |           release compiler script that supports GUI       |  NO  |
+|    0.1.4     |                                      | N/A  |                         polish off the GUI                |  NO  |
+|    0.2.0     | design a  roadmap to  support client side encryption | NO | design a  roadmap to  support server side encryption | NO |
+
+ **This is a rough outline** I am hopeing to have some support from the community so that this goes alot faster!, it may take some time tp get to the 0.2.0, but after that we can get into thje real fun of actually implementing these designs, please by all means open up a pull and start codeing, 
 
 # you can contact the comunity on slack
 
