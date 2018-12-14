@@ -65,11 +65,12 @@ if your only looking to preview what this keylogger version can do then download
    
    	hit winkey+x and select "Powershell (admin)", then type the following command useing the path you found to MinGw
 		
-		[Enviroment]::SetEnviromentVariable("Path",$env:Path+";C:\ . . . \MinGw\bin\", [System.EnviromentVariableTarget]::Machine)
+		[Environment]::SetEnvironmentVariable("Path",$env:Path+";C:\ . . . \MinGw\bin\", [System.EnvironmentVariableTarget]::Machine)
 		
  **DO NOT:** forget the ";" before the start of your path. this is an important delimiter.
  
  restart your computer and gcc will be a part of your system path
+ 
  **Step four, Configuration**
  
  If their is a server ip that you want the client to connect to then you must change the ip address in the **KeyLogger\KeyLoggerSoftware\Client** folder, open the **KeyLogger_clientCom.h** file and find 
