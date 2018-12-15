@@ -1,5 +1,6 @@
-## KeyLogger Version 0.1.0
- this is a Windows based keylogger, it has multiple usefull features! as described below
+# KeyLogger Version 0.1.0
+ this is a Windows based keylogger, it has multiple usefull features! as described below,
+
 
 currently Version 0.1.0 is capable of:
 
@@ -159,3 +160,4 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
   1.) document all functions internal flow and external **not done** new documentation will be added to describe functions.
   
 # please review it and let me know what Isues arise. 
+#### Windows has blocked the binary release as sevear malware, this is a demo sample of a keylogger, and a form of spyware, this program is intended for educational purposes, if your still interested in testing the binarys it may be prudent to disable windows defender on your testing virtual machine, please do not use this on your every day machine
