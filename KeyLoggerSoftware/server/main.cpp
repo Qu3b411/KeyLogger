@@ -13,7 +13,7 @@ SOCKETLIST slist;
 void Listener()
 {
     WSADATA WSA;
-    SOCKET Listener, acceptedTarget;
+    SOCKET Listener;
     SOCKADDR_IN server, target;
     slist.nextTarget=0x00;
     slist.target=0x00;
@@ -46,10 +46,11 @@ void Listener()
     while(true)
     {
         fprintf(stderr, "accepted\n\t\t[*]Listening: ");
-        acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
+        SOCKET *acceptedTarget = new SOCKET;
+        *acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
         SOCKETLIST link;
 
-        if(acceptedTarget==INVALID_SOCKET)
+        if(*acceptedTarget==INVALID_SOCKET)
         {
             fprintf(stderr ,"\n\t\t[*] error connecting");
         }
@@ -57,8 +58,9 @@ void Listener()
         {
             fprintf(stderr ," connection accepted\n[*] IP ADDRESS %d",htonl(target.sin_addr.S_un.S_addr));
             u_long mode =1;
-            ioctlsocket(acceptedTarget,FIONBIO,&mode);
-            link.target = &acceptedTarget;
+            ioctlsocket(*acceptedTarget,FIONBIO,&mode);
+
+            link.target = acceptedTarget;
 
             mu.lock();
             /*
@@ -101,7 +103,7 @@ void Handler()
                 while(recv(*(link.target),buffer,0x1001,0) !=  SOCKET_ERROR )
                 {
                         *(buffer+0x1000)=0x00;
-                        printf("%s",buffer);
+                       printf("%s",buffer);
                 }
                 if (WSAGetLastError() == WSAEWOULDBLOCK)
                 {
@@ -136,6 +138,8 @@ int main()
     std::thread thread1 (Listener);
     std::thread thread2 (Handler);
     thread1.join();
+    exit(-1);
+
 
     return 0;
 }
