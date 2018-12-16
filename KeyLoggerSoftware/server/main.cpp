@@ -43,12 +43,13 @@ void Listener()
 
     listen(Listener,3);
     cL=sizeof(target);
+    SOCKETLIST link;
     while(true)
     {
         fprintf(stderr, "accepted\n\t\t[*]Listening: ");
         SOCKET *acceptedTarget = new SOCKET;
         *acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
-        SOCKETLIST link;
+        SOCKETLIST *link = new SOCKETLIST;
 
         if(*acceptedTarget==INVALID_SOCKET)
         {
@@ -60,7 +61,7 @@ void Listener()
             u_long mode =1;
             ioctlsocket(*acceptedTarget,FIONBIO,&mode);
 
-            link.target = acceptedTarget;
+            link->target = acceptedTarget;
 
             mu.lock();
             /*
@@ -71,13 +72,13 @@ void Listener()
             */
             if(slist.target==0x00)
             {
-                slist=link;
+                slist=*link;
                 slist.nextTarget=&slist;
             }
             else
             {
-                link.nextTarget=slist.nextTarget;
-                slist.nextTarget=&link;
+                link->nextTarget=slist.nextTarget;
+                slist.nextTarget=link;
             }
             mu.unlock();
 
@@ -91,6 +92,7 @@ void Handler()
         unsigned int rcv;
         char* buffer = (char*)malloc(0x1000);
         SOCKETLIST link;
+        SOCKETLIST previousLink;
         while(1)
         {
             while(slist.target == NULL )
@@ -109,7 +111,7 @@ void Handler()
                 {
                     Sleep(1);
                     WSASetLastError(0x00);
-
+                    previousLink =link;
                     link = *(link.nextTarget);
                 }
                 else
@@ -122,6 +124,11 @@ void Handler()
                         slist.target=0x00;
                         slist.nextTarget=0x00;
                         mu.unlock();
+                    }
+                    else if (previousLink.target == link.nextTarget->target)
+                    {
+                        link = *(link.nextTarget);
+                        link.nextTarget= &link;
                     }
                     /*
                         TODO: remove socket from linked list
