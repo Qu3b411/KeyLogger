@@ -3,7 +3,7 @@
 
 typedef struct socketlist
 {
-    SOCKET target;
+    SOCKET* target;
     struct socketlist* nextTarget;
 }SOCKETLIST;
 
