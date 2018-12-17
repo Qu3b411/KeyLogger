@@ -138,7 +138,7 @@ by the end of the script you should have the exe's,
 |    0.1.1     | Limit unsent buffer size before exit |  NO  |     set file names to connecting ip address_TimeStamp     |  NO  |
 |              |    				      |  N/A | client termination loops back to start new client session |  YES  |
 |	       |                                      |  N/A | start the javac implimintations for the GUI, GUI will not be supported at this time | NO |
-|    0.1.2     |  build in click screen captures      |  NO  |                   build multi-client support              |  NO  |
+|    0.1.2     |  build in click screen captures      |  NO  |                   build multi-client support              |  Yes  |
 |              |                                      |      |                                                           |      |
 |    0.1.3     | hook enum process and remove pid     | N/A  |                    build a minimal javac GUI              |  NO  |
 |              |                                      | N/A  |           release compiler script that supports GUI       |  NO  |
