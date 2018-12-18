@@ -135,12 +135,12 @@ by the end of the script you should have the exe's,
 
 | Version Spec |      Client Side Requirements        | done |                   Server Side Requirements                | done |
 | ------------ |:------------------------------------:|:----:|:---------------------------------------------------------:| ----:|
-|    0.1.1     | Limit unsent buffer size before exit |  NO  |     set file names to connecting ip address_TimeStamp     |  YES   |
+|    0.1.1     | Limit unsent buffer size before exit |  NO  |     set file names to connecting ip address_TimeStamp     |  YES |
 |              |    				      |  N/A | client termination loops back to start new client session |  YES  |
 |	       |                                      |  N/A | start the javac implimintations for the GUI, GUI will not be supported at this time | NO |
-|    0.1.2     |  build in click screen captures      |  NO  |                   build multi-client support              |  Yes will need some work |
+|    0.1.2     |  build in click screen captures      |  NO  |                   build multi-client support              |  YES |
 |              |                                      |      |                                                           |      |
-|    0.1.3     | hook enum process and remove pid     | N/A  |                    build a minimal javac GUI              |  NO  |
+|    0.1.3     | hook enum process and remove pid     |  NO  |                    build a minimal javac GUI              |  NO  |
 |              |                                      | N/A  |           release compiler script that supports GUI       |  NO  |
 |    0.1.4     |                                      | N/A  |                         polish off the GUI                |  NO  |
 |    0.2.0     | design a  roadmap to  support client side encryption | NO | design a  roadmap to  support server side encryption | NO |
