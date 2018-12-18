@@ -22,7 +22,7 @@ if /I "%windowd%" EQU "Y" goto :ServerCompiler
 if /I "%windowd%" EQU "N" goto :exit
 goto :Server
 :ServerCompiler
-g++ -std=c++11 .\KeyLoggerSoftware\Server\main.cpp -lws2_32  -o .\KeyLoggerSoftware\server\keylogserverServer.exe 
+mingw32-g++ -std=c++11 .\KeyLoggerSoftware\Server\main.cpp -lws2_32  -o .\KeyLoggerSoftware\server\keylogserverServer.exe 
 echo complete
 
 :exit
