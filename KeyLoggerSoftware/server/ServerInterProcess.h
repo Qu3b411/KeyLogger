@@ -6,6 +6,7 @@ typedef struct socketlist
     SOCKET* target;
     struct socketlist* nextTarget;
     char* name;
+    HANDLE FileDescriptor;
 }SOCKETLIST;
 
 
