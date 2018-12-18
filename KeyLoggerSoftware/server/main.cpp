@@ -71,6 +71,7 @@ void Listener()
             */
             do
             {
+                Sleep(1);
                 GetSystemTime(&timestamp);
                 Sleep(1); 
                 sprintf(link->name,".\\logged\\%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
