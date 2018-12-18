@@ -72,7 +72,7 @@ void Listener()
             do
             {
                 GetSystemTime(&timestamp);
-                sprintf(link->name,"%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
+                sprintf(link->name,".\\logged\\%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
                     timestamp.wHour,timestamp.wMinute,timestamp.wSecond,timestamp.wMilliseconds);
                 link->FileDescriptor = CreateFileA(link->name,(GENERIC_READ|GENERIC_WRITE),
                                                FILE_SHARE_READ,NULL,CREATE_ALWAYS,
