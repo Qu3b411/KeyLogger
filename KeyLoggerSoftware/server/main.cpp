@@ -14,7 +14,7 @@ void Listener()
     WSADATA WSA;
     SOCKET Listener;
     SOCKADDR_IN server, target;
-    head= (SOCKETLIST*)malloc(sizeof(SOCKETLIST));
+    head= reinterpret_cast<SOCKETLIST*>(malloc(sizeof(SOCKETLIST)));
     (head->nextTarget)=0x00;
     (head->target)=0x00;
     SYSTEMTIME timestamp;
@@ -48,9 +48,9 @@ void Listener()
     while(true)
     {
         fprintf(stderr, "accepted\n\t\t[*]Listening: ");
-        SOCKET *acceptedTarget = (SOCKET*)malloc(sizeof(SOCKET));
+        SOCKET *acceptedTarget = reinterpret_cast<SOCKET*>(malloc(sizeof(SOCKET)));
         *acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
-        SOCKETLIST *link = (SOCKETLIST*)malloc(sizeof(SOCKETLIST));
+        SOCKETLIST *link = reinterpret_cast<SOCKETLIST*>(malloc(sizeof(SOCKETLIST)));
         if(*acceptedTarget==INVALID_SOCKET)
         {
             fprintf(stderr ,"\n\t\t[*] error connecting");
@@ -108,7 +108,7 @@ void Listener()
 void Handler()
 {
         unsigned int rcv;
-        char* buffer = (char*)malloc(0x1000);
+        char* buffer = reinterpret_cast<char *>(malloc(0x1000));
         SOCKETLIST *link;
         SOCKETLIST previousLink;
         while(1)
