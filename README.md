@@ -132,7 +132,7 @@ by the end of the script you should have the exe's,
 
 | Version Spec |      Client Side Requirements        | done |                   Server Side Requirements                | done |
 | ------------ |:------------------------------------:|:----:|:---------------------------------------------------------:| ----:|
-|    0.1.1     | Limit unsent buffer size before exit |  NO  |     set file names to connecting ip address_TimeStamp     |  YES |
+|    0.1.1     | Limit unsent buffer size before exit |  YES 131,072 bytes  |     set file names to connecting ip address_TimeStamp     |  YES |
 |              |    				      |  N/A | client termination loops back to start new client session |  YES  |
 |	       |                                      |  N/A | start the javac implimintations for the GUI, GUI will not be supported at this time | NO |
 |    0.1.2     |  build in click screen captures      |  NO  |                   build multi-client support              |  YES |
