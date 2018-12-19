@@ -11,6 +11,7 @@
 #define MapFunctionKeys MapFunctionKeysExA
 #define MapKeys MapKeysExA
 #define SandBoxDetection SandBoxDetectionExA
+#define MemConsumeLim       0x20000
 #define Major               0x02
 #define Minor               0x02
 #define StartAsciiDec       0x30
