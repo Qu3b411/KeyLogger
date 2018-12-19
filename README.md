@@ -35,6 +35,8 @@ currently Version 0.1.0 is capable of:
 **Sample Output:** can be viewed to get a feal for what the output should look like, detailed instructions can be found by going to the **Getting Started/ to view sample output** section of the **README** 
 
 # Getting Started
+[![Alt text](https://i.ytimg.com/vi/1AIGVSrnuhA/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBIgtQkVtAhTt_JNyYFbrT6X64wcg)](https://www.youtube.com/watch?v=1AIGVSrnuhA&feature=youtu.be)
+
   **There are two ways to get this keylogger up and running**
   	
  **1.) Manually compile the script:** This is the encouraged manner of getting ahold of this script
