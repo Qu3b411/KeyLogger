@@ -62,7 +62,7 @@ void Listener()
             u_long mode =1;
             WaitForSingleObject(mu,INFINITE);
             ioctlsocket(*acceptedTarget,FIONBIO,&mode);
-            link->name = (char*)malloc(0x100);
+            link->name = reinterpret_cast<char*>(malloc(0x100));
             link->target = acceptedTarget;
             /*
                 if a file from the same ip is created at the same time then the naming convention
