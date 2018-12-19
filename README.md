@@ -118,15 +118,12 @@ by the end of the script you should have the exe's,
    
            c:\ . . . \client>keylogger.exe 
           
-  step 4) then navigate to your server and do the following
-  	  
-	  c:\ . . . \server> keyloggerServer.exe >> log#.xml
-	  
-  in this case # represents a number
+  step 4) then navigate to the server directory and start the server listening
+  
   
   step 5) log data for some time,
   
-  step 6) kill the keylogger process and the keyloggerServer will seld terminate shortly their after, the easiest way to kill the process is through the details tab on the task manager.
+  step 6) kill the keylogger process and the keyloggerServer, then navigate over to the ./server/logged directory and open the xml file.
   
  if you see a page that looks as the sample did, then **Congradulations!** you have successfully created your first keylog capture!
  
