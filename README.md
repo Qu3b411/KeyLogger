@@ -156,7 +156,5 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
   
   1.) document all functions internal flow and external **not done** new documentation will be added to describe functions.
   
-  2.) find the bug aflicting the server which limits client connections and write a patch!!!
-  
 # please review it and let me know what Isues arise. 
 #### Windows has blocked the binary release as sevear malware, this is a demo sample of a keylogger, and a form of spyware, this program is intended for educational purposes, if your still interested in testing the binarys it may be prudent to disable windows defender on your testing virtual machine, please do not use this on your every day machine
