@@ -14,6 +14,7 @@ SOCKETLIST *head;
 JavaVM* jvm;
 JNIEnv* env;
 int ConnectionCount;
+
  JNICALL jobjectArray getBuffer()
   {
 
@@ -37,7 +38,7 @@ int ConnectionCount;
         while ((sl_c) != sl_h);
     }
     ReleaseMutex(mu);
-    return ret;
+      return ret;
   }
 void Listener()
 {
@@ -244,7 +245,7 @@ int main()
     jmethodID Init = env->GetMethodID(cls,"<init>","()V");
     jobject obj = env->NewObject(cls,Init);
     env->RegisterNatives(cls,methods,1);
-    jmethodID Init_Gui = env->GetMethodID(cls,"Gui","()V");
+    jmethodID Init_Gui = env->GetMethodID(cls,"Console","()V");
     env->CallVoidMethod(obj,Init_Gui);
     delete option;
     thread1.join();
