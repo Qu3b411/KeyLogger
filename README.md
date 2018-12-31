@@ -57,18 +57,26 @@ if your only looking to preview what this keylogger version can do then download
   
   **compileing the keylogger can be done as follows**
   
-  **step one, get gcc**
-   go to [https://mingw-w64.org/doku.php#mingw-w64] and download gcc, 
+  ###install video
+  [![Alt text](https://i.ytimg.com/vi/1AIGVSrnuhA/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBIgtQkVtAhTt_JNyYFbrT6X64wcg)](https://www.youtube.com/watch?v=0JiTcOa91kQ&feature=youtu.be)
+  
+  **step one, get gcc and jdk8_0_191**
+  
+  **mingw:** go to [https://mingw-w64.org/doku.php#mingw-w64] and download gcc,or, in my experience  the best installation method is to use the code::blocks install   [http://www.codeblocks.org/downloads/binaries] use the mingw-setup
+   
+  **jdk8_0_191** go to [https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html] and download the x86 bit version, [Note: x86 is 32bit platform compliant, x86 can run in both 32bit and 64bit modes] and install that package.
+
+   
    
   **step two, locate compiler**
       
    locate %systemdrive%\...\MinGW, it will likley be  in "\Program Files\" or "\Program Files (x86)\"
    
-   **step three, adding MinGw\bin to system path**
+  **step three, adding MinGw\bin to system path**
    
    	hit winkey+x and select "Powershell (admin)", then type the following command useing the path you found to MinGw
 		
-		[Environment]::SetEnvironmentVariable("Path",$env:Path+";C:\ . . . \MinGw\bin\", [System.EnvironmentVariableTarget]::Machine)
+		[Environment]::SetEnvironmentVariable("Path",$env:Path+";C:\ . . . \MinGw\bin\;C:\...\jdk*\", [System.EnvironmentVariableTarget]::Machine)
 		
  **DO NOT:** forget the ";" before the start of your path. this is an important delimiter.
  
