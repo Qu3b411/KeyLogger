@@ -74,11 +74,7 @@ if your only looking to preview what this keylogger version can do then download
    
   **step three, adding MinGw\bin to system path**
    
-   	hit winkey+x and select "Powershell (admin)", then type the following command useing the path you found to MinGw
-		
-		[Environment]::SetEnvironmentVariable("Path",$env:Path+";C:\ . . . \MinGw\bin\;C:\...\jdk*\", [System.EnvironmentVariableTarget]::Machine)
-		
- **DO NOT:** forget the ";" before the start of your path. this is an important delimiter.
+ run the install.ps1 script and then reboot the system **you may need to enable script running**
  
  restart your computer and gcc will be a part of your system path
  
