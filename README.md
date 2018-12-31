@@ -144,13 +144,16 @@ by the end of the script you should have the exe's,
 | ------------ |:------------------------------------:|:----:|:---------------------------------------------------------:| ----:|
 |    0.1.1     | Limit unsent buffer size before exit |  YES 131,072 bytes  |     set file names to connecting ip address_TimeStamp     |  YES |
 |              |    				      |  N/A | client termination loops back to start new client session |  YES  |
-|	       |                                      |  N/A | start the javac implimintations for the GUI, GUI will not be supported at this time | NO |
+|	       |                                      |  N/A | start the javac implimintations for the GUI, GUI will not be supported at this time | yes | 
 |    0.1.2     |  build in click screen captures      |  NO  |                   build multi-client support              |  YES |
 |              |                                      |      |                                                           |      |
 |    0.1.3     | hook enum process and remove pid     |  NO  |                    build a minimal javac GUI              |  NO  |
 |              |                                      | N/A  |           release compiler script that supports GUI       |  NO  |
 |    0.1.4     |                                      | N/A  |                         polish off the GUI                |  NO  |
 |    0.2.0     | design a  roadmap to  support client side encryption | NO | design a  roadmap to  support server side encryption | NO |
+
+Note: once its pollished to the point of doing a release includeing documentation and bug fixes i will be doing the 0.2.0 release
+
 
  **This is a rough outline** I am hopeing to have some support from the community so that this goes alot faster!, it may take some time tp get to the 0.2.0, but after that we can get into thje real fun of actually implementing these designs, please by all means open up a pull and start codeing, 
 
