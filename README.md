@@ -1,4 +1,4 @@
-# KeyLogger Version 0.1.0
+# KeyLogger Version 0.2.0
  this is a Windows based keylogger, it has multiple usefull features! as described below,
 
 
