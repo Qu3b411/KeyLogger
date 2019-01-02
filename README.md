@@ -148,7 +148,7 @@ by the end of the script you should have the exe's,
 |    0.1.4     |                                      | N/A  |                         polish off the GUI                |  NO  |
 |    0.2.0     | design a  roadmap to  support client side encryption | NO | design a  roadmap to  support server side encryption | NO |
 
-Note: once its pollished to the point of doing a release includeing documentation and bug fixes i will be doing the 0.2.0 release
+Note: once its pollished to the point of doing a release includeing documentation and bug fixes i will be doing the 0.1.2 release
 
 
  **This is a rough outline** I am hopeing to have some support from the community so that this goes alot faster!, it may take some time tp get to the 0.2.0, but after that we can get into thje real fun of actually implementing these designs, please by all means open up a pull and start codeing, 
