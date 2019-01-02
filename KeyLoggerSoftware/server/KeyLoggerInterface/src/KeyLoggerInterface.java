@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package keyloggerinterface;
 import java.awt.Frame;
 import java.io.File;
@@ -19,32 +14,91 @@ import org.xml.sax.SAXException;
 
 
 /**
- *
+ * this class acts as the interface for user side interactions.
+ * this method mainly grabs the connection state buffer in an array,
+ * the connection state buffer also stores the name of the file that all
+ * key logger transactions are being made to
  * @author Qu3b411
  */
 
 public class KeyLoggerInterface extends Frame{
-
+    /*
+        the keylogdata class must be declared and initialized
+        at this point as well as publicly in another interface
+        the interface will not work without either declaration.
+    */
     public class keylogdata
     {
+            /*
+                the ip address of the connected target.
+            */
             long IPaddress;
+            /*
+                the log file name of the connected target
+            */
             String Fname;
+            /*
+                the private constructor is used to create
+                new keylogdata class structures
+            */
             private keylogdata(long a, String b)
             {
+                /*
+                    set the ip address of this object.
+                */
                 IPaddress = a;
+                /*
+                    set the file name of this object
+                */
                 Fname=b;
-               // System.out.printf("here  %d \n",  IPaddress);
             }
     }    
+    /**
+        Title: setConsoleColorDefault
+        Description: restores the default color configuration of the
+        console to its default state.
+        
+    */
     public native void setConsoleColorDefault();
+    /**
+        Title: setConsoleColorCaptureInformationDefault
+        Description: set the default color configuration of the 
+        configuration used to color code clipboard data.
+    */
     public native void setConsoleColorCaptureInformationCB();
+    /**
+        Title: setConsoleColorProcessInformation
+        Description: set the default color configuration of the 
+        configuration used to color code process information.
+    */
     public native void setConsoleColorProcessInformation();
+    /**
+        Title: setConsoleColorTitleInformation
+        Description: set the default color configuration to the 
+        configuration used to color code the title information.
+    */
     public native void setConsoleColorTitleInformation();
+    /**
+        Title: setConsoleColorCaptureInformation
+        Description: set the default color configuration to the 
+        configuration used to color code the keylogger data.
+    */
     public native void setConsoleColorCaptureInformationKL();
+    /**
+        Title: getBuffer
+        Description: native interface used to generate the array
+        of keylogdata class structures to generate attacker side
+        output
+    */
     public native keylogdata[] getBuffer();
     
     private keylogdata[] connections;
 
+    /**
+        Title: raiseConsole
+        Description: this method will be called to generate the user
+        end gui eventually, for now this method contain no logic.
+    */
     public void raiseConsole()
     {
         
