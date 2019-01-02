@@ -14,10 +14,11 @@ SOCKETLIST *head;
 JavaVM* jvm;
 JNIEnv* env;
 int ConnectionCount;
+CONSOLE_SCREEN_BUFFER_INFO csbi;
 JNICALL void setConsoleColorDefault()
 {
     HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hCon,0x0f);
+    SetConsoleTextAttribute(hCon,csbi.wAttributes);
 }
 JNICALL void setConsoleColorCaptureInformationCB()
 {
@@ -538,6 +539,11 @@ void Handler()
 */
 int main()
 {
+    
+    /*
+        remember the default colors.
+    */
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&csbi);
 
     /*
         set a global counter on the number of established connections to zero.
