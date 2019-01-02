@@ -2,6 +2,7 @@
 #include <mswsock.h>
 #include "ServerInterProcess.h"
 #include "keyloggerinterface.h"
+#include "ConsoleColors.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <thread>
@@ -15,30 +16,54 @@ JavaVM* jvm;
 JNIEnv* env;
 int ConnectionCount;
 CONSOLE_SCREEN_BUFFER_INFO csbi;
+/**
+    Title: setConsoleColorDefault
+    Description: restores the color of the text in the console.
+*/
 JNICALL void setConsoleColorDefault()
 {
     HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hCon,csbi.wAttributes);
 }
+/**
+    Title: setConsoleColorCaptureInformationCB
+    Description: sets the color of the console for displaying clipboard
+    capture data.
+*/
 JNICALL void setConsoleColorCaptureInformationCB()
 {
      HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hCon,0x30);
+    SetConsoleTextAttribute(hCon,ClipBoardColor);
 }
+/**
+    Title: setConsoleColorProcessInformation
+    Description: sets the color of the console for displaying Process
+    information.
+*/
 JNICALL void setConsoleColorProcessInformation()
 {
     HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hCon,0x2f);
+    SetConsoleTextAttribute(hCon,ProccessInfoColor);
 }
+/**
+    Title: setConsoleColorTitleInformation
+    Description: sets the color of the console for displaying Title
+    information.
+*/
 JNICALL void setConsoleColorTitleInformation()
 {
     HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hCon,0x4f);
+    SetConsoleTextAttribute(hCon,TitleInfoColor);
 }
+/**
+    Title: setConsoleColorCaptureInformationKL
+    Description: sets the color of the console for displaying keylogger
+    capture data.
+*/
 JNICALL void setConsoleColorCaptureInformationKL()
 {
     HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hCon,0x60);
+    SetConsoleTextAttribute(hCon,keylogColor);
 }
 
 /**
@@ -539,7 +564,7 @@ void Handler()
 */
 int main()
 {
-    
+
     /*
         remember the default colors.
     */
