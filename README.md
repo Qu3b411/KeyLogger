@@ -161,8 +161,9 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
      Qu3b411
 
 # TODO
-  
-  1.) document all functions internal flow and external **not done** new documentation will be added to describe functions.
+  ys
+  1.) compile a fresh copy with jar and config for support in release
+  2.) create instructions for release version dependecieys
   
 # please review it and let me know what Isues arise. 
 #### Windows has blocked the binary release as sevear malware, this is a demo sample of a keylogger, and a form of spyware, this program is intended for educational purposes, if your still interested in testing the binarys it may be prudent to disable windows defender on your testing virtual machine, please do not use this on your every day machine
