@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 using namespace std;
 /**
     name: writeUnsanitizedBuffer
@@ -85,8 +86,17 @@ XML_PROCESS_BUFFER writeSanitizedByte(XML_PROCESS_BUFFER buffer, const char ch)
         case '\'': buffer = writeUnsanitizedBuffer(buffer,"&apos;"); break;
         case '"': buffer = writeUnsanitizedBuffer(buffer,"&quot;"); break;
 
-        default:  buffer = writeUnsanitizedByte(buffer,ch);
-
+        default:
+            if((int)(unsigned char)ch >=0x7f)
+            {
+                char* temp = reinterpret_cast<char*>(malloc(0x20));
+                sprintf(temp,"\\SpecialChar#_U0%d\\",(int)(unsigned char)ch);
+                buffer = writeUnsanitizedBuffer(buffer,const_cast<char*>(temp));
+            }
+            else
+            {
+                buffer = writeUnsanitizedByte(buffer,ch);
+            }
     }
     return buffer;
 }
