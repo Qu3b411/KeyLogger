@@ -640,7 +640,7 @@ int main()
     /*
         set the class path relative to the binary and locate the keylogger interface.
     */
-    option[0].optionString= const_cast<char*>("-Djava.class.path=.\\KeyLoggerInterface\\build\\classes;");
+    option[0].optionString= const_cast<char*>("-Djava.class.path=.\\KeyLoggerInterface.jar;.\\KeyLoggerInterface\\build\\classes;");
     /*
         initiate the jvm to version 8
     */
