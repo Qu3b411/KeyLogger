@@ -1,8 +1,8 @@
-# KeyLogger Version 0.1.0
+# KeyLogger Version 0.1.1
  this is a Windows based keylogger, it has multiple usefull features! as described below,
 
 
-currently Version 0.1.0 is capable of:
+currently Version 0.1.1 is capable of:
 
 **1.) logging keystrokes:** includeing several of the function keys!
 
@@ -30,6 +30,9 @@ currently Version 0.1.0 is capable of:
 		[NOTE:] after a disconnect the server currently prints out the 
 		ending xml tag so you can view the log in your web browser of 
 		choice.
+**10.) server side is capable of connecting multiple targets at once** this is a usefull feature when redteaming multiple targets in an office environment
+
+**11.) console gui dump is color coded** so you never have to leave the confort of your console interface.
 
 
 **Sample Output:** can be viewed to get a feal for what the output should look like, detailed instructions can be found by going to the **Getting Started/ to view sample output** section of the **README** 
@@ -52,17 +55,33 @@ currently Version 0.1.0 is capable of:
 
 if your only looking to preview what this keylogger version can do then downloading the compiled version will give you a preocompiled binary with the server and both client configurations.
  
+ ## Installing the Release V0.1.1
  
+  **Step one, get jre1.8_0_191""
   
-  **compileing the keylogger can be done as follows**
+  **jre1.8_0_191:** go to [https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html] and download the x86 offline exe installer.[Note: x86 is 32bit platform compliant, x86 can run in both 32bit and 64bit modes], and install the package. 
+  
+ **Step two, configure paths to run the server**
+ 	
+ run cmd as an administrator and locate KeyLogger-V0.1.1 in the root directory of your download their should be a ps1 script named "ReleaseInstall" to run it type the following
+ 
+ 		powershell -ExecutionPolicy ByPsdd -File ReleaseInstall.ps1
+
+if this command was ran successfully restart your vm with the following command.
+
+		shutdown /r /t 0
+
+
+ 
+ ## manually compileing the keylogger can be done as follows
   
   ### install video
   
   [![Alt text](https://i.ytimg.com/vi/1AIGVSrnuhA/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBIgtQkVtAhTt_JNyYFbrT6X64wcg)](https://www.youtube.com/watch?v=0JiTcOa91kQ&feature=youtu.be)
   
-  **step one, get gcc and jdk8_0_191**
+  **step one, get gcc and jdk1.8_0_191**
   
-  **mingw:** go to [https://mingw-w64.org/doku.php#mingw-w64] and download gcc,or, in my experience  the best installation method is to use the code::blocks install   [http://www.codeblocks.org/downloads/binaries] use the mingw-setup
+  **mingw:** go to [https://mingw-w64.org/doku.php#mingw-w64] and download gcc,or, in my experience  the best installation method is to use the code::blocks install   [http://www.codeblocks.org/downloads/binaries] use the mingw-setup**
    
   **jdk8_0_191** go to [https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html] and download the x86 bit version, [Note: x86 is 32bit platform compliant, x86 can run in both 32bit and 64bit modes] and install that package.
 
@@ -74,9 +93,15 @@ if your only looking to preview what this keylogger version can do then download
    
   **step three, adding MinGw\bin to system path**
    
- run the install.ps1 script and then reboot the system **you may need to enable script running**
+ run the install.ps1 script and then reboot the system 
+ 	
+from cmd locate the install.ps1 script and run the following command
+
+ 		powershell -ExecutionPolicy ByPsdd -File RInstall.ps1	
  
- restart your computer and gcc will be a part of your system path
+ restart your computer and gcc/jdk will be a part of your system path
+ 
+ 		shutdown /r /t 0 
  
  **Step four, Configuration**
  
@@ -96,9 +121,8 @@ Open Command prompt and navigate to the root directory of this program and find 
 by the end of the script you should have the exe's, 
   
    
-   **congradulations**, you can now run this exe and see what it can realy do!
-
-**Compiled versions** can be run as soon as they are downloaded.
+ # congradulations
+ you can now run this exe and see what it can realy do!
    
    **to view a sample output**
   
@@ -148,7 +172,6 @@ by the end of the script you should have the exe's,
 |    0.1.4     |                                      | N/A  |                         polish off the GUI                |  NO  |
 |    0.2.0     | design a  roadmap to  support client side encryption | NO | design a  roadmap to  support server side encryption | NO |
 
-Note: once its pollished to the point of doing a release includeing documentation and bug fixes i will be doing the 0.1.2 release
 
  **This is a rough outline** I am hopeing to have some support from the community so that this goes alot faster!, it may take some time tp get to the 0.2.0, but after that we can get into thje real fun of actually implementing these designs, please by all means open up a pull and start codeing, 
 
@@ -161,7 +184,6 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
      Qu3b411
 
 # TODO
-  ys
   1.) compile a fresh copy with jar and config for support in release
   2.) create instructions for release version dependecieys
   
