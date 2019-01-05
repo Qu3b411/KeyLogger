@@ -80,7 +80,7 @@ if this command was ran successfully restart your vm with the following command.
   
   ### install video
   
-  [![Alt text](https://i.ytimg.com/vi/1AIGVSrnuhA/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBIgtQkVtAhTt_JNyYFbrT6X64wcg)](https://www.youtube.com/watch?v=0JiTcOa91kQ&feature=youtu.be)
+  [![Alt text](https://i.ytimg.com/vi/1AIGVSrnuhA/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBIgtQkVtAhTt_JNyYFbrT6X64wcg)](https://www.youtube.com/watch?v=K7Bzoxk83CA&feature=youtu.be)
   
   **step one, get gcc and jdk1.8_0_191**
   
