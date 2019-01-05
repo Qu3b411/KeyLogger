@@ -56,8 +56,11 @@ currently Version 0.1.1 is capable of:
 if your only looking to preview what this keylogger version can do then downloading the compiled version will give you a preocompiled binary with the server and both client configurations.
  
  ## Installing the Release V0.1.1
- 
-  **Step one, get jre1.8_0_191""
+   ### install video
+  
+  [![Alt text](https://img.youtube.com/vi/jtg9VI9bIEc/default.jpg)](https://www.youtube.com/watch?v=jtg9VI9bIEc&feature=youtu.be)
+  
+  **Step one, get jre1.8_0_191**
   
   **jre1.8_0_191:** go to [https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html] and download the x86 offline exe installer.[Note: x86 is 32bit platform compliant, x86 can run in both 32bit and 64bit modes], and install the package. 
   
@@ -185,6 +188,7 @@ https://join.slack.com/t/qu3b411keylogger/shared_invite/enQtNDkzMjg4NDQ5MjQ4LWU2
 
 # TODO
   1.) compile a fresh copy with jar and config for support in release
+  
   2.) create instructions for release version dependecieys
   
 # please review it and let me know what Isues arise. 
