@@ -187,7 +187,7 @@ void Listener()
     /*
         greeting message for the server.
     */
-    fprintf(stderr ,"Welcome to the keylogger server version 0.1.0, \n momentarily the listener should be established!\n");
+    fprintf(stderr ,"Welcome to the keylogger server version 0.1.1, \n momentarily the listener should be established!\n");
     fprintf(stderr ,"\t[*] Initalizing socket...\n");
     /*
         attempt to start the windows socket api
