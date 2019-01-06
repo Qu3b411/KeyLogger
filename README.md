@@ -32,7 +32,7 @@ currently Version 0.1.1 is capable of:
 		choice.
 **10.) server side is capable of connecting multiple targets at once** this is a usefull feature when redteaming multiple targets in an office environment
 
-**11.) console gui dump is color coded** so you never have to leave the confort of your console interface.
+**11.) console dump is color coded** so you never have to leave the confort of your console interface.
 
 
 **Sample Output:** can be viewed to get a feal for what the output should look like, detailed instructions can be found by going to the **Getting Started/ to view sample output** section of the **README** 
