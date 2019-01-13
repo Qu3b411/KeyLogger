@@ -1,7 +1,7 @@
 # KeyLogger Version 0.1.1
  this is a Windows based keylogger, it has multiple usefull features! as described below,
 
-
+will be buisy with school this semester, please be patient with updates
 currently Version 0.1.1 is capable of:
 
 **1.) logging keystrokes:** includeing several of the function keys!
